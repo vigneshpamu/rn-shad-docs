@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { TextPreview } from '../../../components/previews/TextPreview';
+
 # Text
 
 A versatile, themeable text component with support for multiple typography variants, colors, weights, and alignments. Perfect for creating consistent typography throughout your app.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<TextPreview platform="ios" />}
+  android={<TextPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add text
+npx @codervigi/rn-shad-cli@latest add text
 ```
 
 ## Usage

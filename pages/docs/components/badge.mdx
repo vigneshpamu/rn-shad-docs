@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { BadgePreview } from '../../../components/previews/BadgePreview';
+
 # Badge
 
 A small, lightweight component for displaying labels, tags, or status indicators. The badge component supports multiple variants and sizes with optional icon support and theme integration.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<BadgePreview platform="ios" />}
+  android={<BadgePreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add badge
+npx @codervigi/rn-shad-cli@latest add badge
 ```
 
 ## Usage

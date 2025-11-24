@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { AvatarPreview } from '../../../components/previews/AvatarPreview';
+
 # Avatar
 
 A composable component for displaying user profile images with automatic fallback to initials. The avatar component supports multiple sizes and gracefully handles missing or failed image loads.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<AvatarPreview platform="ios" />}
+  android={<AvatarPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add avatar
+npx @codervigi/rn-shad-cli@latest add avatar
 ```
 
 ## Usage

@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { InputPreview } from '../../../components/previews/InputPreview';
+
 # Input
 
 A beautifully animated text input component with label, error states, icons, and focus animations. Built with React Native Reanimated for smooth 60fps animations.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<InputPreview platform="ios" />}
+  android={<InputPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add input
+npx @codervigi/rn-shad-cli@latest add input
 ```
 
 ## Usage

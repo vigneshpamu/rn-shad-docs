@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { AlertPreview } from '../../../components/previews/AlertPreview';
+
 # Alert
 
 A flexible alert component for displaying contextual messages with different severity levels. The alert component supports multiple variants, optional icons, and composable sub-components for titles and descriptions.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<AlertPreview platform="ios" />}
+  android={<AlertPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add alert
+npx @codervigi/rn-shad-cli@latest add alert
 ```
 
 ## Usage

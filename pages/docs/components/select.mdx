@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SelectPreview } from '../../../components/previews/SelectPreview';
+
 # Select
 
 A dropdown selection component that allows users to choose one option from a list. The Select component features a modal-based dropdown, animated chevron icon, and full keyboard navigation support with theme integration.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SelectPreview platform="ios" />}
+  android={<SelectPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add select
+npx @codervigi/rn-shad-cli@latest add select
 ```
 
 ## Usage

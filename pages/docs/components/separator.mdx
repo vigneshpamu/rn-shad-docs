@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SeparatorPreview } from '../../../components/previews/SeparatorPreview';
+
 # Separator
 
 A simple, lightweight component for creating visual dividers between content. Supports horizontal and vertical orientations with customizable thickness and color. Perfect for organizing content visually with minimal styling overhead.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SeparatorPreview platform="ios" />}
+  android={<SeparatorPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add separator
+npx @codervigi/rn-shad-cli@latest add separator
 ```
 
 ## Usage

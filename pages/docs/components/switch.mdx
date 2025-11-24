@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SwitchPreview } from '../../../components/previews/SwitchPreview';
+
 # Switch
 
 A toggle switch component that allows users to turn a feature or setting on and off. The Switch component features smooth animations and supports multiple sizes with optional theme integration.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SwitchPreview platform="ios" />}
+  android={<SwitchPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add switch
+npx @codervigi/rn-shad-cli@latest add switch
 ```
 
 ## Usage

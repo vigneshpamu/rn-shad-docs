@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { TabsPreview } from '../../../components/previews/TabsPreview';
+
 # Tabs
 
 A flexible and animated tabs component for organizing content into separate panels. The Tabs component features smooth transitions with spring animations, theme integration, and support for both controlled and uncontrolled states.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<TabsPreview platform="ios" />}
+  android={<TabsPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add tabs
+npx @codervigi/rn-shad-cli@latest add tabs
 ```
 
 ## Usage

@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { ChipPreview } from '../../../components/previews/ChipPreview';
+
 # Chip
 
 A versatile, removable component for displaying tags, filters, or selections. The chip component supports multiple variants and sizes with optional remove functionality and press handlers for interactive use cases like filter chips and tag selection.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<ChipPreview platform="ios" />}
+  android={<ChipPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add chip
+npx @codervigi/rn-shad-cli@latest add chip
 ```
 
 ## Usage

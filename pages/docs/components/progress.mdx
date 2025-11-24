@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { ProgressPreview } from '../../../components/previews/ProgressPreview';
+
 # Progress
 
 A progress bar component that displays the progress of a task with smooth spring animations, multiple size variants, and semantic color variants (default, success, warning, destructive).
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<ProgressPreview platform="ios" />}
+  android={<ProgressPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add progress
+npx @codervigi/rn-shad-cli@latest add progress
 ```
 
 ## Usage

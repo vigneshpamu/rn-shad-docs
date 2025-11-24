@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { DialogPreview } from '../../../components/previews/DialogPreview';
+
 # Dialog
 
 A versatile modal dialog component that displays centered content with a backdrop overlay. Features smooth animations, customizable sizing, and accessibility support for confirmation dialogs, alerts, and more.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<DialogPreview platform="ios" />}
+  android={<DialogPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add dialog
+npx @codervigi/rn-shad-cli@latest add dialog
 ```
 
 ## Usage

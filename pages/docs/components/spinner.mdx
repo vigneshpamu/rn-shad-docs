@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SpinnerPreview } from '../../../components/previews/SpinnerPreview';
+
 # Spinner
 
 An animated loading spinner component with multiple size options and customizable colors. Perfect for indicating ongoing operations with smooth continuous rotation.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SpinnerPreview platform="ios" />}
+  android={<SpinnerPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add spinner
+npx @codervigi/rn-shad-cli@latest add spinner
 ```
 
 ## Usage

@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { CardPreview } from '../../../components/previews/CardPreview';
+
 # Card
 
 A flexible, composable card component with support for multiple variants, animations, and pressable states. Perfect for displaying content in organized, elevated containers with smooth interactions using React Native Reanimated.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<CardPreview platform="ios" />}
+  android={<CardPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add card
+npx @codervigi/rn-shad-cli@latest add card
 ```
 
 ## Usage

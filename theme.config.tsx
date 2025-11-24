@@ -23,7 +23,7 @@ const config: DocsThemeConfig = {
     </>
   ),
   sidebar: {
-    defaultMenuCollapseLevel: 1,
+    defaultMenuCollapseLevel: Infinity,
   },
   toc: {
     backToTop: true

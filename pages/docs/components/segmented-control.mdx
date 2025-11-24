@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SegmentedControlPreview } from '../../../components/previews/SegmentedControlPreview';
+
 # SegmentedControl
 
 An animated component for selecting between multiple options. The segmented control displays options as horizontal segments with a smooth animated indicator that transitions between selections, perfect for view toggles, filters, and mode switching.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SegmentedControlPreview platform="ios" />}
+  android={<SegmentedControlPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add segmented-control
+npx @codervigi/rn-shad-cli@latest add segmented-control
 ```
 
 ## Usage

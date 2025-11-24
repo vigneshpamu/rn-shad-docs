@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SheetPreview } from '../../../components/previews/SheetPreview';
+
 # Sheet
 
 A bottom sheet component that slides up from the bottom of the screen with support for snap points, gestures, and scrollable content. Perfect for menus, filters, and expandable content panels.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SheetPreview platform="ios" />}
+  android={<SheetPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add sheet
+npx @codervigi/rn-shad-cli@latest add sheet
 ```
 
 ## Usage

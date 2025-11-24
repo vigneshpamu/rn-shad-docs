@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { ButtonPreview } from '../../../components/previews/ButtonPreview';
+
 # Button
 
 A beautiful, animated button component with multiple variants, sizes, and icon support. Features smooth press animations using React Native Reanimated.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<ButtonPreview platform="ios" />}
+  android={<ButtonPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add button
+npx @codervigi/rn-shad-cli@latest add button
 ```
 
 ## Usage

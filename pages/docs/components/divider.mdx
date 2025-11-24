@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { DividerPreview } from '../../../components/previews/DividerPreview';
+
 # Divider
 
 A versatile component for creating visual dividers with optional labels. Supports horizontal and vertical orientations with customizable colors and thickness. Perfect for separating content sections with descriptive labels or as simple divider lines.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<DividerPreview platform="ios" />}
+  android={<DividerPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add divider
+npx @codervigi/rn-shad-cli@latest add divider
 ```
 
 ## Usage

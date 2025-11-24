@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SliderPreview } from '../../../components/previews/SliderPreview';
+
 # Slider
 
 An interactive slider component for selecting values within a range. Features smooth gesture-based interactions with both pan and tap gestures, customizable sizes, and step support.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SliderPreview platform="ios" />}
+  android={<SliderPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add slider
+npx @codervigi/rn-shad-cli@latest add slider
 ```
 
 ## Usage

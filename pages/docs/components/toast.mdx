@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { ToastPreview } from '../../../components/previews/ToastPreview';
+
 # Toast
 
 A notification system component that displays temporary messages to the user. Features multiple variants (success, error, warning, info), automatic dismissal, customizable actions, and smooth animations.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<ToastPreview platform="ios" />}
+  android={<ToastPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add toast
+npx @codervigi/rn-shad-cli@latest add toast
 ```
 
 ## Usage

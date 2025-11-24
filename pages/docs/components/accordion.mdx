@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { AccordionPreview } from '../../../components/previews/AccordionPreview';
+
 # Accordion
 
 A flexible accordion component for displaying collapsible sections of content. The Accordion component features smooth height animations, support for single or multiple expanded items, theme integration, and an animated chevron icon.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<AccordionPreview platform="ios" />}
+  android={<AccordionPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add accordion
+npx @codervigi/rn-shad-cli@latest add accordion
 ```
 
 ## Usage

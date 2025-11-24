@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { LabelPreview } from '../../../components/previews/LabelPreview';
+
 # Label
 
 A text label component for form fields and other UI elements. The Label component provides consistent typography and styling for labels across your application, with support for required indicators, disabled states, and error states.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<LabelPreview platform="ios" />}
+  android={<LabelPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add label
+npx @codervigi/rn-shad-cli@latest add label
 ```
 
 ## Usage

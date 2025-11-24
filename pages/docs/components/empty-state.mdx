@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { EmptyStatePreview } from '../../../components/previews/EmptyStatePreview';
+
 # EmptyState
 
 A composable component for displaying empty states, no results, or placeholder content. The empty state component combines an icon, title, optional description, and action button area for comprehensive feedback when there's nothing to display.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<EmptyStatePreview platform="ios" />}
+  android={<EmptyStatePreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add empty-state
+npx @codervigi/rn-shad-cli@latest add empty-state
 ```
 
 ## Usage

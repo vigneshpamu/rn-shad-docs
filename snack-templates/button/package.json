@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "react-native-reanimated": "~3.10.1",
+    "react-native-gesture-handler": "~2.16.1",
+    "lucide-react-native": "0.446.0",
+    "expo": "~51.0.0",
+    "react": "18.2.0",
+    "react-native": "0.74.5"
+  }
+}

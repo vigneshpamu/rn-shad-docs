@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { MenuPreview } from '../../../components/previews/MenuPreview';
+
 # Menu
 
 A context menu component that displays a list of actions when triggered. The Menu component uses a flexible compound component structure with separate Menu, MenuTrigger, MenuContent, MenuItem, and MenuSeparator sub-components for maximum flexibility.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<MenuPreview platform="ios" />}
+  android={<MenuPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add menu
+npx @codervigi/rn-shad-cli@latest add menu
 ```
 
 ## Usage

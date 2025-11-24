@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { SkeletonPreview } from '../../../components/previews/SkeletonPreview';
+
 # Skeleton
 
 A loading skeleton component that displays a placeholder while content is loading. Perfect for creating skeleton screens that mimic your content layout with smooth pulse animations.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<SkeletonPreview platform="ios" />}
+  android={<SkeletonPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add skeleton
+npx @codervigi/rn-shad-cli@latest add skeleton
 ```
 
 ## Usage

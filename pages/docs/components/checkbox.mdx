@@ -1,11 +1,21 @@
+import { DevicePreview } from '../../../components/DeviceMockup';
+import { CheckboxPreview } from '../../../components/previews/CheckboxPreview';
+
 # Checkbox
 
 A checkbox component for selecting one or more options from a set. The Checkbox component features smooth animations with a scale effect, multiple sizes, and built-in support for disabled states.
 
+## Interactive Preview
+
+<DevicePreview
+  ios={<CheckboxPreview platform="ios" />}
+  android={<CheckboxPreview platform="android" />}
+/>
+
 ## Installation
 
 ```bash
-npx rn-shad-cli add checkbox
+npx @codervigi/rn-shad-cli@latest add checkbox
 ```
 
 ## Usage
