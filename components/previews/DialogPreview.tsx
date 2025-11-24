@@ -17,8 +17,8 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
 
   return (
     <>
-      {trigger && React.cloneElement(trigger as React.ReactElement, { onOpenChange })}
-      {open && content && React.cloneElement(content as React.ReactElement, { onOpenChange })}
+      {trigger && React.cloneElement(trigger as React.ReactElement<any>, { onOpenChange })}
+      {open && content && React.cloneElement(content as React.ReactElement<any>, { onOpenChange })}
     </>
   );
 }
@@ -209,14 +209,17 @@ function Button({
     default: {
       backgroundColor: '#18181B',
       color: '#FAFAFA',
+      border: 'none',
     },
     primary: {
       backgroundColor: '#18181B',
       color: '#FAFAFA',
+      border: 'none',
     },
     destructive: {
       backgroundColor: '#EF4444',
       color: '#FFFFFF',
+      border: 'none',
     },
     outline: {
       backgroundColor: 'transparent',
@@ -236,7 +239,7 @@ function Button({
         fontSize: '14px',
         fontWeight: '600',
         fontFamily,
-        border: variant === 'outline' ? style.border : 'none',
+        border: style.border,
         backgroundColor: style.backgroundColor,
         color: style.color,
         cursor: 'pointer',

@@ -19,9 +19,9 @@ function Select({ value, onValueChange, placeholder, disabled, children, platfor
 
   const childrenArray = React.Children.toArray(children);
   const selectedItem = childrenArray.find(
-    (child) => React.isValidElement(child) && child.props.value === value
+    (child) => React.isValidElement(child) && (child.props as any).value === value
   );
-  const selectedLabel = selectedItem && React.isValidElement(selectedItem) ? selectedItem.props.children : placeholder || 'Select...';
+  const selectedLabel = selectedItem && React.isValidElement(selectedItem) ? (selectedItem.props as any).children : placeholder || 'Select...';
 
   return (
     <div style={{ position: 'relative' }}>
@@ -97,14 +97,15 @@ function Select({ value, onValueChange, placeholder, disabled, children, platfor
           >
             {React.Children.map(children, (child) => {
               if (React.isValidElement(child)) {
-                return React.cloneElement(child as React.ReactElement, {
+                const childProps = child.props as any;
+                return React.cloneElement(child as React.ReactElement<any>, {
                   onSelect: () => {
-                    if (!child.props.disabled) {
-                      onValueChange(child.props.value);
+                    if (!childProps.disabled) {
+                      onValueChange(childProps.value);
                       setIsOpen(false);
                     }
                   },
-                  isSelected: value === child.props.value,
+                  isSelected: value === childProps.value,
                   platform,
                 });
               }

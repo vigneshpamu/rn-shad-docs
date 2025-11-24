@@ -260,14 +260,17 @@ function Button({
     default: {
       backgroundColor: '#18181B',
       color: '#FAFAFA',
+      border: 'none',
     },
     primary: {
       backgroundColor: '#18181B',
       color: '#FAFAFA',
+      border: 'none',
     },
     destructive: {
       backgroundColor: '#EF4444',
       color: '#FFFFFF',
+      border: 'none',
     },
     outline: {
       backgroundColor: 'transparent',
@@ -288,7 +291,7 @@ function Button({
         fontSize: '14px',
         fontWeight: '600',
         fontFamily,
-        border: variant === 'outline' ? style.border : 'none',
+        border: style.border,
         backgroundColor: style.backgroundColor,
         color: style.color,
         cursor: 'pointer',

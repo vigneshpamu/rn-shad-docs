@@ -18,8 +18,8 @@ function Menu({ children, platform = 'ios' }: MenuProps) {
 
   return (
     <>
-      {trigger && React.cloneElement(trigger as React.ReactElement, { onToggle: () => setIsOpen(!isOpen) })}
-      {isOpen && content && React.cloneElement(content as React.ReactElement, { onClose: () => setIsOpen(false), platform })}
+      {trigger && React.cloneElement(trigger as React.ReactElement<any>, { onToggle: () => setIsOpen(!isOpen) })}
+      {isOpen && content && React.cloneElement(content as React.ReactElement<any>, { onClose: () => setIsOpen(false), platform })}
     </>
   );
 }
@@ -65,7 +65,7 @@ function MenuContent({ children, onClose, platform = 'ios' }: { children: React.
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child as React.ReactElement, {
+            return React.cloneElement(child as React.ReactElement<any>, {
               onClose,
               platform,
             });

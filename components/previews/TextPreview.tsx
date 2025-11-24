@@ -378,14 +378,15 @@ export function TextPreview({ platform }: { platform: 'ios' | 'android' }) {
                 your@email.com
               </Text>
             </div>
-            <Text
-              platform={platform}
-              variant="caption"
-              color="muted"
-              style={{ marginTop: '6px' }}
-            >
-              We'll never share your email with anyone else.
-            </Text>
+            <div style={{ marginTop: '6px' }}>
+              <Text
+                platform={platform}
+                variant="caption"
+                color="muted"
+              >
+                We'll never share your email with anyone else.
+              </Text>
+            </div>
           </div>
 
           <div>
@@ -408,14 +409,15 @@ export function TextPreview({ platform }: { platform: 'ios' | 'android' }) {
                 ••••••••
               </Text>
             </div>
-            <Text
-              platform={platform}
-              variant="caption"
-              color="destructive"
-              style={{ marginTop: '6px' }}
-            >
-              Password must be at least 8 characters long.
-            </Text>
+            <div style={{ marginTop: '6px' }}>
+              <Text
+                platform={platform}
+                variant="caption"
+                color="destructive"
+              >
+                Password must be at least 8 characters long.
+              </Text>
+            </div>
           </div>
         </div>
       </div>

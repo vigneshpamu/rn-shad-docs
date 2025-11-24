@@ -434,15 +434,16 @@ export function CardPreview({ platform }: { platform: 'ios' | 'android' }) {
             </div>
           </CardContent>
           <CardFooter>
-            <Button
-              platform={platform}
-              variant="default"
-              size="sm"
-              onPress={() => {}}
-              style={{ flex: 1 }}
-            >
-              View Profile
-            </Button>
+            <div style={{ flex: 1 }}>
+              <Button
+                platform={platform}
+                variant="default"
+                size="sm"
+                onPress={() => {}}
+              >
+                View Profile
+              </Button>
+            </div>
           </CardFooter>
         </Card>
       </div>
