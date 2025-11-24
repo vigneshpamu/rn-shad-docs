@@ -6,7 +6,7 @@ export interface SnackEmbedProps {
   preview?: boolean;
   previewOnly?: boolean; // NEW: Hide code editor, show only preview
   theme?: 'light' | 'dark';
-  loading?: 'auto' | 'lazy';
+  loading?: 'lazy' | 'eager';
   file?: string;
   height?: string | number;
 }
@@ -91,7 +91,7 @@ export interface SnackLinkProps {
   platform?: 'ios' | 'android' | 'web' | 'mydevice';
   preview?: boolean;
   theme?: 'light' | 'dark';
-  loading?: 'auto' | 'lazy';
+  loading?: 'lazy' | 'eager';
 }
 
 export function SnackLink({
