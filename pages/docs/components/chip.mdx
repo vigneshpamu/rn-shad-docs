@@ -1,0 +1,470 @@
+# Chip
+
+A versatile, removable component for displaying tags, filters, or selections. The chip component supports multiple variants and sizes with optional remove functionality and press handlers for interactive use cases like filter chips and tag selection.
+
+## Installation
+
+```bash
+npx rn-shad-cli add chip
+```
+
+## Usage
+
+### Basic Chip
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip>React Native</Chip>
+```
+
+### Chip with Remove Handler
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip onRemove={() => console.log('removed')}>
+  Removable Tag
+</Chip>
+```
+
+### Interactive Chip with Press Handler
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip onPress={() => console.log('pressed')}>
+  Clickable Chip
+</Chip>
+```
+
+### Different Variants
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip variant="default">Default</Chip>
+<Chip variant="primary">Primary</Chip>
+<Chip variant="success">Success</Chip>
+<Chip variant="warning">Warning</Chip>
+<Chip variant="error">Error</Chip>
+```
+
+### Different Sizes
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip size="sm">Small</Chip>
+<Chip size="md">Medium</Chip>
+<Chip size="lg">Large</Chip>
+```
+
+### Disabled Chip
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+
+<Chip disabled>Disabled</Chip>
+```
+
+## Variants
+
+The chip component supports 5 different variants for different semantic meanings and visual styles:
+
+### Default
+```tsx
+<Chip variant="default">Default</Chip>
+```
+Light gray background with dark text. Best for neutral or general-purpose chips.
+
+### Primary
+```tsx
+<Chip variant="primary">Primary</Chip>
+```
+Light blue background with blue text. Use for primary or highlighted selections.
+
+### Success
+```tsx
+<Chip variant="success">Success</Chip>
+```
+Light green background with green text. Use for positive, approved, or successful states.
+
+### Warning
+```tsx
+<Chip variant="warning">Warning</Chip>
+```
+Light orange background with orange text. Use for warnings or caution states.
+
+### Error
+```tsx
+<Chip variant="error">Error</Chip>
+```
+Light red background with red text. Use for errors or critical states.
+
+## Sizes
+
+The chip component provides 3 size options for different contexts:
+
+### Small
+```tsx
+<Chip size="sm">Compact</Chip>
+```
+Reduced padding and smaller text. Use in dense layouts or lists.
+
+### Medium
+```tsx
+<Chip size="md">Standard</Chip>
+```
+Default size with balanced padding. Best for most use cases.
+
+### Large
+```tsx
+<Chip size="lg">Spacious</Chip>
+```
+Increased padding for more prominence. Use for standalone or important chips.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Chip text or content |
+| `variant` | `'default' \| 'primary' \| 'success' \| 'warning' \| 'error'` | `'default'` | Visual style variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Chip size |
+| `onPress` | `() => void` | - | Callback when chip is pressed |
+| `onRemove` | `() => void` | - | Callback when remove icon is pressed |
+| `disabled` | `boolean` | `false` | Disables press and remove interactions |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `PressableProps`.
+
+## Features
+
+- **Multiple Variants**: 5 different variants for semantic meaning
+- **Size Options**: Small, medium, and large sizes for various contexts
+- **Removable**: Built-in remove button with X icon that appears when `onRemove` is provided
+- **Interactive**: Press handler support for clickable chips and filtering
+- **Disabled State**: Full disable support with visual feedback
+- **Responsive**: Automatic sizing and spacing based on size prop
+- **Accessible**: Proper touch targets with hitSlop on remove button
+- **Theme Integration**: Variant colors with semantic meaning
+
+## Examples
+
+### Filter Chips
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+function FilterChips() {
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const filters = ['React Native', 'UI Components', 'Mobile', 'TypeScript'];
+
+  const toggleFilter = (filter: string) => {
+    setSelectedFilters(prev =>
+      prev.includes(filter)
+        ? prev.filter(f => f !== filter)
+        : [...prev, filter]
+    );
+  };
+
+  return (
+    <View style={{ gap: 12 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+        {filters.map((filter) => (
+          <Chip
+            key={filter}
+            variant={selectedFilters.includes(filter) ? 'primary' : 'default'}
+            onPress={() => toggleFilter(filter)}
+          >
+            {filter}
+          </Chip>
+        ))}
+      </View>
+    </View>
+  );
+}
+```
+
+### Removable Tags
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+function RemovableTags() {
+  const [tags, setTags] = useState(['JavaScript', 'React', 'Mobile']);
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+      {tags.map((tag) => (
+        <Chip
+          key={tag}
+          variant="primary"
+          onRemove={() => removeTag(tag)}
+        >
+          {tag}
+        </Chip>
+      ))}
+    </View>
+  );
+}
+```
+
+### Status Indicator Chips
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View } from 'react-native';
+
+function StatusChips() {
+  const statuses = [
+    { label: 'Active', variant: 'success' as const },
+    { label: 'Pending', variant: 'warning' as const },
+    { label: 'Failed', variant: 'error' as const },
+    { label: 'Processing', variant: 'primary' as const },
+  ];
+
+  return (
+    <View style={{ gap: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+      {statuses.map((status) => (
+        <Chip key={status.label} variant={status.variant}>
+          {status.label}
+        </Chip>
+      ))}
+    </View>
+  );
+}
+```
+
+### Skill Tags with Removal
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function SkillSelector() {
+  const [skills, setSkills] = useState<string[]>(['JavaScript', 'React Native']);
+  const availableSkills = ['JavaScript', 'React Native', 'TypeScript', 'Mobile', 'UI Design'];
+
+  const addSkill = (skill: string) => {
+    if (!skills.includes(skill)) {
+      setSkills([...skills, skill]);
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    setSkills(skills.filter(s => s !== skillToRemove));
+  };
+
+  const unusedSkills = availableSkills.filter(s => !skills.includes(s));
+
+  return (
+    <View style={{ gap: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Selected Skills</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          {skills.map((skill) => (
+            <Chip
+              key={skill}
+              variant="primary"
+              onRemove={() => removeSkill(skill)}
+            >
+              {skill}
+            </Chip>
+          ))}
+        </View>
+      </View>
+
+      {unusedSkills.length > 0 && (
+        <View>
+          <Text weight="semibold" style={{ marginBottom: 8 }}>Available Skills</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {unusedSkills.map((skill) => (
+              <Chip
+                key={skill}
+                variant="default"
+                onPress={() => addSkill(skill)}
+              >
+                {skill}
+              </Chip>
+            ))}
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### Grouped Chips by Type
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View, Text } from 'react-native';
+
+function GroupedChips() {
+  const categories = [
+    {
+      title: 'Languages',
+      items: ['JavaScript', 'TypeScript', 'Python'],
+      variant: 'primary' as const,
+    },
+    {
+      title: 'Frameworks',
+      items: ['React', 'React Native', 'Vue'],
+      variant: 'success' as const,
+    },
+    {
+      title: 'Platforms',
+      items: ['Web', 'Mobile', 'Desktop'],
+      variant: 'default' as const,
+    },
+  ];
+
+  return (
+    <View style={{ gap: 24 }}>
+      {categories.map((category) => (
+        <View key={category.title}>
+          <Text weight="semibold" style={{ marginBottom: 8 }}>
+            {category.title}
+          </Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {category.items.map((item) => (
+              <Chip key={item} variant={category.variant}>
+                {item}
+              </Chip>
+            ))}
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Search Result Tags
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function SearchFilters() {
+  const [activeFilters, setActiveFilters] = useState([
+    'category:tech',
+    'type:article',
+    'year:2024',
+  ]);
+
+  const removeFilter = (filterToRemove: string) => {
+    setActiveFilters(activeFilters.filter(f => f !== filterToRemove));
+  };
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Text weight="semibold">Active Filters</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+        {activeFilters.length > 0 ? (
+          activeFilters.map((filter) => (
+            <Chip
+              key={filter}
+              size="sm"
+              variant="primary"
+              onRemove={() => removeFilter(filter)}
+            >
+              {filter}
+            </Chip>
+          ))
+        ) : (
+          <Text color="muted">No filters applied</Text>
+        )}
+      </View>
+    </View>
+  );
+}
+```
+
+### Size Showcase
+
+```tsx
+import { Chip } from '@/components/ui/chip';
+import { View, Text } from 'react-native';
+
+function ChipSizes() {
+  return (
+    <View style={{ gap: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Small</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          <Chip size="sm" variant="primary">
+            Tag
+          </Chip>
+          <Chip size="sm" variant="success" onRemove={() => {}}>
+            Removable
+          </Chip>
+        </View>
+      </View>
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Medium</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          <Chip size="md" variant="primary">
+            Standard Tag
+          </Chip>
+          <Chip size="md" variant="warning" onRemove={() => {}}>
+            Removable
+          </Chip>
+        </View>
+      </View>
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Large</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          <Chip size="lg" variant="primary">
+            Prominent Tag
+          </Chip>
+          <Chip size="lg" variant="error" onRemove={() => {}}>
+            Removable
+          </Chip>
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Choose Semantic Variants**: Match the variant to the meaning:
+   - `default` for neutral/general tags
+   - `primary` for selected or important items
+   - `success` for positive or approved states
+   - `warning` for cautionary items
+   - `error` for failures or critical items
+
+2. **Remove vs Disable**: Use `onRemove` for destructive removal, not for toggling state
+
+3. **Size Selection**:
+   - Use `sm` in dense lists or filtering interfaces
+   - Use `md` for standard tag displays
+   - Use `lg` for prominent standalone chips
+
+4. **Interactive vs Static**: Only add `onPress` if the chip is meant to be clickable
+
+5. **Keep Text Concise**: Chips work best with 1-3 words
+
+6. **Visual Hierarchy**: Use variants to indicate priority or status, not just for aesthetics
+
+7. **Touch Targets**: Remove buttons have appropriate hitSlop (8px) for easy interaction
+
+8. **Accessibility**: Ensure chip text is descriptive and meaningful without relying on color alone

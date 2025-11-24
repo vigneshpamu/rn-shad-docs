@@ -1,0 +1,38 @@
+# Documentation
+
+Welcome to RN Shad UI documentation. Learn how to install and use beautiful React Native components in your project.
+
+## Getting Started
+
+- [Installation](/docs/installation) - Set up RN Shad UI in your project
+- [Components](/docs/components) - Browse all available components
+
+## What is RN Shad UI?
+
+RN Shad UI is a collection of beautiful, accessible React Native components inspired by shadcn/ui. Unlike traditional component libraries, components are copied directly to your project, giving you full ownership and customization control.
+
+## Key Features
+
+- **30+ Components** - Comprehensive library covering all common UI needs
+- **Copy & Paste** - Components are added to your codebase, not installed as dependencies
+- **TypeScript First** - Fully typed with excellent IDE support
+- **Animated** - Smooth 60fps animations with React Native Reanimated
+- **Customizable** - Modify components to match your design system
+- **Production Ready** - Battle-tested and ready for production use
+
+## Quick Example
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+export default function LoginForm() {
+  return (
+    <>
+      <Input label="Email" placeholder="you@example.com" />
+      <Input label="Password" secureTextEntry />
+      <Button onPress={handleLogin}>Login</Button>
+    </>
+  );
+}
+```

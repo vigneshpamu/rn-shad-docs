@@ -1,0 +1,434 @@
+# Combobox
+
+A searchable dropdown component that combines a text input with a list of options. Users can type to filter options, making it ideal for selecting from large lists. The Combobox features real-time filtering, search highlighting, and smooth animations.
+
+## Installation
+
+```bash
+npx rn-shad-cli add combobox
+```
+
+## Usage
+
+### Basic Combobox
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+export function BasicCombobox() {
+  const [value, setValue] = useState('');
+
+  const options = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Orange', value: 'orange' },
+    { label: 'Grape', value: 'grape' },
+  ];
+
+  return (
+    <Combobox
+      value={value}
+      onValueChange={setValue}
+      options={options}
+      placeholder="Select a fruit..."
+    />
+  );
+}
+```
+
+### With Custom Search Placeholder
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+export function ComboboxWithSearchPlaceholder() {
+  const [value, setValue] = useState('');
+
+  const options = [
+    { label: 'JavaScript', value: 'js' },
+    { label: 'TypeScript', value: 'ts' },
+    { label: 'Python', value: 'py' },
+    { label: 'Rust', value: 'rust' },
+  ];
+
+  return (
+    <Combobox
+      value={value}
+      onValueChange={setValue}
+      options={options}
+      placeholder="Choose a language"
+      searchPlaceholder="Type language name..."
+    />
+  );
+}
+```
+
+### Disabled Combobox
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+export function DisabledCombobox() {
+  const [value, setValue] = useState('');
+
+  const options = [
+    { label: 'Option 1', value: '1' },
+    { label: 'Option 2', value: '2' },
+  ];
+
+  return (
+    <Combobox
+      value={value}
+      onValueChange={setValue}
+      options={options}
+      disabled={true}
+      placeholder="This combobox is disabled"
+    />
+  );
+}
+```
+
+## Components
+
+### Combobox
+
+The main component that combines a search input with a filtered list of options.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Currently selected value |
+| `onValueChange` | `(value: string) => void` | - | Callback fired when selection changes |
+| `options` | `ComboboxOption[]` | - | Array of selectable options |
+| `placeholder` | `string` | `'Select option...'` | Placeholder text when nothing is selected |
+| `searchPlaceholder` | `string` | `'Search...'` | Placeholder text in the search input |
+| `disabled` | `boolean` | `false` | Whether the combobox is disabled |
+| `style` | `ViewStyle` | - | Additional styles for the trigger button |
+
+### ComboboxOption
+
+A single option in the combobox list.
+
+#### Type Definition
+
+```tsx
+interface ComboboxOption {
+  label: string;  // Display text shown to the user
+  value: string;  // Internal value used for selection
+}
+```
+
+## Features
+
+- **Real-time Search**: Filter options as the user types
+- **Case-Insensitive Matching**: Search works regardless of letter case
+- **Auto-Focus Search**: Search input automatically focuses when the dropdown opens
+- **Empty State**: Shows a "No results found" message when search returns no matches
+- **Selection Indicator**: Checkmark icon appears next to the selected option
+- **Theme Integration**: Automatically uses theme colors with fallback defaults
+- **Scroll Support**: Long lists are scrollable within a max-height container
+- **Clear on Select**: Search clears automatically after selection
+- **Touch Feedback**: Selected items highlight with a muted background
+
+## Practical Examples
+
+### Country Selector with Search
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+const countries = [
+  { label: 'United States', value: 'us' },
+  { label: 'United Kingdom', value: 'uk' },
+  { label: 'United Arab Emirates', value: 'ae' },
+  { label: 'Canada', value: 'ca' },
+  { label: 'Australia', value: 'au' },
+  { label: 'India', value: 'in' },
+  { label: 'Indonesia', value: 'id' },
+];
+
+export function CountryCombobox() {
+  const [country, setCountry] = useState('');
+
+  return (
+    <Combobox
+      value={country}
+      onValueChange={setCountry}
+      options={countries}
+      placeholder="Select a country"
+      searchPlaceholder="Search countries..."
+    />
+  );
+}
+```
+
+### Programming Language Selector
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+const languages = [
+  { label: 'JavaScript', value: 'js' },
+  { label: 'TypeScript', value: 'ts' },
+  { label: 'Python', value: 'py' },
+  { label: 'Rust', value: 'rust' },
+  { label: 'Go', value: 'go' },
+  { label: 'Ruby', value: 'rb' },
+  { label: 'Java', value: 'java' },
+  { label: 'C++', value: 'cpp' },
+];
+
+export function LanguageSelector() {
+  const [language, setLanguage] = useState('');
+
+  return (
+    <Combobox
+      value={language}
+      onValueChange={setLanguage}
+      options={languages}
+      placeholder="Select preferred language"
+      searchPlaceholder="Type language name..."
+    />
+  );
+}
+```
+
+### Form Integration with Validation
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+
+const departments = [
+  { label: 'Engineering', value: 'eng' },
+  { label: 'Sales', value: 'sales' },
+  { label: 'Marketing', value: 'marketing' },
+  { label: 'Human Resources', value: 'hr' },
+  { label: 'Finance', value: 'finance' },
+];
+
+export function DepartmentForm() {
+  const [department, setDepartment] = useState('');
+  const [error, setError] = useState('');
+
+  const handleDepartmentChange = (value: string) => {
+    setDepartment(value);
+    setError('');
+  };
+
+  const handleSubmit = () => {
+    if (!department) {
+      setError('Please select a department');
+      return;
+    }
+    console.log('Submitted with department:', department);
+  };
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Label>Department</Label>
+      <Combobox
+        value={department}
+        onValueChange={handleDepartmentChange}
+        options={departments}
+        placeholder="Select department"
+        searchPlaceholder="Search departments..."
+      />
+      {error && (
+        <Text style={{ color: '#EF4444', fontSize: 12 }}>
+          {error}
+        </Text>
+      )}
+      <Pressable
+        style={{
+          backgroundColor: '#18181B',
+          paddingVertical: 10,
+          paddingHorizontal: 16,
+          borderRadius: 6,
+          marginTop: 8,
+        }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Submit
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Large List with Dynamic Options
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState, useMemo } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+
+const US_STATES = [
+  { label: 'Alabama', value: 'al' },
+  { label: 'Alaska', value: 'ak' },
+  { label: 'Arizona', value: 'az' },
+  { label: 'Arkansas', value: 'ar' },
+  { label: 'California', value: 'ca' },
+  { label: 'Colorado', value: 'co' },
+  { label: 'Connecticut', value: 'ct' },
+  { label: 'Delaware', value: 'de' },
+  // ... more states
+];
+
+export function StateSelector() {
+  const [state, setState] = useState('');
+
+  return (
+    <Combobox
+      value={state}
+      onValueChange={setState}
+      options={US_STATES}
+      placeholder="Select a state"
+      searchPlaceholder="Search states..."
+    />
+  );
+}
+```
+
+### User Selection from List
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+
+export function UserSelector() {
+  const [users, setUsers] = useState<Array<{ label: string; value: string }>>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState('');
+
+  useEffect(() => {
+    // Simulate API call to fetch users
+    setTimeout(() => {
+      setUsers([
+        { label: 'Alice Johnson', value: 'alice' },
+        { label: 'Bob Smith', value: 'bob' },
+        { label: 'Charlie Brown', value: 'charlie' },
+        { label: 'Diana Prince', value: 'diana' },
+        { label: 'Eve Davis', value: 'eve' },
+      ]);
+      setLoading(false);
+    }, 500);
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  return (
+    <Combobox
+      value={selectedUser}
+      onValueChange={setSelectedUser}
+      options={users}
+      placeholder="Assign to user"
+      searchPlaceholder="Search users..."
+    />
+  );
+}
+```
+
+### Category Selection with Grouping
+
+```tsx
+import { Combobox } from '@/components/ui/combobox';
+import { useState } from 'react';
+
+const categories = [
+  { label: 'Electronics - Phones', value: 'phones' },
+  { label: 'Electronics - Laptops', value: 'laptops' },
+  { label: 'Electronics - Tablets', value: 'tablets' },
+  { label: 'Clothing - Men', value: 'clothing-men' },
+  { label: 'Clothing - Women', value: 'clothing-women' },
+  { label: 'Books - Fiction', value: 'books-fiction' },
+  { label: 'Books - Non-Fiction', value: 'books-nonfiction' },
+];
+
+export function CategorySelector() {
+  const [category, setCategory] = useState('');
+
+  return (
+    <Combobox
+      value={category}
+      onValueChange={setCategory}
+      options={categories}
+      placeholder="Select a category"
+      searchPlaceholder="Search categories..."
+    />
+  );
+}
+```
+
+## Search Algorithm
+
+The Combobox uses case-insensitive substring matching for filtering:
+
+```typescript
+const filteredOptions = options.filter(option =>
+  option.label.toLowerCase().includes(searchQuery.toLowerCase())
+);
+```
+
+This means:
+- Searching "john" matches "John Doe", "johnson", "jonathan"
+- Searching "NEW" matches "new york", "New Jersey", "anew product"
+- Search is performed on the `label` property, not the `value`
+- Partial matches are supported (no exact match required)
+
+## Animation Details
+
+The Combobox uses React Native Reanimated for smooth animations:
+
+- **Dropdown Fade In**: 200ms fade-in animation when dropdown opens
+- **Dropdown Fade Out**: 150ms fade-out animation when dropdown closes
+- **Search Icon**: Visible in the search input for visual consistency
+- **Selection Highlight**: Selected items immediately highlight with muted background
+
+## Layout
+
+The dropdown modal positions itself directly below the trigger:
+- Top position: Trigger Y + Trigger Height + 4px offset
+- Left position: Aligned with the trigger button's left edge
+- Width: Matches the trigger button width
+- Max-height: 300px for the entire dropdown, 250px for scrollable options
+
+## Best Practices
+
+1. **Use for Large Lists**: Prefer Combobox over Select when you have 10+ options
+2. **Provide Meaningful Labels**: Use clear, searchable text in the label field
+3. **Logical Ordering**: Sort options in a logical order (alphabetical, frequency, etc.)
+4. **Validate Selection**: Show error messages for required comboboxes
+5. **Handle Empty Search**: Provide helpful "No results found" messaging
+6. **Autocomplete Values**: Consider auto-populating with common selections
+7. **Search-Friendly Values**: Ensure labels are searchable and clear
+8. **Mobile Considerations**: Test search on touch devices for ease of use
+
+## Keyboard Navigation
+
+- Tap to open the dropdown
+- Type to filter options in real-time
+- Tap an option to select it
+- Tap outside to dismiss (overlay close)
+- The search input auto-focuses when dropdown opens for immediate typing
+
+## Accessibility
+
+- Search input auto-focuses for immediate typing capability
+- Selected state is visually indicated with a checkmark
+- Clear empty state message when no results match
+- Touch targets are adequate for easy interaction
+- Disabled state prevents interaction with reduced visual opacity

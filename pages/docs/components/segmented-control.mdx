@@ -1,0 +1,448 @@
+# SegmentedControl
+
+An animated component for selecting between multiple options. The segmented control displays options as horizontal segments with a smooth animated indicator that transitions between selections, perfect for view toggles, filters, and mode switching.
+
+## Installation
+
+```bash
+npx rn-shad-cli add segmented-control
+```
+
+## Usage
+
+### Basic SegmentedControl
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { useState } from 'react';
+
+function BasicSegmentedControl() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  return (
+    <SegmentedControl
+      segments={['All', 'Active', 'Archived']}
+      selectedIndex={selectedIndex}
+      onIndexChange={setSelectedIndex}
+    />
+  );
+}
+```
+
+### View Toggle
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { useState } from 'react';
+
+function ViewToggle() {
+  const [viewMode, setViewMode] = useState(0);
+
+  return (
+    <SegmentedControl
+      segments={['Grid', 'List']}
+      selectedIndex={viewMode}
+      onIndexChange={setViewMode}
+    />
+  );
+}
+```
+
+### Tab Navigation
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function TabNavigation() {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const tabContent = [
+    'Overview content here',
+    'Details content here',
+    'Settings content here',
+  ];
+
+  return (
+    <View>
+      <SegmentedControl
+        segments={['Overview', 'Details', 'Settings']}
+        selectedIndex={activeTab}
+        onIndexChange={setActiveTab}
+      />
+      <View style={{ padding: 16 }}>
+        <Text>{tabContent[activeTab]}</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Disabled State
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+
+<SegmentedControl
+  segments={['Option 1', 'Option 2', 'Option 3']}
+  disabled
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `segments` | `string[]` | - | Array of segment labels to display |
+| `selectedIndex` | `number` | `0` | Currently selected segment index (controlled mode) |
+| `onIndexChange` | `(index: number) => void` | - | Callback when a segment is pressed |
+| `disabled` | `boolean` | `false` | Disables interaction with all segments |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Animated Indicator**: Smooth spring animation as the selection indicator transitions between segments
+- **Flexible Segments**: Supports any number of segments with equal width distribution
+- **Controlled/Uncontrolled**: Works as both controlled and uncontrolled component
+- **Disabled State**: Full disable support with visual feedback
+- **Touch Feedback**: Responsive to user interactions
+- **Shadow Effect**: Subtle elevation on the indicator for depth
+- **Theme Integration**: Automatic color support with variant text styling
+- **Responsive Layout**: Automatically adapts to container width
+
+## Examples
+
+### Filter View
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text, FlatList } from 'react-native';
+import { useState } from 'react';
+
+function FilteredList() {
+  const [filterIndex, setFilterIndex] = useState(0);
+
+  const filters = ['All', 'Completed', 'Pending', 'Archived'];
+  const items = {
+    0: ['Task 1', 'Task 2', 'Task 3', 'Task 4'],
+    1: ['Task 1', 'Task 3'],
+    2: ['Task 2', 'Task 4'],
+    3: [],
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <SegmentedControl
+        segments={filters}
+        selectedIndex={filterIndex}
+        onIndexChange={setFilterIndex}
+      />
+      <View style={{ marginTop: 16, flex: 1 }}>
+        {items[filterIndex as keyof typeof items].length > 0 ? (
+          <FlatList
+            data={items[filterIndex as keyof typeof items]}
+            renderItem={({ item }) => (
+              <View style={{ padding: 12, borderBottomWidth: 1, borderColor: '#E4E4E7' }}>
+                <Text>{item}</Text>
+              </View>
+            )}
+            keyExtractor={(item) => item}
+          />
+        ) : (
+          <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+            <Text color="muted">No items</Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+}
+```
+
+### Layout Toggle
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, FlatList, Text } from 'react-native';
+import { useState } from 'react';
+
+function LayoutToggle() {
+  const [layoutMode, setLayoutMode] = useState(0);
+
+  const items = Array.from({ length: 12 }, (_, i) => `Item ${i + 1}`);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <SegmentedControl
+        segments={['Grid', 'List']}
+        selectedIndex={layoutMode}
+        onIndexChange={setLayoutMode}
+      />
+      <View style={{ marginTop: 16, flex: 1 }}>
+        <FlatList
+          data={items}
+          numColumns={layoutMode === 0 ? 2 : 1}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flex: 1,
+                padding: 8,
+                margin: 4,
+                backgroundColor: '#F4F4F5',
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 100,
+              }}
+            >
+              <Text weight="semibold">{item}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item}
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+### Sorting Options
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text, FlatList } from 'react-native';
+import { useState } from 'react';
+
+function SortableList() {
+  const [sortIndex, setSortIndex] = useState(0);
+
+  const sortOptions = ['Latest', 'Popular', 'Rating'];
+
+  const getData = () => {
+    const baseData = [
+      { id: '1', title: 'First Item' },
+      { id: '2', title: 'Second Item' },
+      { id: '3', title: 'Third Item' },
+    ];
+
+    if (sortIndex === 0) return baseData; // Latest
+    if (sortIndex === 1) return [...baseData].reverse(); // Popular
+    return baseData; // Rating
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <SegmentedControl
+        segments={sortOptions}
+        selectedIndex={sortIndex}
+        onIndexChange={setSortIndex}
+      />
+      <View style={{ marginTop: 16, flex: 1 }}>
+        <FlatList
+          data={getData()}
+          renderItem={({ item }) => (
+            <View style={{ padding: 16, borderBottomWidth: 1, borderColor: '#E4E4E7' }}>
+              <Text weight="semibold">{item.title}</Text>
+              <Text color="muted" style={{ marginTop: 4 }}>
+                Sorted by {sortOptions[sortIndex]}
+              </Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+### Time Period Toggle
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function TimePeriodSelector() {
+  const [periodIndex, setPeriodIndex] = useState(0);
+
+  const periods = ['Today', 'Week', 'Month', 'Year'];
+  const stats = {
+    0: '1,234 views',
+    1: '8,456 views',
+    2: '32,145 views',
+    3: '124,567 views',
+  };
+
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      <SegmentedControl
+        segments={periods}
+        selectedIndex={periodIndex}
+        onIndexChange={setPeriodIndex}
+      />
+      <View style={{ backgroundColor: '#F4F4F5', padding: 16, borderRadius: 8 }}>
+        <Text variant="h4" weight="semibold" style={{ marginBottom: 8 }}>
+          Analytics for {periods[periodIndex]}
+        </Text>
+        <Text color="muted">{stats[periodIndex as keyof typeof stats]}</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Content Tabs
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text, ScrollView } from 'react-native';
+import { useState } from 'react';
+
+function TabbedContent() {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const tabs = [
+    {
+      title: 'Description',
+      content: 'This is the detailed description of the product.',
+    },
+    {
+      title: 'Reviews',
+      content: 'Customer reviews appear here.',
+    },
+    {
+      title: 'Specifications',
+      content: 'Technical specifications are listed here.',
+    },
+  ];
+
+  return (
+    <View style={{ flex: 1 }}>
+      <SegmentedControl
+        segments={tabs.map(t => t.title)}
+        selectedIndex={activeTab}
+        onIndexChange={setActiveTab}
+      />
+      <ScrollView style={{ marginTop: 16, padding: 16, flex: 1 }}>
+        <Text>{tabs[activeTab].content}</Text>
+      </ScrollView>
+    </View>
+  );
+}
+```
+
+### Mode Switcher
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function ModeSwitch() {
+  const [modeIndex, setModeIndex] = useState(0);
+
+  const modes = ['Light', 'Dark', 'Auto'];
+  const modeDescriptions = {
+    0: 'Use light theme',
+    1: 'Use dark theme',
+    2: 'Follow system settings',
+  };
+
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      <Text variant="h3" weight="semibold">Theme</Text>
+      <SegmentedControl
+        segments={modes}
+        selectedIndex={modeIndex}
+        onIndexChange={setModeIndex}
+      />
+      <Text color="muted" style={{ marginTop: 8 }}>
+        {modeDescriptions[modeIndex as keyof typeof modeDescriptions]}
+      </Text>
+    </View>
+  );
+}
+```
+
+### Controlled vs Uncontrolled
+
+```tsx
+import { SegmentedControl } from '@/components/ui/segmented-control';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function ControlledExample() {
+  const [index, setIndex] = useState(0);
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Controlled</Text>
+        <SegmentedControl
+          segments={['Option A', 'Option B', 'Option C']}
+          selectedIndex={index}
+          onIndexChange={setIndex}
+        />
+        <Text color="muted" style={{ marginTop: 8 }}>
+          Selected: Option {String.fromCharCode(65 + index)}
+        </Text>
+      </View>
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Uncontrolled</Text>
+        <SegmentedControl
+          segments={['Option A', 'Option B', 'Option C']}
+          onIndexChange={(i) => console.log('Selected index:', i)}
+        />
+        <Text color="muted" style={{ marginTop: 8 }}>
+          Check console for selection changes
+        </Text>
+      </View>
+    </View>
+  );
+}
+```
+
+## Animation Details
+
+The segmented control uses React Native Reanimated for smooth, performant animations:
+
+- **Spring Animation**: The indicator transitions with a spring effect using `withSpring` with `damping: 20` and `stiffness: 200`
+- **60 FPS**: Hardware-accelerated animations maintain smooth performance
+- **Layout-Based**: Animation calculates positions based on segment layout for responsive behavior
+
+## Best Practices
+
+1. **Use for Multiple Options**: Best with 2-4 segments; use TabNavigator for more options
+
+2. **Clear Labels**: Keep segment labels concise and descriptive (1-2 words ideal)
+
+3. **Controlled Components**: Use controlled mode when you need to sync state externally:
+   ```tsx
+   const [index, setIndex] = useState(0);
+   <SegmentedControl
+     segments={['Tab 1', 'Tab 2']}
+     selectedIndex={index}
+     onIndexChange={setIndex}
+   />
+   ```
+
+4. **Visual Feedback**: The animated indicator provides feedback; don't add additional press effects
+
+5. **Accessibility**: Ensure segment labels clearly describe what they do
+
+6. **Equal Width**: Segments automatically distribute equally; avoid very long labels
+
+7. **Responsive**: The component adapts to its container width automatically
+
+8. **Disabled State**: Use when selection is not available temporarily, not as a visual-only element
+
+## Performance Notes
+
+- Uses React Native Reanimated for GPU-accelerated animations
+- Lazy layout measurement with optimization for reflow
+- Efficient segment rendering without unnecessary re-renders
+- Smooth 60 FPS animations on most devices

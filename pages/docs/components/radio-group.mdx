@@ -1,0 +1,308 @@
+# RadioGroup
+
+An animated radio group component for selecting a single option from a set of mutually exclusive choices. Features smooth spring animations, customizable sizes, and built-in theme support.
+
+## Installation
+
+```bash
+npx rn-shad-cli add radio-group
+```
+
+## Usage
+
+### Basic Radio Group
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { useState } from 'react';
+
+export function BasicRadioGroup() {
+  const [value, setValue] = useState('option1');
+
+  return (
+    <RadioGroup value={value} onValueChange={setValue}>
+      <RadioItem value="option1" label="Option 1" />
+      <RadioItem value="option2" label="Option 2" />
+      <RadioItem value="option3" label="Option 3" />
+    </RadioGroup>
+  );
+}
+```
+
+### Controlled Radio Group
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function ControlledRadioGroup() {
+  const [selectedOption, setSelectedOption] = useState('small');
+
+  return (
+    <View style={{ gap: 16 }}>
+      <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
+        <RadioItem value="small" label="Small" size="sm" />
+        <RadioItem value="medium" label="Medium" size="md" />
+        <RadioItem value="large" label="Large" size="lg" />
+      </RadioGroup>
+
+      <Text style={{ fontSize: 14, color: '#71717A' }}>
+        Selected: {selectedOption}
+      </Text>
+    </View>
+  );
+}
+```
+
+### Settings Radio Group
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import { FormLabel, FormDescription } from '@/components/ui/form';
+
+export function SettingsRadioGroup() {
+  const [theme, setTheme] = useState('light');
+  const [notification, setNotification] = useState('all');
+
+  return (
+    <ScrollView style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 12 }}>
+      <View style={{ gap: 24 }}>
+        {/* Theme Settings */}
+        <View style={{ gap: 12 }}>
+          <FormLabel required>Theme Preference</FormLabel>
+          <RadioGroup value={theme} onValueChange={setTheme}>
+            <RadioItem value="light" label="Light" size="md" />
+            <RadioItem value="dark" label="Dark" size="md" />
+            <RadioItem value="auto" label="Auto (System)" size="md" />
+          </RadioGroup>
+          <FormDescription>
+            Choose how the app should appear on your device.
+          </FormDescription>
+        </View>
+
+        {/* Notification Settings */}
+        <View style={{ gap: 12 }}>
+          <FormLabel required>Notifications</FormLabel>
+          <RadioGroup value={notification} onValueChange={setNotification}>
+            <RadioItem value="all" label="All Notifications" size="md" />
+            <RadioItem value="important" label="Important Only" size="md" />
+            <RadioItem value="none" label="None" size="md" />
+          </RadioGroup>
+          <FormDescription>
+            Control which notifications you want to receive.
+          </FormDescription>
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+```
+
+### Disabled Radio Group
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { View } from 'react-native';
+
+export function DisabledRadioGroup() {
+  return (
+    <View style={{ gap: 16 }}>
+      {/* Disabled entire group */}
+      <RadioGroup value="option1" disabled>
+        <RadioItem value="option1" label="Disabled Option 1" />
+        <RadioItem value="option2" label="Disabled Option 2" />
+      </RadioGroup>
+
+      {/* Disable individual items */}
+      <RadioGroup value="option1" onValueChange={() => {}}>
+        <RadioItem value="option1" label="Enabled Option" />
+        <RadioItem value="option2" label="Disabled Option" disabled />
+      </RadioGroup>
+    </View>
+  );
+}
+```
+
+### Different Sizes
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { View } from 'react-native';
+
+export function RadioSizes() {
+  return (
+    <View style={{ gap: 24 }}>
+      <View style={{ gap: 8 }}>
+        <RadioGroup value="small" onValueChange={() => {}}>
+          <RadioItem value="small" label="Small Radio" size="sm" />
+        </RadioGroup>
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <RadioGroup value="medium" onValueChange={() => {}}>
+          <RadioItem value="medium" label="Medium Radio" size="md" />
+        </RadioGroup>
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <RadioGroup value="large" onValueChange={() => {}}>
+          <RadioItem value="large" label="Large Radio" size="lg" />
+        </RadioGroup>
+      </View>
+    </View>
+  );
+}
+```
+
+### Survey Form with Radio Groups
+
+```tsx
+import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
+import { Form, FormField, FormLabel, FormDescription } from '@/components/ui/form';
+import { useState } from 'react';
+import { View, Pressable, Text } from 'react-native';
+
+export function SurveyForm() {
+  const [responses, setResponses] = useState({
+    satisfaction: 'good',
+    likelihood: 'very',
+    improvement: 'support',
+  });
+
+  const handleChange = (field: string, value: string) => {
+    setResponses(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    console.log('Survey responses:', responses);
+  };
+
+  return (
+    <Form>
+      <FormField>
+        <FormLabel required>Overall Satisfaction</FormLabel>
+        <RadioGroup value={responses.satisfaction} onValueChange={(value) => handleChange('satisfaction', value)}>
+          <RadioItem value="poor" label="Poor" />
+          <RadioItem value="fair" label="Fair" />
+          <RadioItem value="good" label="Good" />
+          <RadioItem value="excellent" label="Excellent" />
+        </RadioGroup>
+        <FormDescription>How satisfied are you with our service?</FormDescription>
+      </FormField>
+
+      <FormField>
+        <FormLabel required>Likelihood to Recommend</FormLabel>
+        <RadioGroup value={responses.likelihood} onValueChange={(value) => handleChange('likelihood', value)}>
+          <RadioItem value="unlikely" label="Unlikely" />
+          <RadioItem value="maybe" label="Maybe" />
+          <RadioItem value="very" label="Very Likely" />
+          <RadioItem value="extremely" label="Extremely Likely" />
+        </RadioGroup>
+        <FormDescription>How likely are you to recommend us?</FormDescription>
+      </FormField>
+
+      <FormField>
+        <FormLabel required>What Could We Improve?</FormLabel>
+        <RadioGroup value={responses.improvement} onValueChange={(value) => handleChange('improvement', value)}>
+          <RadioItem value="quality" label="Product Quality" />
+          <RadioItem value="price" label="Pricing" />
+          <RadioItem value="support" label="Customer Support" />
+          <RadioItem value="speed" label="Delivery Speed" />
+        </RadioGroup>
+      </FormField>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, marginTop: 20 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Submit Survey
+        </Text>
+      </Pressable>
+    </Form>
+  );
+}
+```
+
+## Props
+
+### RadioGroup Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Currently selected radio item value |
+| `onValueChange` | `(value: string) => void` | - | Callback when selection changes |
+| `disabled` | `boolean` | `false` | Disables all radio items in the group |
+| `children` | `React.ReactNode` | - | RadioItem components |
+| `style` | `ViewStyle` | - | Custom styles for the group container |
+
+### RadioItem Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique value for this radio item |
+| `label` | `string` | - | Display label text |
+| `disabled` | `boolean` | `false` | Disables this specific radio item |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the radio button |
+| `animationDuration` | `number` | `300` | Duration of selection animation in milliseconds |
+
+## Features
+
+- **Smooth Animations**: Spring-based animations using React Native Reanimated
+- **Multiple Sizes**: Small, medium, and large radio button sizes
+- **Customizable**: Full control over sizing and animation timing
+- **Disabled States**: Support for disabling entire group or individual items
+- **Theme Integration**: Automatically uses theme colors for consistent styling
+- **Accessibility**: Proper structure and press handling for accessibility
+- **Context-Based**: RadioItem automatically connects to parent RadioGroup via context
+- **Interactive Feedback**: Spring animation on selection with visual feedback
+
+## Animation Details
+
+The RadioGroup component uses React Native Reanimated for smooth spring animations:
+
+- **Selection Animation**: When a radio item is selected, the inner dot scales and fades in smoothly
+- **Spring Physics**: Uses configurable spring config for natural motion
+- **Press Feedback**: The radio button scales down slightly when pressed, then returns to normal
+- **Border Color Animation**: The border color smoothly transitions between selected and unselected states
+
+## Size Configuration
+
+| Size | Button Size | Dot Size |
+|------|-------------|----------|
+| `sm` | 16px | 8px |
+| `md` | 20px | 10px |
+| `lg` | 24px | 12px |
+
+## Color Scheme
+
+The component uses theme colors:
+- **Primary Color**: Used for the selected state border and dot
+- **Border Color**: Used for unselected state and disabled items
+- **Background Color**: Used for the radio button background
+
+## Best Practices
+
+1. **Use with Form**: Pair RadioGroup with Form components for consistent styling
+2. **Provide Labels**: Always provide descriptive labels for each radio item
+3. **Clear Default**: Always set a default value for the RadioGroup
+4. **Group Related Options**: Keep related options together
+5. **Disable When Appropriate**: Disable entire group when context isn't available
+6. **Add Descriptions**: Use FormDescription to explain what each option means
+7. **Limit Options**: Keep the number of options reasonable (3-6 is ideal)
+8. **Clear Language**: Use concise, clear language for labels
+9. **Consistent Sizing**: Use consistent size across related radio groups
+10. **Accessible Labels**: Ensure labels are clear and descriptive for screen readers
+
+## Related Components
+
+- **Form** - For consistent form styling
+- **FormLabel** - For field labels
+- **FormDescription** - For additional information
+- **Checkbox** - For multiple selections

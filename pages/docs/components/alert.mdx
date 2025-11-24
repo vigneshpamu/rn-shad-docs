@@ -1,0 +1,438 @@
+# Alert
+
+A flexible alert component for displaying contextual messages with different severity levels. The alert component supports multiple variants, optional icons, and composable sub-components for titles and descriptions.
+
+## Installation
+
+```bash
+npx rn-shad-cli add alert
+```
+
+## Usage
+
+### Basic Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+
+<Alert>
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>You can add components to your app using the cli.</AlertDescription>
+</Alert>
+```
+
+### With Icon
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react-native';
+
+<Alert variant="destructive" icon={AlertCircle}>
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
+</Alert>
+```
+
+### Success Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { CheckCircle2 } from 'lucide-react-native';
+
+<Alert variant="success" icon={CheckCircle2}>
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Your profile has been updated successfully.</AlertDescription>
+</Alert>
+```
+
+### Warning Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react-native';
+
+<Alert variant="warning" icon={AlertTriangle}>
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>This action cannot be undone.</AlertDescription>
+</Alert>
+```
+
+## Variants
+
+The alert component supports 4 different variants for different severity levels:
+
+### Default
+```tsx
+<Alert variant="default" icon={Info}>
+  <AlertTitle>Information</AlertTitle>
+  <AlertDescription>Important information about the system</AlertDescription>
+</Alert>
+```
+Light gray background for neutral/informational messages.
+
+### Destructive
+```tsx
+<Alert variant="destructive" icon={AlertCircle}>
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>Something went wrong</AlertDescription>
+</Alert>
+```
+Light red background with red border. Use for errors or critical alerts.
+
+### Success
+```tsx
+<Alert variant="success" icon={CheckCircle2}>
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Operation completed successfully</AlertDescription>
+</Alert>
+```
+Light green background with green border. Use for positive confirmations.
+
+### Warning
+```tsx
+<Alert variant="warning" icon={AlertTriangle}>
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>Please review this important notice</AlertDescription>
+</Alert>
+```
+Light amber background with amber border. Use for warnings or cautions.
+
+## Props
+
+### Alert Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Alert content including AlertTitle and AlertDescription |
+| `variant` | `'default' \| 'destructive' \| 'success' \| 'warning'` | `'default'` | Visual style variant |
+| `icon` | `LucideIcon` | - | Icon component from lucide-react-native (20px) |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+### AlertTitle Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Title text content |
+
+### AlertDescription Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Description text content |
+
+## Features
+
+- **Multiple Variants**: 4 variants for different alert types (default, destructive, success, warning)
+- **Icon Support**: Built-in support for Lucide icons with proper sizing (20px)
+- **Composable Structure**: Separate sub-components for flexible composition
+- **Theme Integration**: Automatic theme color support with semantic background colors
+- **Semantic Colors**: Dedicated background colors for each variant with matching borders
+- **Flexible Layout**: Row-based layout with icon on the left and content on the right
+- **Accessibility**: Proper text hierarchy with semibold titles and regular descriptions
+
+## Examples
+
+### Error Alert with Action
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { AlertCircle, X } from 'lucide-react-native';
+import { useState } from 'react';
+
+function DismissibleAlert() {
+  const [visible, setVisible] = useState(true);
+
+  if (!visible) return null;
+
+  return (
+    <View style={{ position: 'relative' }}>
+      <Alert variant="destructive" icon={AlertCircle}>
+        <AlertTitle>Payment Failed</AlertTitle>
+        <AlertDescription>
+          Your payment could not be processed. Please try again or contact support.
+        </AlertDescription>
+      </Alert>
+      <Button
+        size="icon"
+        variant="ghost"
+        onPress={() => setVisible(false)}
+        style={{ position: 'absolute', top: 8, right: 8 }}
+      >
+        <X size={16} />
+      </Button>
+    </View>
+  );
+}
+```
+
+### Validation Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { AlertCircle } from 'lucide-react-native';
+
+function ValidationAlert() {
+  const errors = ['Email is required', 'Password must be at least 8 characters'];
+
+  return (
+    <Alert variant="destructive" icon={AlertCircle}>
+      <View>
+        <AlertTitle>Validation Error</AlertTitle>
+        <AlertDescription>
+          {errors.map((error, index) => (
+            <View key={index} style={{ marginTop: index > 0 ? 4 : 0 }}>
+              - {error}
+            </View>
+          ))}
+        </AlertDescription>
+      </View>
+    </Alert>
+  );
+}
+```
+
+### Confirmation Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { CheckCircle2 } from 'lucide-react-native';
+
+function ConfirmationAlert() {
+  return (
+    <Alert variant="success" icon={CheckCircle2}>
+      <View style={{ flex: 1 }}>
+        <AlertTitle>Email Confirmed</AlertTitle>
+        <AlertDescription>
+          Your email address has been successfully verified.
+        </AlertDescription>
+      </View>
+      <Button
+        variant="ghost"
+        size="sm"
+        onPress={() => console.log('Continue')}
+        style={{ marginTop: 12 }}
+      >
+        Continue
+      </Button>
+    </Alert>
+  );
+}
+```
+
+### System Status Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { AlertTriangle } from 'lucide-react-native';
+
+function SystemStatusAlert() {
+  return (
+    <Alert variant="warning" icon={AlertTriangle}>
+      <AlertTitle>Scheduled Maintenance</AlertTitle>
+      <AlertDescription>
+        Our servers will be undergoing maintenance on Saturday from 2 AM - 6 AM EST. Services may be unavailable during this time.
+      </AlertDescription>
+    </Alert>
+  );
+}
+```
+
+### Update Notification
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Info } from 'lucide-react-native';
+
+function UpdateNotification() {
+  return (
+    <Alert variant="default" icon={Info}>
+      <View style={{ flex: 1 }}>
+        <AlertTitle>New Features Available</AlertTitle>
+        <AlertDescription>
+          A new version of the app is available with improved performance and new features.
+        </AlertDescription>
+      </View>
+      <Button
+        variant="default"
+        size="sm"
+        onPress={() => console.log('Update')}
+        style={{ marginTop: 12 }}
+      >
+        Update Now
+      </Button>
+    </Alert>
+  );
+}
+```
+
+### Form Error Summary
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View, FlatList } from 'react-native';
+import { AlertCircle } from 'lucide-react-native';
+
+function FormErrorSummary({ errors }: { errors: string[] }) {
+  if (errors.length === 0) return null;
+
+  return (
+    <Alert variant="destructive" icon={AlertCircle}>
+      <View style={{ flex: 1 }}>
+        <AlertTitle>
+          {errors.length === 1 ? 'Error' : `${errors.length} Errors`}
+        </AlertTitle>
+        <AlertDescription>
+          <FlatList
+            data={errors}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <View style={{ marginTop: 4 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 6 }}>•</View>
+                  <View style={{ flex: 1 }}>{item}</View>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item) => item}
+          />
+        </AlertDescription>
+      </View>
+    </Alert>
+  );
+}
+```
+
+### Multi-step Process Alert
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View, Text } from 'react-native';
+import { Info } from 'lucide-react-native';
+
+function ProcessAlert() {
+  const steps = ['Verify email', 'Set up profile', 'Add payment method'];
+
+  return (
+    <Alert variant="default" icon={Info}>
+      <View>
+        <AlertTitle>Complete Your Setup</AlertTitle>
+        <AlertDescription>
+          {steps.map((step, index) => (
+            <View key={index} style={{ marginTop: index > 0 ? 6 : 0, flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 999,
+                  backgroundColor: '#18181B',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 8,
+                }}
+              >
+                <Text style={{ color: '#FAFAFA', fontSize: 12, fontWeight: 'bold' }}>
+                  {index + 1}
+                </Text>
+              </View>
+              <Text>{step}</Text>
+            </View>
+          ))}
+        </AlertDescription>
+      </View>
+    </Alert>
+  );
+}
+```
+
+### Contextual Alert in Form
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { View } from 'react-native';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { CheckCircle2, AlertCircle } from 'lucide-react-native';
+import { useState } from 'react';
+
+function FormWithAlert() {
+  const [password, setPassword] = useState('');
+  const [isValid, setIsValid] = useState(false);
+
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    setIsValid(text.length >= 8);
+  };
+
+  return (
+    <View style={{ gap: 16 }}>
+      <Input
+        label="Password"
+        placeholder="Enter password"
+        secureTextEntry
+        value={password}
+        onChangeText={handlePasswordChange}
+      />
+
+      {password && (
+        <Alert
+          variant={isValid ? 'success' : 'destructive'}
+          icon={isValid ? CheckCircle2 : AlertCircle}
+        >
+          <AlertDescription>
+            {isValid
+              ? 'Password strength is good'
+              : 'Password must be at least 8 characters'}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <Button disabled={!isValid}>
+        Continue
+      </Button>
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Semantic Variants**: Choose variants that match the alert's purpose:
+   - `default` for informational alerts
+   - `destructive` for errors
+   - `success` for positive confirmations
+   - `warning` for cautions or important notices
+
+2. **Always Include Title**: The AlertTitle helps users quickly understand the alert
+
+3. **Keep Descriptions Concise**: Use clear, actionable language in descriptions
+
+4. **Add Icons**: Include relevant icons to enhance visual communication
+
+5. **Provide Actions**: Include action buttons when users need to respond:
+   ```tsx
+   <Alert variant="warning">
+     <View style={{ flex: 1 }}>
+       <AlertTitle>Action Required</AlertTitle>
+       <AlertDescription>Please confirm your email</AlertDescription>
+     </View>
+     <Button size="sm" variant="default" onPress={handleConfirm} />
+   </Alert>
+   ```
+
+6. **Dismiss Capability**: Consider adding a close button for non-critical alerts
+
+7. **Accessibility**: Ensure alerts are announced to screen readers with meaningful titles
+
+8. **Placement**: Position alerts near relevant content or at the top of the screen
+
+9. **Color Meaning**: Only use variants with their conventional semantic meaning for consistency

@@ -1,0 +1,186 @@
+# Button
+
+A beautiful, animated button component with multiple variants, sizes, and icon support. Features smooth press animations using React Native Reanimated.
+
+## Installation
+
+```bash
+npx rn-shad-cli add button
+```
+
+## Usage
+
+### Basic Button
+
+```tsx
+import { Button } from '@/components/ui/button';
+
+<Button onPress={() => console.log('Pressed')}>
+  Click me
+</Button>
+```
+
+### With Icon
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Mail } from 'lucide-react-native';
+
+<Button
+  icon={Mail}
+  iconPosition="left"
+  onPress={handleSend}
+>
+  Send Email
+</Button>
+```
+
+### Loading State
+
+```tsx
+<Button loading={true}>
+  Processing...
+</Button>
+```
+
+### Icon Only
+
+```tsx
+import { Settings } from 'lucide-react-native';
+
+<Button
+  size="icon"
+  icon={Settings}
+  onPress={openSettings}
+/>
+```
+
+## Variants
+
+The button component supports 6 different variants:
+
+### Default
+```tsx
+<Button variant="default">Default</Button>
+```
+Dark background with white text.
+
+### Destructive
+```tsx
+<Button variant="destructive">Delete</Button>
+```
+Red background for destructive actions.
+
+### Outline
+```tsx
+<Button variant="outline">Outline</Button>
+```
+Transparent background with border.
+
+### Secondary
+```tsx
+<Button variant="secondary">Secondary</Button>
+```
+Light gray background.
+
+### Ghost
+```tsx
+<Button variant="ghost">Ghost</Button>
+```
+Transparent background, visible on hover/press.
+
+### Link
+```tsx
+<Button variant="link">Link</Button>
+```
+Styled as an underlined text link.
+
+## Sizes
+
+### Default
+```tsx
+<Button size="default">Default Size</Button>
+```
+
+### Small
+```tsx
+<Button size="sm">Small</Button>
+```
+
+### Large
+```tsx
+<Button size="lg">Large</Button>
+```
+
+### Icon
+```tsx
+<Button size="icon" icon={Settings} />
+```
+Square button for icon-only usage.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Button content |
+| `variant` | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'` | `'default'` | Visual style variant |
+| `size` | `'default' \| 'sm' \| 'lg' \| 'icon'` | `'default'` | Button size |
+| `disabled` | `boolean` | `false` | Whether the button is disabled |
+| `loading` | `boolean` | `false` | Show loading spinner |
+| `icon` | `LucideIcon` | - | Icon component from lucide-react-native |
+| `iconPosition` | `'left' \| 'right'` | `'left'` | Position of the icon |
+| `onPress` | `() => void` | - | Press handler |
+| `onLongPress` | `() => void` | - | Long press handler |
+| `className` | `string` | - | Additional Tailwind classes for container |
+| `textClassName` | `string` | - | Additional Tailwind classes for text |
+| `haptic` | `boolean` | `true` | Enable haptic feedback on press |
+
+## Features
+
+- **Smooth Animations**: Press animation using Reanimated with spring physics
+- **Icon Support**: Built-in icon support with Lucide icons
+- **Loading State**: Automatically shows spinner and disables interaction
+- **Haptic Feedback**: Native haptic feedback on supported platforms
+- **Accessibility**: Proper disabled states and press handling
+- **Customizable**: Full control via Tailwind classes
+
+## Examples
+
+### Form Submit Button
+
+```tsx
+<Button
+  variant="default"
+  size="lg"
+  loading={isSubmitting}
+  disabled={!isValid}
+  onPress={handleSubmit}
+>
+  Submit Form
+</Button>
+```
+
+### Destructive Action with Confirmation
+
+```tsx
+<Button
+  variant="destructive"
+  icon={Trash}
+  onLongPress={confirmDelete}
+>
+  Delete Account
+</Button>
+```
+
+### Navigation Button
+
+```tsx
+<Button
+  variant="ghost"
+  icon={ChevronRight}
+  iconPosition="right"
+  onPress={() => navigation.navigate('Details')}
+>
+  View Details
+</Button>
+```

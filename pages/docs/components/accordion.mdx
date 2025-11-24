@@ -1,0 +1,655 @@
+# Accordion
+
+A flexible accordion component for displaying collapsible sections of content. The Accordion component features smooth height animations, support for single or multiple expanded items, theme integration, and an animated chevron icon.
+
+## Installation
+
+```bash
+npx rn-shad-cli add accordion
+```
+
+## Usage
+
+### Basic Accordion
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text } from 'react-native';
+
+export function BasicAccordion() {
+  return (
+    <Accordion type="single" defaultValue="item1">
+      <AccordionItem value="item1">
+        <AccordionTrigger>Is it accessible?</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item2">
+        <AccordionTrigger>Is it styled?</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            Yes. It comes with default styles that you can customize.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item3">
+        <AccordionTrigger>Is it animated?</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            Yes. It features smooth height animations powered by React Native Reanimated.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+### Multiple Accordion
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { Text } from 'react-native';
+
+export function MultipleAccordion() {
+  return (
+    <Accordion type="multiple" defaultValue={['item1', 'item2']}>
+      <AccordionItem value="item1">
+        <AccordionTrigger>First Section</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            Multiple items can be open at the same time.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item2">
+        <AccordionTrigger>Second Section</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            You can open and close multiple sections simultaneously.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="item3">
+        <AccordionTrigger>Third Section</AccordionTrigger>
+        <AccordionContent>
+          <Text>
+            This is useful for complex forms or detailed content.
+          </Text>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+### Controlled Accordion
+
+```tsx
+import { useState } from 'react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text } from 'react-native';
+
+export function ControlledAccordion() {
+  const [expanded, setExpanded] = useState<string[]>(['item1']);
+
+  return (
+    <View>
+      <Accordion
+        type="multiple"
+        value={expanded}
+        onValueChange={setExpanded}
+      >
+        <AccordionItem value="item1">
+          <AccordionTrigger>Controlled Item 1</AccordionTrigger>
+          <AccordionContent>
+            <Text>This accordion is controlled via state.</Text>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="item2">
+          <AccordionTrigger>Controlled Item 2</AccordionTrigger>
+          <AccordionContent>
+            <Text>You can manage which items are open from outside.</Text>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <Text style={{ marginTop: 16 }}>Expanded items: {expanded.join(', ')}</Text>
+    </View>
+  );
+}
+```
+
+## Sub-Components
+
+### Accordion (Root)
+
+The root component that provides context to all child components. Controls whether single or multiple items can be expanded.
+
+### AccordionItem
+
+A container for each accordion section. Must contain AccordionTrigger and AccordionContent.
+
+### AccordionTrigger
+
+The clickable header that toggles the accordion item open/closed. Includes an animated chevron icon.
+
+### AccordionContent
+
+The collapsible content area. Animates in and out with smooth height transitions.
+
+## Props
+
+### Accordion Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `'single' \| 'multiple'` | `'single'` | Whether only one or multiple items can be expanded at once |
+| `defaultValue` | `string \| string[]` | `''` (single) or `[]` (multiple) | The initially expanded item(s) (uncontrolled) |
+| `value` | `string \| string[]` | - | The expanded item(s) (controlled) |
+| `onValueChange` | `(value: string \| string[]) => void` | - | Callback fired when expanded items change |
+| `children` | `React.ReactNode` | - | AccordionItem components |
+
+### AccordionItem Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique identifier for this accordion item |
+| `children` | `React.ReactNode` | - | AccordionTrigger and AccordionContent components |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+### AccordionTrigger Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Trigger label text or content |
+
+### AccordionContent Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Content to display when expanded |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+### Smooth Height Animations
+The AccordionContent uses React Native Reanimated to animate the height from 0 to the content's natural height. The opacity also fades in and out smoothly for a polished effect.
+
+### Animated Chevron Icon
+The chevron icon rotates 180 degrees with a spring animation when the accordion item opens or closes, providing visual feedback for the state change.
+
+### Single and Multiple Mode
+Support for both single (only one item open at a time) and multiple (multiple items can be open simultaneously) modes.
+
+### Theme Integration
+Automatically integrates with the theme system if available, using semantic colors for borders and text. Falls back to sensible defaults if theme is not available.
+
+### Flexible State Management
+Support for both controlled (via `value` and `onValueChange`) and uncontrolled (via `defaultValue`) components.
+
+### Responsive Design
+Full-width layout with flexible content areas adapts to different screen sizes and content types.
+
+### Accessibility
+- Proper touch targets for easy interaction
+- Semantic structure with clear visual hierarchy
+- Animated chevron provides visual feedback
+- Works with accessibility labels and descriptions
+- Supports theme-based colors
+
+## Examples
+
+### FAQ Accordion
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text } from 'react-native';
+
+export function FAQAccordion() {
+  const faqs = [
+    {
+      question: 'What is your return policy?',
+      answer: 'We offer a 30-day money-back guarantee on all purchases. If you are not satisfied with your purchase, you can return it for a full refund.',
+    },
+    {
+      question: 'Do you offer free shipping?',
+      answer: 'We offer free shipping on orders over $50. For orders under $50, a flat shipping fee of $5 applies.',
+    },
+    {
+      question: 'How long does delivery take?',
+      answer: 'Standard shipping typically takes 5-7 business days. Express shipping is available for 2-3 business days.',
+    },
+    {
+      question: 'Can I modify my order?',
+      answer: 'Yes, you can modify your order within 24 hours of purchase. After 24 hours, the order may have already been processed.',
+    },
+    {
+      question: 'Do you ship internationally?',
+      answer: 'Yes, we ship to most countries worldwide. International shipping times and costs vary depending on the destination.',
+    },
+  ];
+
+  return (
+    <View style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 16 }}>Frequently Asked Questions</Text>
+      <Accordion type="single">
+        {faqs.map((faq, index) => (
+          <AccordionItem key={index} value={`faq${index}`}>
+            <AccordionTrigger>{faq.question}</AccordionTrigger>
+            <AccordionContent>
+              <Text style={{ color: '#71717A', lineHeight: 20 }}>{faq.answer}</Text>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </View>
+  );
+}
+```
+
+### Collapsible Form Sections
+
+```tsx
+import { useState } from 'react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text, TextInput, ScrollView } from 'react-native';
+import { Button } from '@/components/ui/button';
+
+export function CollapsibleForm() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = () => {
+    console.log('Form submitted:', formData);
+  };
+
+  return (
+    <ScrollView style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 16 }}>Registration Form</Text>
+
+      <Accordion type="multiple" defaultValue={['personal', 'address']}>
+        <AccordionItem value="personal">
+          <AccordionTrigger>Personal Information</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 12 }}>
+              <View>
+                <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>First Name</Text>
+                <TextInput
+                  style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                  value={formData.firstName}
+                  onChangeText={(value) => handleInputChange('firstName', value)}
+                  placeholder="John"
+                />
+              </View>
+              <View>
+                <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>Last Name</Text>
+                <TextInput
+                  style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                  value={formData.lastName}
+                  onChangeText={(value) => handleInputChange('lastName', value)}
+                  placeholder="Doe"
+                />
+              </View>
+              <View>
+                <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>Email</Text>
+                <TextInput
+                  style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                  value={formData.email}
+                  onChangeText={(value) => handleInputChange('email', value)}
+                  placeholder="john@example.com"
+                  keyboardType="email-address"
+                />
+              </View>
+              <View>
+                <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>Phone</Text>
+                <TextInput
+                  style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                  value={formData.phone}
+                  onChangeText={(value) => handleInputChange('phone', value)}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="address">
+          <AccordionTrigger>Address</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 12 }}>
+              <View>
+                <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>Street Address</Text>
+                <TextInput
+                  style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                  value={formData.street}
+                  onChangeText={(value) => handleInputChange('street', value)}
+                  placeholder="123 Main St"
+                />
+              </View>
+              <View style={{ flexDirection: 'row', gap: 12 }}>
+                <View style={{ flex: 2 }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>City</Text>
+                  <TextInput
+                    style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                    value={formData.city}
+                    onChangeText={(value) => handleInputChange('city', value)}
+                    placeholder="San Francisco"
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>State</Text>
+                  <TextInput
+                    style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                    value={formData.state}
+                    onChangeText={(value) => handleInputChange('state', value)}
+                    placeholder="CA"
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 12, fontWeight: '600', marginBottom: 4, color: '#71717A' }}>ZIP</Text>
+                  <TextInput
+                    style={{ borderWidth: 1, borderColor: '#E4E4E7', padding: 8, borderRadius: 6 }}
+                    value={formData.zip}
+                    onChangeText={(value) => handleInputChange('zip', value)}
+                    placeholder="94105"
+                  />
+                </View>
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <Button
+        onPress={handleSubmit}
+        style={{ marginTop: 24 }}
+      >
+        Submit Registration
+      </Button>
+    </ScrollView>
+  );
+}
+```
+
+### Product Details Accordion
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text, ScrollView } from 'react-native';
+import { Check } from 'lucide-react-native';
+
+export function ProductDetailsAccordion() {
+  const features = ['Premium Materials', 'Eco-friendly', 'Lifetime Warranty', 'Made in USA'];
+
+  return (
+    <ScrollView style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 16 }}>Product Details</Text>
+
+      <Accordion type="single" defaultValue="features">
+        <AccordionItem value="features">
+          <AccordionTrigger>Features</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 8 }}>
+              {features.map((feature, index) => (
+                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Check size={16} color="#22C55E" />
+                  <Text>{feature}</Text>
+                </View>
+              ))}
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="specs">
+          <AccordionTrigger>Specifications</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 12 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#E4E4E7' }}>
+                <Text style={{ color: '#71717A' }}>Dimensions</Text>
+                <Text style={{ fontWeight: '600' }}>10 x 15 x 5 cm</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#E4E4E7' }}>
+                <Text style={{ color: '#71717A' }}>Weight</Text>
+                <Text style={{ fontWeight: '600' }}>500g</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ color: '#71717A' }}>Material</Text>
+                <Text style={{ fontWeight: '600' }}>Premium Stainless Steel</Text>
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="care">
+          <AccordionTrigger>Care Instructions</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 8 }}>
+              <Text style={{ color: '#71717A', lineHeight: 20 }}>
+                1. Clean with soft cloth and warm soapy water{'\n'}
+                2. Dry immediately to prevent water spots{'\n'}
+                3. Avoid harsh chemicals and abrasive cleaners{'\n'}
+                4. Store in a cool, dry place
+              </Text>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="shipping">
+          <AccordionTrigger>Shipping & Returns</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 8 }}>
+              <View>
+                <Text style={{ fontWeight: '600', marginBottom: 4 }}>Free Shipping</Text>
+                <Text style={{ color: '#71717A' }}>Orders over $50 qualify for free shipping</Text>
+              </View>
+              <View style={{ marginTop: 8 }}>
+                <Text style={{ fontWeight: '600', marginBottom: 4 }}>30-Day Returns</Text>
+                <Text style={{ color: '#71717A' }}>Hassle-free returns within 30 days of purchase</Text>
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </ScrollView>
+  );
+}
+```
+
+### Help Center Accordion
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text, ScrollView, Pressable } from 'react-native';
+import { ChevronRight } from 'lucide-react-native';
+
+export function HelpCenterAccordion() {
+  const sections = [
+    {
+      title: 'Getting Started',
+      items: [
+        { title: 'How to create an account', link: '#' },
+        { title: 'Setting up your profile', link: '#' },
+        { title: 'First time user guide', link: '#' },
+      ],
+    },
+    {
+      title: 'Account Management',
+      items: [
+        { title: 'Changing your password', link: '#' },
+        { title: 'Managing privacy settings', link: '#' },
+        { title: 'Deactivating your account', link: '#' },
+      ],
+    },
+    {
+      title: 'Billing & Payment',
+      items: [
+        { title: 'Updating payment method', link: '#' },
+        { title: 'Understanding your invoice', link: '#' },
+        { title: 'Subscription plans explained', link: '#' },
+      ],
+    },
+  ];
+
+  return (
+    <ScrollView style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 16 }}>Help Center</Text>
+
+      <Accordion type="single">
+        {sections.map((section, index) => (
+          <AccordionItem key={index} value={`section${index}`}>
+            <AccordionTrigger>{section.title}</AccordionTrigger>
+            <AccordionContent>
+              <View style={{ gap: 8 }}>
+                {section.items.map((item, itemIndex) => (
+                  <Pressable
+                    key={itemIndex}
+                    style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8 }}
+                  >
+                    <Text style={{ color: '#0A84FF', flex: 1 }}>{item.title}</Text>
+                    <ChevronRight size={16} color="#0A84FF" />
+                  </Pressable>
+                ))}
+              </View>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </ScrollView>
+  );
+}
+```
+
+### Settings with Nested Accordions
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { View, Text, Switch, ScrollView } from 'react-native';
+import { useState } from 'react';
+
+export function SettingsAccordion() {
+  const [notifications, setNotifications] = useState(true);
+  const [emailAlerts, setEmailAlerts] = useState(false);
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [autoBackup, setAutoBackup] = useState(true);
+  const [cloudSync, setCloudSync] = useState(false);
+
+  return (
+    <ScrollView style={{ padding: 16 }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 16 }}>Settings</Text>
+
+      <Accordion type="single">
+        <AccordionItem value="notifications">
+          <AccordionTrigger>Notifications</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 16 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: '500' }}>Notifications</Text>
+                  <Text style={{ fontSize: 12, color: '#71717A' }}>Enable all notifications</Text>
+                </View>
+                <Switch value={notifications} onValueChange={setNotifications} />
+              </View>
+              {notifications && (
+                <>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text>Email Alerts</Text>
+                    <Switch value={emailAlerts} onValueChange={setEmailAlerts} />
+                  </View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text>Push Notifications</Text>
+                    <Switch value={pushNotifications} onValueChange={setPushNotifications} />
+                  </View>
+                </>
+              )}
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="storage">
+          <AccordionTrigger>Storage & Backup</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 16 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: '500' }}>Auto Backup</Text>
+                  <Text style={{ fontSize: 12, color: '#71717A' }}>Daily backup at 2:00 AM</Text>
+                </View>
+                <Switch value={autoBackup} onValueChange={setAutoBackup} />
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: '500' }}>Cloud Sync</Text>
+                  <Text style={{ fontSize: 12, color: '#71717A' }}>Sync with cloud storage</Text>
+                </View>
+                <Switch value={cloudSync} onValueChange={setCloudSync} />
+              </View>
+              <View style={{ marginTop: 8, padding: 8, backgroundColor: '#F4F4F5', borderRadius: 6 }}>
+                <Text style={{ fontSize: 12, color: '#71717A' }}>Storage used: 2.5 GB of 10 GB</Text>
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="about">
+          <AccordionTrigger>About</AccordionTrigger>
+          <AccordionContent>
+            <View style={{ gap: 12 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ color: '#71717A' }}>App Version</Text>
+                <Text style={{ fontWeight: '600' }}>2.1.0</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ color: '#71717A' }}>Build</Text>
+                <Text style={{ fontWeight: '600' }}>240524</Text>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ color: '#71717A' }}>Last Updated</Text>
+                <Text style={{ fontWeight: '600' }}>May 24, 2024</Text>
+              </View>
+            </View>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </ScrollView>
+  );
+}
+```
+
+## Best Practices
+
+1. **Clear Hierarchy**: Use descriptive titles that clearly indicate what content is within each section
+2. **Single vs Multiple**: Use `type="single"` for steps or decision trees, `type="multiple"` for FAQs or optional sections
+3. **Default Expansion**: Set `defaultValue` for common or important sections users should see first
+4. **Content Organization**: Keep content concise and well-organized within each section
+5. **Visual Feedback**: The animated chevron provides feedback; ensure it's visible
+6. **Consistent Styling**: Apply consistent styling to all accordion items
+7. **Accessible Content**: Use semantic HTML structure and appropriate text hierarchy
+8. **Loading States**: Show loading indicators for sections with asynchronous content
+9. **Form Integration**: Use multiple accordion for multi-step forms to show all fields
+10. **Mobile Optimization**: Consider touch target sizes and content visibility on small screens
+11. **Performance**: Lazy-load content for sections with heavy data sets
+12. **Icon Alignment**: The chevron icon is right-aligned; ensure sufficient space

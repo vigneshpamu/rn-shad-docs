@@ -1,0 +1,378 @@
+# DatePicker
+
+A date selection component with an interactive calendar modal. Features smooth animations, date range constraints, and an intuitive calendar interface with month navigation.
+
+## Installation
+
+```bash
+npx rn-shad-cli add datepicker
+```
+
+## Usage
+
+### Basic DatePicker
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { useState } from 'react';
+
+export default function BasicDatePicker() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  return (
+    <DatePicker
+      value={selectedDate}
+      onValueChange={setSelectedDate}
+      placeholder="Select a date"
+    />
+  );
+}
+```
+
+### DatePicker with Date Range
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { useState } from 'react';
+import { View } from 'react-native';
+
+export default function DateRangePicker() {
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 30);
+
+  return (
+    <View style={{ gap: 16 }}>
+      <DatePicker
+        value={startDate}
+        onValueChange={setStartDate}
+        placeholder="Check-in date"
+        minimumDate={today}
+        maximumDate={maxDate}
+      />
+      <DatePicker
+        value={endDate}
+        onValueChange={setEndDate}
+        placeholder="Check-out date"
+        minimumDate={startDate || tomorrow}
+        maximumDate={maxDate}
+      />
+    </View>
+  );
+}
+```
+
+### Disabled DatePicker
+
+```tsx
+<DatePicker
+  value={new Date()}
+  disabled={true}
+  placeholder="This date picker is disabled"
+/>
+```
+
+### DatePicker with Min/Max Dates
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { useState } from 'react';
+
+export default function ConstrainedDatePicker() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const today = new Date();
+  const minDate = new Date(today);
+  minDate.setDate(minDate.getDate() - 30);
+
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 60);
+
+  return (
+    <DatePicker
+      value={selectedDate}
+      onValueChange={setSelectedDate}
+      placeholder="Select a date (±60 days from today)"
+      minimumDate={minDate}
+      maximumDate={maxDate}
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Date \| undefined` | - | Currently selected date |
+| `onValueChange` | `(date: Date) => void` | - | Callback when date is selected |
+| `placeholder` | `string` | `'Select date'` | Placeholder text when no date is selected |
+| `disabled` | `boolean` | `false` | Whether the date picker is disabled |
+| `minimumDate` | `Date` | - | Earliest date that can be selected |
+| `maximumDate` | `Date` | - | Latest date that can be selected |
+
+## Features
+
+- **Modal Calendar**: Interactive calendar displayed in a modal overlay
+- **Month Navigation**: Smooth month transitions with fade animations
+- **Today Indicator**: Current date highlighted in red for easy reference
+- **Date Formatting**: Automatic date formatting (e.g., "January 15, 2024")
+- **Selection State**: Clear visual indication of selected date
+- **Theme Support**: Automatic theme color integration with fallback colors
+- **Smooth Animations**: Fade animations for calendar transitions
+- **Responsive**: Full-width input trigger with centered modal dialog
+- **Touch Handling**: Proper modal overlay handling for touch interactions
+
+## Calendar Grid Details
+
+The calendar displays:
+- **Week Headers**: Abbreviated day names (Su, Mo, Tu, We, Th, Fr, Sa)
+- **Month Grid**: 7-day weeks arranged in rows
+- **Neighbor Month Days**: Previous and next month dates shown in muted colors for context
+- **Today Highlight**: Current date shown in red (unless selected)
+- **Selected State**: Selected date shown with dark background
+
+## Examples
+
+### Hotel Booking Form
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function HotelBooking() {
+  const [checkIn, setCheckIn] = useState<Date | undefined>();
+  const [checkOut, setCheckOut] = useState<Date | undefined>();
+
+  const handleBook = () => {
+    if (checkIn && checkOut) {
+      console.log('Booking:', { checkIn, checkOut });
+    }
+  };
+
+  const today = new Date();
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 90);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Book Your Stay</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <View>
+            <Text weight="semibold" style={{ marginBottom: 8 }}>Check-in</Text>
+            <DatePicker
+              value={checkIn}
+              onValueChange={setCheckIn}
+              placeholder="Select check-in date"
+              minimumDate={today}
+              maximumDate={maxDate}
+            />
+          </View>
+          <View>
+            <Text weight="semibold" style={{ marginBottom: 8 }}>Check-out</Text>
+            <DatePicker
+              value={checkOut}
+              onValueChange={setCheckOut}
+              placeholder="Select check-out date"
+              minimumDate={checkIn || new Date(today.getTime() + 86400000)}
+              maximumDate={maxDate}
+            />
+          </View>
+        </View>
+      </CardContent>
+      <CardFooter>
+        <Button
+          style={{ flex: 1 }}
+          disabled={!checkIn || !checkOut}
+          onPress={handleBook}
+        >
+          Check Availability
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+### Appointment Scheduling
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function AppointmentScheduler() {
+  const [appointmentDate, setAppointmentDate] = useState<Date | undefined>();
+
+  const handleSchedule = () => {
+    if (appointmentDate) {
+      console.log('Appointment scheduled for:', appointmentDate);
+    }
+  };
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const twoMonthsLater = new Date();
+  twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+
+  return (
+    <Card>
+      <CardContent style={{ paddingTop: 20 }}>
+        <View style={{ gap: 16 }}>
+          <DatePicker
+            value={appointmentDate}
+            onValueChange={setAppointmentDate}
+            placeholder="Select appointment date"
+            minimumDate={tomorrow}
+            maximumDate={twoMonthsLater}
+          />
+          <Button
+            disabled={!appointmentDate}
+            onPress={handleSchedule}
+          >
+            Confirm Appointment
+          </Button>
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Birthday Selection
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function BirthdaySelector() {
+  const [birthDate, setBirthDate] = useState<Date | undefined>();
+
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 13); // Minimum age: 13
+
+  const minDate = new Date();
+  minDate.setFullYear(minDate.getFullYear() - 120); // Maximum reasonable age
+
+  const calculateAge = (date: Date) => {
+    const now = new Date();
+    const age = now.getFullYear() - date.getFullYear();
+    return age;
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Birthday</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <DatePicker
+            value={birthDate}
+            onValueChange={setBirthDate}
+            placeholder="Select your birthday"
+            minimumDate={minDate}
+            maximumDate={maxDate}
+          />
+          {birthDate && (
+            <Text color="muted" variant="sm">
+              Age: {calculateAge(birthDate)} years old
+            </Text>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Report Date Range Selector
+
+```tsx
+import { DatePicker } from '@/components/ui/datepicker';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function ReportDateRange() {
+  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [toDate, setToDate] = useState<Date | undefined>();
+
+  const handleGenerateReport = () => {
+    console.log('Generating report from', fromDate, 'to', toDate);
+  };
+
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const today = new Date();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Select Report Period</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <DatePicker
+            value={fromDate}
+            onValueChange={setFromDate}
+            placeholder="From date"
+            minimumDate={oneYearAgo}
+            maximumDate={today}
+          />
+          <DatePicker
+            value={toDate}
+            onValueChange={setToDate}
+            placeholder="To date"
+            minimumDate={fromDate || oneYearAgo}
+            maximumDate={today}
+          />
+        </View>
+      </CardContent>
+      <CardFooter>
+        <Button
+          disabled={!fromDate || !toDate}
+          onPress={handleGenerateReport}
+        >
+          Generate Report
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+## Best Practices
+
+1. **Provide Clear Labels**: Always include descriptive text or labels above the date picker
+2. **Set Appropriate Constraints**: Use `minimumDate` and `maximumDate` to guide user selection
+3. **Use Placeholders**: Clear placeholders help users understand what date they should select
+4. **Validate Date Ranges**: When using multiple date pickers, validate that end dates are after start dates
+5. **Disable When Appropriate**: Use the `disabled` prop to prevent selection in invalid states
+6. **Format Display**: Use consistent date formatting throughout your application
+7. **Mobile Considerations**: The modal overlay is optimized for mobile screens with proper tap handling
+8. **Theme Colors**: The component automatically uses theme colors; ensure your theme is properly configured
+9. **Edge Cases**: Handle undefined dates appropriately in your application logic
+10. **Accessible Defaults**: Always provide a default value or clear placeholder text

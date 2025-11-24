@@ -1,0 +1,335 @@
+# Text
+
+A versatile, themeable text component with support for multiple typography variants, colors, weights, and alignments. Perfect for creating consistent typography throughout your app.
+
+## Installation
+
+```bash
+npx rn-shad-cli add text
+```
+
+## Usage
+
+### Basic Text
+
+```tsx
+import { Text } from '@/components/ui/text';
+
+<Text>This is a basic text</Text>
+```
+
+### Heading Variants
+
+```tsx
+import { Text } from '@/components/ui/text';
+
+<Text variant="h1">Large Heading</Text>
+<Text variant="h2">Medium-Large Heading</Text>
+<Text variant="h3">Medium Heading</Text>
+<Text variant="h4">Small Heading</Text>
+```
+
+### Body Text
+
+```tsx
+<Text variant="body">This is body text with default styling</Text>
+<Text variant="caption">This is caption text for smaller text</Text>
+<Text variant="label">This is label text for form labels</Text>
+```
+
+### Different Colors
+
+```tsx
+<Text color="default">Default foreground color</Text>
+<Text color="muted">Muted secondary color</Text>
+<Text color="primary">Primary brand color</Text>
+<Text color="destructive">Destructive red color</Text>
+```
+
+### Text Weight
+
+```tsx
+<Text weight="normal">Normal weight text</Text>
+<Text weight="medium">Medium weight text</Text>
+<Text weight="semibold">Semibold text</Text>
+<Text weight="bold">Bold text</Text>
+```
+
+### Text Alignment
+
+```tsx
+<Text align="left">Left aligned text</Text>
+<Text align="center">Center aligned text</Text>
+<Text align="right">Right aligned text</Text>
+```
+
+### Combined Styling
+
+```tsx
+<Text
+  variant="h3"
+  color="primary"
+  weight="bold"
+  align="center"
+>
+  Bold Primary Centered Heading
+</Text>
+```
+
+## Variants
+
+The text component supports 7 typography variants optimized for different use cases:
+
+### h1
+```tsx
+<Text variant="h1">Largest Heading</Text>
+```
+Large heading with 36px font size, 40px line height, and bold weight (800).
+
+### h2
+```tsx
+<Text variant="h2">Large Heading</Text>
+```
+Large heading with 30px font size, 36px line height, and bold weight (700).
+
+### h3
+```tsx
+<Text variant="h3">Medium Heading</Text>
+```
+Medium heading with 24px font size, 32px line height, and semibold weight (600).
+
+### h4
+```tsx
+<Text variant="h4">Small Heading</Text>
+```
+Small heading with 20px font size, 28px line height, and semibold weight (600).
+
+### body
+```tsx
+<Text variant="body">Regular body text</Text>
+```
+Default variant with 16px font size, 24px line height, and normal weight (400).
+
+### caption
+```tsx
+<Text variant="caption">Small caption text</Text>
+```
+Small text with 14px font size, 20px line height, and normal weight (400).
+
+### label
+```tsx
+<Text variant="label">Form label text</Text>
+```
+Label text with 14px font size, 20px line height, medium weight (500), and 0.5px letter spacing.
+
+## Colors
+
+### default
+```tsx
+<Text color="default">Default foreground</Text>
+```
+Uses the primary foreground color (#09090B).
+
+### muted
+```tsx
+<Text color="muted">Muted text</Text>
+```
+Uses the muted foreground color (#71717A) for secondary text.
+
+### primary
+```tsx
+<Text color="primary">Primary accent</Text>
+```
+Uses the primary brand color (#18181B).
+
+### destructive
+```tsx
+<Text color="destructive">Error message</Text>
+```
+Uses the destructive color (#EF4444) for errors and warnings.
+
+## Weight
+
+### normal
+```tsx
+<Text weight="normal">Normal weight</Text>
+```
+Font weight 400.
+
+### medium
+```tsx
+<Text weight="medium">Medium weight</Text>
+```
+Font weight 500.
+
+### semibold
+```tsx
+<Text weight="semibold">Semibold weight</Text>
+```
+Font weight 600.
+
+### bold
+```tsx
+<Text weight="bold">Bold weight</Text>
+```
+Font weight 700.
+
+## Alignment
+
+### left
+```tsx
+<Text align="left">Left aligned</Text>
+```
+Text aligned to the left (default).
+
+### center
+```tsx
+<Text align="center">Center aligned</Text>
+```
+Text centered.
+
+### right
+```tsx
+<Text align="right">Right aligned</Text>
+```
+Text aligned to the right.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Text content to display |
+| `variant` | `'h1' \| 'h2' \| 'h3' \| 'h4' \| 'body' \| 'caption' \| 'label'` | `'body'` | Typography variant |
+| `color` | `'default' \| 'muted' \| 'primary' \| 'destructive'` | `'default'` | Text color |
+| `weight` | `'normal' \| 'medium' \| 'semibold' \| 'bold'` | - | Font weight |
+| `align` | `'left' \| 'center' \| 'right'` | `'left'` | Text alignment |
+| `style` | `StyleProp<TextStyle>` | - | Additional React Native style |
+
+Plus all standard React Native `TextProps`.
+
+## Features
+
+- **7 Typography Variants**: Pre-configured heading and body variants with proper sizing and line heights
+- **4 Color Options**: Default, muted, primary, and destructive colors with theme support
+- **Font Weights**: Four weight options (normal, medium, semibold, bold) for emphasis
+- **Text Alignment**: Left, center, and right alignment support
+- **Theme Support**: Automatically uses your theme colors when available
+- **Composable**: Easily combine variants, colors, weights, and alignment
+- **Performance**: Lightweight component with minimal re-renders
+- **Accessibility**: Proper semantic text rendering for screen readers
+
+## Examples
+
+### Page Title
+
+```tsx
+<View style={{ paddingHorizontal: 16, paddingVertical: 20 }}>
+  <Text variant="h1" color="default">
+    Welcome
+  </Text>
+  <Text variant="body" color="muted" style={{ marginTop: 8 }}>
+    Manage your account and settings
+  </Text>
+</View>
+```
+
+### Form Labels
+
+```tsx
+<View style={{ marginBottom: 16 }}>
+  <Text variant="label" color="default" weight="semibold">
+    Email Address
+  </Text>
+  <Input
+    placeholder="you@example.com"
+    style={{ marginTop: 8 }}
+  />
+</View>
+```
+
+### Error Messages
+
+```tsx
+{error && (
+  <Text variant="caption" color="destructive" style={{ marginTop: 4 }}>
+    {error}
+  </Text>
+)}
+```
+
+### Section Heading with Description
+
+```tsx
+<View style={{ marginBottom: 20 }}>
+  <Text variant="h3" weight="semibold">
+    Account Settings
+  </Text>
+  <Text variant="body" color="muted" style={{ marginTop: 4 }}>
+    Manage your account preferences and security
+  </Text>
+</View>
+```
+
+### Card Title with Price
+
+```tsx
+<View style={{ padding: 16 }}>
+  <Text variant="h4" weight="bold">
+    Premium Plan
+  </Text>
+  <View style={{ marginTop: 8 }}>
+    <Text variant="h2" color="primary">
+      $99/month
+    </Text>
+    <Text variant="caption" color="muted">
+      Billed annually
+    </Text>
+  </View>
+</View>
+```
+
+### Centered Success Message
+
+```tsx
+<View style={{ alignItems: 'center', padding: 20 }}>
+  <Text variant="h3" align="center" weight="semibold">
+    Payment Successful
+  </Text>
+  <Text
+    variant="body"
+    color="muted"
+    align="center"
+    style={{ marginTop: 8 }}
+  >
+    Your order has been confirmed
+  </Text>
+</View>
+```
+
+### List Item with Description
+
+```tsx
+<View style={{ padding: 12 }}>
+  <Text variant="body" weight="medium">
+    John Doe
+  </Text>
+  <Text variant="caption" color="muted" style={{ marginTop: 4 }}>
+    john@example.com
+  </Text>
+</View>
+```
+
+### Badge with Caption
+
+```tsx
+<View style={{
+  backgroundColor: '#f3f4f6',
+  paddingHorizontal: 12,
+  paddingVertical: 6,
+  borderRadius: 4
+}}>
+  <Text variant="label" color="primary" weight="semibold">
+    New Feature
+  </Text>
+</View>
+```

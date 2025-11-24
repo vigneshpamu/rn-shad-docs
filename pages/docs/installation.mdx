@@ -1,0 +1,116 @@
+# Installation
+
+Get started with RN Shad UI in your React Native project.
+
+## Prerequisites
+
+- React Native 0.76+ (or Expo SDK 51+)
+- Node.js 18+
+- TypeScript (recommended)
+
+## Step 1: Initialize
+
+Run the init command in your React Native project root:
+
+```bash
+npx rn-shad-cli@latest init
+```
+
+This will:
+1. Install required peer dependencies
+2. Set up path aliases in `tsconfig.json` and `babel.config.js`
+3. Create directory structure (`components/ui/`, `lib/`, `hooks/`)
+4. Create utility files (`lib/utils.ts`, `lib/theme.ts`)
+
+## Step 2: Configure Babel
+
+The CLI automatically adds module resolver to your `babel.config.js`. Make sure `react-native-reanimated/plugin` is the **last plugin**:
+
+```js
+module.exports = {
+  presets: ['module:@react-native/babel-preset'],
+  plugins: [
+    [
+      'module-resolver',
+      {
+        root: ['.'],
+        alias: {
+          '@': './',
+          '@/components': './components',
+          '@/lib': './lib',
+        },
+      },
+    ],
+    'react-native-reanimated/plugin', // Must be last!
+  ],
+};
+```
+
+## Step 3: Add Components
+
+Now you can add any component:
+
+```bash
+# Add a single component
+npx rn-shad-cli add button
+
+# Add multiple components
+npx rn-shad-cli add button input card alert
+```
+
+## Step 4: Use Components
+
+Import and use components in your app:
+
+```tsx
+import React from 'react';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+
+export default function App() {
+  return (
+    <View>
+      <Button onPress={() => console.log('Pressed!')}>
+        Click me
+      </Button>
+    </View>
+  );
+}
+```
+
+## Troubleshooting
+
+### Metro Cache
+
+If you see import errors after installation:
+
+```bash
+npm start -- --reset-cache
+```
+
+### iOS Pods
+
+For iOS, install pods after adding dependencies:
+
+```bash
+cd ios && pod install && cd ..
+```
+
+### TypeScript Errors
+
+Make sure your `tsconfig.json` includes the path aliases:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+## Next Steps
+
+- Browse [Components](/docs/components) to see what's available
+- Learn about customization and theming

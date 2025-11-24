@@ -1,0 +1,374 @@
+# Checkbox
+
+A checkbox component for selecting one or more options from a set. The Checkbox component features smooth animations with a scale effect, multiple sizes, and built-in support for disabled states.
+
+## Installation
+
+```bash
+npx rn-shad-cli add checkbox
+```
+
+## Usage
+
+```tsx
+import { Checkbox } from '@/components/ui/checkbox';
+```
+
+## Examples
+
+### Basic Checkbox
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { View } from 'react-native';
+
+export function BasicCheckbox() {
+  const [isChecked, setIsChecked] = useState(false);
+
+  return (
+    <View>
+      <Checkbox
+        checked={isChecked}
+        onCheckedChange={setIsChecked}
+      />
+    </View>
+  );
+}
+```
+
+### Checkbox Sizes
+
+```tsx
+import { Checkbox } from '@/components/ui/checkbox';
+import { View } from 'react-native';
+
+export function CheckboxSizes() {
+  return (
+    <View style={{ gap: 16 }}>
+      <Checkbox checked={true} size="sm" />
+      <Checkbox checked={true} size="md" />
+      <Checkbox checked={true} size="lg" />
+    </View>
+  );
+}
+```
+
+### Disabled Checkbox
+
+```tsx
+import { Checkbox } from '@/components/ui/checkbox';
+import { View } from 'react-native';
+
+export function DisabledCheckbox() {
+  return (
+    <View style={{ gap: 12 }}>
+      <Checkbox checked={true} disabled />
+      <Checkbox checked={false} disabled />
+    </View>
+  );
+}
+```
+
+### Checkbox with Label
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function CheckboxWithLabel() {
+  const [agreed, setAgreed] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
+
+  return (
+    <View style={{ gap: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Checkbox
+          checked={agreed}
+          onCheckedChange={setAgreed}
+        />
+        <Label>I agree to the terms and conditions</Label>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Checkbox
+          checked={newsletter}
+          onCheckedChange={setNewsletter}
+        />
+        <Label>Subscribe to our newsletter</Label>
+      </View>
+    </View>
+  );
+}
+```
+
+### Checkbox Group
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { View, Text } from 'react-native';
+
+export function CheckboxGroup() {
+  const [preferences, setPreferences] = useState({
+    email: false,
+    sms: false,
+    push: false,
+    marketing: false,
+  });
+
+  const handleChange = (key: keyof typeof preferences) => {
+    setPreferences(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  return (
+    <View style={{ gap: 16 }}>
+      <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+        Communication Preferences
+      </Text>
+
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Checkbox
+            checked={preferences.email}
+            onCheckedChange={() => handleChange('email')}
+          />
+          <Label>Email notifications</Label>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Checkbox
+            checked={preferences.sms}
+            onCheckedChange={() => handleChange('sms')}
+          />
+          <Label>SMS notifications</Label>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Checkbox
+            checked={preferences.push}
+            onCheckedChange={() => handleChange('push')}
+          />
+          <Label>Push notifications</Label>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Checkbox
+            checked={preferences.marketing}
+            onCheckedChange={() => handleChange('marketing')}
+          />
+          <Label>Marketing emails</Label>
+        </View>
+      </View>
+
+      <Text style={{ fontSize: 12, color: '#666', marginTop: 8 }}>
+        Selected: {Object.values(preferences).filter(Boolean).length} option(s)
+      </Text>
+    </View>
+  );
+}
+```
+
+### In a Form
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { View, Pressable, Text } from 'react-native';
+
+export function RegistrationForm() {
+  const [form, setForm] = useState({
+    acceptTerms: false,
+    acceptPrivacy: false,
+    newsletter: false,
+  });
+
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const handleSubmit = () => {
+    const newErrors: string[] = [];
+
+    if (!form.acceptTerms) {
+      newErrors.push('You must accept the terms and conditions');
+    }
+    if (!form.acceptPrivacy) {
+      newErrors.push('You must accept the privacy policy');
+    }
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Form submitted:', form);
+    setErrors([]);
+  };
+
+  const handleChange = (key: keyof typeof form) => {
+    setForm(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  return (
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 16 }}>
+        <View style={{ gap: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Checkbox
+              checked={form.acceptTerms}
+              onCheckedChange={() => handleChange('acceptTerms')}
+            />
+            <Label required>I accept the Terms and Conditions</Label>
+          </View>
+          {errors.includes('You must accept the terms and conditions') && (
+            <Text style={{ fontSize: 12, color: '#EF4444' }}>
+              This field is required
+            </Text>
+          )}
+        </View>
+
+        <View style={{ gap: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Checkbox
+              checked={form.acceptPrivacy}
+              onCheckedChange={() => handleChange('acceptPrivacy')}
+            />
+            <Label required>I accept the Privacy Policy</Label>
+          </View>
+          {errors.includes('You must accept the privacy policy') && (
+            <Text style={{ fontSize: 12, color: '#EF4444' }}>
+              This field is required
+            </Text>
+          )}
+        </View>
+
+        <View style={{ gap: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Checkbox
+              checked={form.newsletter}
+              onCheckedChange={() => handleChange('newsletter')}
+            />
+            <Label>Subscribe to our newsletter</Label>
+          </View>
+        </View>
+      </View>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Create Account
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Custom Animation Duration
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { View } from 'react-native';
+
+export function CheckboxWithCustomAnimation() {
+  const [slow, setSlow] = useState(false);
+  const [fast, setFast] = useState(false);
+
+  return (
+    <View style={{ gap: 16 }}>
+      <Checkbox
+        checked={slow}
+        onCheckedChange={setSlow}
+        animationDuration={600}
+      />
+      <Checkbox
+        checked={fast}
+        onCheckedChange={setFast}
+        animationDuration={100}
+      />
+    </View>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `checked` | `boolean` | - | Whether the checkbox is checked |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Callback fired when the checkbox state changes |
+| `disabled` | `boolean` | `false` | Disables the checkbox and reduces opacity |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the checkbox component |
+| `animationDuration` | `number` | `300` | Duration of the check animation in milliseconds |
+
+## Features
+
+### Smooth Animations
+The Checkbox component uses React Native Reanimated to provide smooth, 60fps animations with both check fill and scale effects. The animation duration is configurable to suit your interaction design.
+
+### Multiple Sizes
+Three size options (small, medium, large) ensure the checkbox works well in different layouts and screen sizes while maintaining visual hierarchy.
+
+### Scale Feedback
+When a checkbox is pressed, it scales down and back up, providing immediate visual feedback to the user's interaction before the state changes.
+
+### Theme Support
+The component automatically integrates with the theme system if available, allowing checkbox colors to respond to theme changes. Falls back to sensible defaults if theme is not available.
+
+### Accessibility
+- Proper touch targets for easy interaction
+- Support for disabled state with reduced opacity
+- Smooth animations reduce jarring visual changes
+- Works with accessibility labels and descriptions
+
+### Responsive Visual States
+- Border color animates smoothly when checked
+- Background color transitions from white (unchecked) to primary color (checked)
+- Check icon animates in with scale effect
+- Disabled state shows muted appearance with reduced opacity
+
+## Component Details
+
+### Animation Behavior
+The checkbox features two coordinated animations:
+1. **Check animation**: The checkmark icon scales and fades in/out (0 to 1 progress)
+2. **Scale feedback**: The entire checkbox box scales down (0.9) and back up on press
+
+Lower animation durations (100-150ms) provide snappy, responsive interactions, while higher values (400-600ms) give a more pronounced, deliberate animation.
+
+### Size Configuration
+
+| Size | Box Size | Icon Size |
+|------|----------|-----------|
+| `sm` | 16px | 12px |
+| `md` | 20px | 14px |
+| `lg` | 24px | 16px |
+
+### Disabled State
+When disabled, the checkbox:
+- Reduces opacity to 50%
+- Sets background to muted color
+- Sets border to light border color
+- Does not respond to press events
+- Maintains the current checked state visually
+
+## Best Practices
+
+1. **Always Use Labels**: Pair checkboxes with descriptive labels using the `<Label>` component
+2. **Group Related Items**: Use checkboxes to group related options together visually
+3. **Provide Help Text**: Add descriptive text below checkboxes for complex choices
+4. **Form Validation**: Show error messages next to checkboxes that have validation errors
+5. **Consistent Sizing**: Use the same size for all checkboxes in a group for visual consistency
+6. **Required Indicators**: Use the `required` prop on `<Label>` for mandatory checkboxes
+7. **Accessible Spacing**: Maintain adequate spacing between checkboxes and their labels

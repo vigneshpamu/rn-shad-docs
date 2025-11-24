@@ -1,0 +1,323 @@
+# Select
+
+A dropdown selection component that allows users to choose one option from a list. The Select component features a modal-based dropdown, animated chevron icon, and full keyboard navigation support with theme integration.
+
+## Installation
+
+```bash
+npx rn-shad-cli add select
+```
+
+## Usage
+
+### Basic Select
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+export function BasicSelect() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="orange">Orange</SelectItem>
+    </Select>
+  );
+}
+```
+
+### With Placeholder
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+export function SelectWithPlaceholder() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select
+      value={value}
+      onValueChange={setValue}
+      placeholder="Choose a fruit..."
+    >
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="orange">Orange</SelectItem>
+    </Select>
+  );
+}
+```
+
+### Disabled Select
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+export function DisabledSelect() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select
+      value={value}
+      onValueChange={setValue}
+      disabled={true}
+      placeholder="This select is disabled"
+    >
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="orange">Orange</SelectItem>
+    </Select>
+  );
+}
+```
+
+### With Disabled Items
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+export function SelectWithDisabledItems() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana" disabled>Banana (Out of Stock)</SelectItem>
+      <SelectItem value="orange">Orange</SelectItem>
+    </Select>
+  );
+}
+```
+
+## Components
+
+### Select
+
+The main wrapper component that manages the dropdown state and context.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Currently selected value |
+| `onValueChange` | `(value: string) => void` | - | Callback fired when selection changes |
+| `placeholder` | `string` | `'Select an option'` | Placeholder text when no value is selected |
+| `children` | `React.ReactNode` | - | SelectItem components to display in the dropdown |
+| `disabled` | `boolean` | `false` | Whether the select is disabled |
+
+### SelectItem
+
+An individual option within the Select component.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | The value associated with this option |
+| `children` | `React.ReactNode` | - | Display text for the option |
+| `disabled` | `boolean` | `false` | Whether this option is disabled |
+
+## Features
+
+- **Modal Dropdown**: Uses a modal for the dropdown content, preventing layout overflow issues
+- **Animated Icon**: Chevron icon rotates smoothly when opening/closing with spring physics
+- **Scroll Support**: Long lists are scrollable with the ScrollView component
+- **Selection Indicator**: Checkmark icon appears next to the selected item
+- **Theme Integration**: Automatically uses theme colors with fallback to default palette
+- **Touch Feedback**: Selected items highlight with a muted background color
+- **Keyboard Navigation**: Modal can be dismissed with the Android back button
+- **Disabled States**: Both the entire select and individual items can be disabled
+
+## Practical Examples
+
+### Country Selector
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+const countries = [
+  { code: 'us', name: 'United States' },
+  { code: 'uk', name: 'United Kingdom' },
+  { code: 'ca', name: 'Canada' },
+  { code: 'au', name: 'Australia' },
+  { code: 'in', name: 'India' },
+];
+
+export function CountrySelector() {
+  const [country, setCountry] = useState('');
+
+  return (
+    <Select
+      value={country}
+      onValueChange={setCountry}
+      placeholder="Select a country"
+    >
+      {countries.map((c) => (
+        <SelectItem key={c.code} value={c.code}>
+          {c.name}
+        </SelectItem>
+      ))}
+    </Select>
+  );
+}
+```
+
+### Form Integration with Validation
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function FormWithSelect() {
+  const [role, setRole] = useState('');
+  const [error, setError] = useState('');
+
+  const handleRoleChange = (value: string) => {
+    setRole(value);
+    setError('');
+  };
+
+  const validateAndSubmit = () => {
+    if (!role) {
+      setError('Please select a role');
+      return;
+    }
+    console.log('Submitted with role:', role);
+  };
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Label>User Role</Label>
+      <Select
+        value={role}
+        onValueChange={handleRoleChange}
+        placeholder="Select your role"
+      >
+        <SelectItem value="user">Regular User</SelectItem>
+        <SelectItem value="moderator">Moderator</SelectItem>
+        <SelectItem value="admin">Administrator</SelectItem>
+      </Select>
+      {error && (
+        <Text style={{ color: '#EF4444', fontSize: 12 }}>
+          {error}
+        </Text>
+      )}
+    </View>
+  );
+}
+```
+
+### Grouped Options (Manual Grouping)
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
+
+export function GroupedSelect() {
+  const [timezone, setTimezone] = useState('');
+
+  return (
+    <Select
+      value={timezone}
+      onValueChange={setTimezone}
+      placeholder="Select timezone"
+    >
+      <SelectItem value="utc-0">UTC 0 (Greenwich Mean Time)</SelectItem>
+      <SelectItem value="utc+1">UTC +1 (Central European Time)</SelectItem>
+      <SelectItem value="utc+2">UTC +2 (Eastern European Time)</SelectItem>
+      <SelectItem value="utc-5">UTC -5 (Eastern Standard Time)</SelectItem>
+      <SelectItem value="utc-8">UTC -8 (Pacific Standard Time)</SelectItem>
+      <SelectItem value="utc+8">UTC +8 (China Standard Time)</SelectItem>
+    </Select>
+  );
+}
+```
+
+### Dynamic Options from API
+
+```tsx
+import { Select, SelectItem } from '@/components/ui/select';
+import { useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+
+export function DynamicSelect() {
+  const [options, setOptions] = useState<Array<{ id: string; name: string }>>([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState('');
+
+  useEffect(() => {
+    // Simulate API call
+    setTimeout(() => {
+      setOptions([
+        { id: '1', name: 'Option 1' },
+        { id: '2', name: 'Option 2' },
+        { id: '3', name: 'Option 3' },
+      ]);
+      setLoading(false);
+    }, 500);
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  return (
+    <Select
+      value={selected}
+      onValueChange={setSelected}
+      placeholder="Select an option"
+    >
+      {options.map((opt) => (
+        <SelectItem key={opt.id} value={opt.id}>
+          {opt.name}
+        </SelectItem>
+      ))}
+    </Select>
+  );
+}
+```
+
+## Animation Details
+
+The Select component uses React Native Reanimated for smooth animations:
+
+- **Chevron Rotation**: The chevron icon rotates 180 degrees when the dropdown opens/closes with spring physics (damping: 15, stiffness: 150)
+- **Modal Animations**: The dropdown content fades in (150ms) and out (100ms) for a smooth appearance/disappearance
+- **Selection Feedback**: Selected items immediately show a visual highlight with a muted background
+
+## Positioning
+
+The dropdown modal positions itself directly below the trigger button:
+- Top position: Trigger Y + Trigger Height + 4px offset
+- Left position: Aligned with the trigger button's left edge
+- Width: Matches the trigger button width
+
+The modal uses an overlay that covers the entire screen, allowing users to dismiss the dropdown by tapping outside of it.
+
+## Best Practices
+
+1. **Always Use Placeholders**: Provide clear placeholder text to guide users
+2. **Organize Options Logically**: Group related options together
+3. **Use for Multiple Related Items**: When you have 3+ options that are related
+4. **Validate Selection**: Show error messages for required selects that haven't been filled
+5. **Disable Unavailable Options**: Use disabled state for options that aren't available
+6. **Consistent Sizing**: Keep all selects the same size within a form
+7. **Label Your Selects**: Always pair with a Label component for context
+8. **Handle Empty State**: Set reasonable default values or require explicit selection
+
+## Accessibility
+
+- The component respects disabled states and applies reduced opacity
+- Modal can be dismissed with the back button on Android
+- Touch targets are adequate for easy interaction
+- Selected state is visually indicated with a checkmark
+- Clear visual feedback on item selection

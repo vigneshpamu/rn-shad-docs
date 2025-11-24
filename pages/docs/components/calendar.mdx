@@ -1,0 +1,531 @@
+# Calendar
+
+A standalone calendar component for displaying and selecting dates. Features smooth animations, marked dates, date range constraints, and an intuitive month-based grid layout.
+
+## Installation
+
+```bash
+npx rn-shad-cli add calendar
+```
+
+## Usage
+
+### Basic Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { useState } from 'react';
+
+export default function BasicCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  return (
+    <Calendar
+      value={selectedDate}
+      onValueChange={setSelectedDate}
+    />
+  );
+}
+```
+
+### Calendar with Marked Dates
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { useState } from 'react';
+
+export default function CalendarWithMarked() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const markedDates = {
+    '2024-12-15': { marked: true, dotColor: '#3B82F6' },
+    '2024-12-20': { marked: true, dotColor: '#10B981' },
+    '2024-12-25': { marked: true, dotColor: '#EF4444' },
+  };
+
+  return (
+    <Calendar
+      value={selectedDate}
+      onValueChange={setSelectedDate}
+      markedDates={markedDates}
+    />
+  );
+}
+```
+
+### Calendar with Date Range Constraints
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { useState } from 'react';
+
+export default function ConstrainedCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const today = new Date();
+  const minDate = new Date(today);
+  minDate.setDate(minDate.getDate() - 30);
+
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 60);
+
+  return (
+    <Calendar
+      value={selectedDate}
+      onValueChange={setSelectedDate}
+      minimumDate={minDate}
+      maximumDate={maxDate}
+    />
+  );
+}
+```
+
+### Calendar in Card Layout
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function CardCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString([], {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Select a Date</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={selectedDate}
+            onValueChange={setSelectedDate}
+          />
+          {selectedDate && (
+            <Text color="muted">
+              Selected: {formatDate(selectedDate)}
+            </Text>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Date \| undefined` | - | Currently selected date |
+| `onValueChange` | `(date: Date) => void` | - | Callback when date is selected |
+| `minimumDate` | `Date` | - | Earliest date that can be selected |
+| `maximumDate` | `Date` | - | Latest date that can be selected |
+| `markedDates` | `Record<string, { marked?: boolean; dotColor?: string }>` | `{}` | Dates to mark with indicators |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+## Features
+
+- **Embedded Display**: Displays calendar directly in layout (not modal)
+- **Month Navigation**: Smooth navigation between months with animated transitions
+- **Today Indicator**: Current date shown with red text and border for easy reference
+- **Marked Dates**: Mark important dates with custom colored dot indicators
+- **Date Selection**: Clear visual indication of selected date
+- **Theme Support**: Automatic theme color integration with fallback colors
+- **Smooth Animations**: Fade animations for month and grid transitions
+- **Responsive**: Fills available width with proper 7-column grid layout
+- **Flexible Styling**: Optional style prop for custom sizing and layout
+
+## Calendar Grid Details
+
+The calendar displays:
+- **Header**: Month and year with left/right navigation buttons
+- **Day Labels**: Abbreviated day names (Su, Mo, Tu, We, Th, Fr, Sa)
+- **Date Grid**: 7-column layout with proper week alignment
+- **Neighbor Dates**: Dates from previous/next month shown in muted colors
+- **Today Highlight**: Current date shown in red with optional border
+- **Selected State**: Selected date shown with dark background
+- **Marked Dates**: Visual dot indicators below marked dates
+
+## Examples
+
+### Event Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+interface Event {
+  date: string;
+  title: string;
+  color: string;
+}
+
+export default function EventCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const events: Event[] = [
+    { date: '2024-12-10', title: 'Team Meeting', color: '#3B82F6' },
+    { date: '2024-12-15', title: 'Project Deadline', color: '#EF4444' },
+    { date: '2024-12-20', title: 'Conference', color: '#10B981' },
+    { date: '2024-12-25', title: 'Holiday', color: '#F59E0B' },
+  ];
+
+  const markedDates = events.reduce((acc, event) => {
+    acc[event.date] = { marked: true, dotColor: event.color };
+    return acc;
+  }, {} as Record<string, { marked: true; dotColor: string }>);
+
+  const getEventForDate = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return events.find(e => e.date === dateStr);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Event Calendar</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={selectedDate}
+            onValueChange={setSelectedDate}
+            markedDates={markedDates}
+          />
+          {selectedDate && getEventForDate(selectedDate) && (
+            <View style={{
+              padding: 12,
+              backgroundColor: '#F3F4F6',
+              borderRadius: 8,
+              borderLeftWidth: 4,
+              borderLeftColor: getEventForDate(selectedDate)?.color
+            }}>
+              <Text weight="semibold">{getEventForDate(selectedDate)?.title}</Text>
+              <Text color="muted" variant="sm" style={{ marginTop: 4 }}>
+                {selectedDate.toLocaleDateString()}
+              </Text>
+            </View>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Availability Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function AvailabilityCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  // Mark available and unavailable dates
+  const availableDates = {
+    '2024-12-12': { marked: true, dotColor: '#10B981' }, // Available
+    '2024-12-14': { marked: true, dotColor: '#10B981' },
+    '2024-12-16': { marked: true, dotColor: '#10B981' },
+    '2024-12-13': { marked: true, dotColor: '#EF4444' }, // Unavailable
+    '2024-12-15': { marked: true, dotColor: '#EF4444' },
+  };
+
+  const isAvailable = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return availableDates[dateStr]?.dotColor === '#10B981';
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Available Dates</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={selectedDate}
+            onValueChange={setSelectedDate}
+            markedDates={availableDates}
+          />
+          {selectedDate && (
+            <View style={{
+              padding: 12,
+              backgroundColor: isAvailable(selectedDate) ? '#DCFCE7' : '#FEE2E2',
+              borderRadius: 8
+            }}>
+              <Text weight="semibold" color={isAvailable(selectedDate) ? 'text-green-900' : 'text-red-900'}>
+                {isAvailable(selectedDate) ? 'Available' : 'Unavailable'}
+              </Text>
+              <Text variant="sm" color="muted">
+                {selectedDate.toLocaleDateString()}
+              </Text>
+            </View>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Shift Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+interface Shift {
+  date: string;
+  shift: string;
+  color: string;
+}
+
+export default function ShiftCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const shifts: Shift[] = [
+    { date: '2024-12-10', shift: 'Morning', color: '#FBBF24' },
+    { date: '2024-12-11', shift: 'Afternoon', color: '#60A5FA' },
+    { date: '2024-12-12', shift: 'Night', color: '#A78BFA' },
+    { date: '2024-12-13', shift: 'Morning', color: '#FBBF24' },
+    { date: '2024-12-14', shift: 'Afternoon', color: '#60A5FA' },
+  ];
+
+  const markedDates = shifts.reduce((acc, s) => {
+    acc[s.date] = { marked: true, dotColor: s.color };
+    return acc;
+  }, {} as Record<string, { marked: true; dotColor: string }>);
+
+  const getShiftForDate = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return shifts.find(s => s.date === dateStr);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Shift Schedule</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={selectedDate}
+            onValueChange={setSelectedDate}
+            markedDates={markedDates}
+          />
+          {selectedDate && getShiftForDate(selectedDate) && (
+            <View style={{ padding: 12, backgroundColor: '#F9FAFB', borderRadius: 8 }}>
+              <Text weight="semibold">Shift: {getShiftForDate(selectedDate)?.shift}</Text>
+              <Text color="muted" variant="sm" style={{ marginTop: 4 }}>
+                {selectedDate.toLocaleDateString([], {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </Text>
+            </View>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Range Selector Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+export default function RangeSelectorCalendar() {
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [currentSelection, setCurrentSelection] = useState<'start' | 'end'>('start');
+
+  const handleDateSelect = (date: Date) => {
+    if (currentSelection === 'start') {
+      setStartDate(date);
+      setCurrentSelection('end');
+    } else {
+      if (startDate && date > startDate) {
+        setEndDate(date);
+      }
+    }
+  };
+
+  const markedDates: Record<string, { marked: true; dotColor: string }> = {};
+
+  if (startDate) {
+    const dateStr = startDate.toISOString().split('T')[0];
+    markedDates[dateStr] = { marked: true, dotColor: '#3B82F6' };
+  }
+
+  if (endDate) {
+    const dateStr = endDate.toISOString().split('T')[0];
+    markedDates[dateStr] = { marked: true, dotColor: '#10B981' };
+  }
+
+  const handleReset = () => {
+    setStartDate(undefined);
+    setEndDate(undefined);
+    setCurrentSelection('start');
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Select Date Range</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={currentSelection === 'start' ? startDate : endDate}
+            onValueChange={handleDateSelect}
+            markedDates={markedDates}
+          />
+          <View style={{ gap: 8 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text variant="sm" color="muted">Start:</Text>
+              <Text weight="semibold">
+                {startDate?.toLocaleDateString() || 'Not selected'}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text variant="sm" color="muted">End:</Text>
+              <Text weight="semibold">
+                {endDate?.toLocaleDateString() || 'Not selected'}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </CardContent>
+      <CardFooter>
+        <Button variant="outline" onPress={handleReset} style={{ flex: 1 }}>
+          Reset
+        </Button>
+        <Button disabled={!startDate || !endDate} style={{ flex: 1 }}>
+          Apply
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+### Birthday Reminder Calendar
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+import { useState } from 'react';
+
+interface Birthday {
+  name: string;
+  date: string; // MM-DD format for recurring
+  color: string;
+}
+
+export default function BirthdayReminderCalendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const birthdays: Birthday[] = [
+    { name: 'Alice Johnson', date: '12-15', color: '#EC4899' },
+    { name: 'Bob Smith', date: '12-20', color: '#8B5CF6' },
+    { name: 'Carol Davis', date: '12-25', color: '#EF4444' },
+  ];
+
+  // Generate marked dates for the month
+  const markedDates: Record<string, { marked: true; dotColor: string }> = {};
+
+  birthdays.forEach(birthday => {
+    const monthDay = birthday.date;
+    // Assuming we mark for current year
+    const key = `2024-${monthDay}`;
+    markedDates[key] = { marked: true, dotColor: birthday.color };
+  });
+
+  const getUpcomingBirthday = (date: Date) => {
+    const monthDay = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return birthdays.find(b => b.date === monthDay);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Birthday Reminders</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <Calendar
+            value={selectedDate}
+            onValueChange={setSelectedDate}
+            markedDates={markedDates}
+          />
+          {selectedDate && getUpcomingBirthday(selectedDate) && (
+            <View style={{
+              padding: 12,
+              backgroundColor: '#FCE7F3',
+              borderRadius: 8,
+              borderLeftWidth: 4,
+              borderLeftColor: getUpcomingBirthday(selectedDate)?.color
+            }}>
+              <Text weight="semibold">
+                {getUpcomingBirthday(selectedDate)?.name}'s Birthday
+              </Text>
+              <Text color="muted" variant="sm" style={{ marginTop: 4 }}>
+                {selectedDate.toLocaleDateString([], {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </Text>
+            </View>
+          )}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Embedded Display**: Calendar is ideal for inline display; use DatePicker for modal selection
+2. **Mark Important Dates**: Use marked dates to highlight events, availability, or deadlines
+3. **Color Coding**: Use consistent colors for different date types (e.g., red for unavailable, green for available)
+4. **Responsive Sizing**: Calendar adapts to container width; place in properly sized containers
+5. **Date Constraints**: Set minimum and maximum dates to limit user selection
+6. **Selection Handling**: Always check if selected date is defined before using it
+7. **Theme Consistency**: Marked date colors should match your theme or be clearly distinguishable
+8. **Multiple Calendars**: Use separate Calendar components for multi-month views if needed
+9. **Update Handler**: Implement onValueChange to capture and handle date selections
+10. **Accessibility**: Ensure proper date labels and descriptions for selected dates

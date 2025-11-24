@@ -1,0 +1,538 @@
+# Menu
+
+A context menu component that displays a list of actions when triggered. The Menu component uses a flexible compound component structure with separate Menu, MenuTrigger, MenuContent, MenuItem, and MenuSeparator sub-components for maximum flexibility.
+
+## Installation
+
+```bash
+npx rn-shad-cli add menu
+```
+
+## Usage
+
+### Basic Menu
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+
+export function BasicMenu() {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 10, backgroundColor: '#f0f0f0', borderRadius: 6 }}>
+          <Text>Menu</Text>
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem onPress={() => console.log('Edit pressed')}>
+          Edit
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Delete pressed')}>
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Menu with Separator
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+import { MoreVertical } from 'lucide-react-native';
+
+export function MenuWithSeparator() {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 10 }}>
+          <MoreVertical size={24} />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem onPress={() => console.log('View')}>View</MenuItem>
+        <MenuItem onPress={() => console.log('Edit')}>Edit</MenuItem>
+        <MenuSeparator />
+        <MenuItem onPress={() => console.log('Share')}>Share</MenuItem>
+        <MenuItem onPress={() => console.log('Download')}>Download</MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Menu with Destructive Actions
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+import { MoreVertical, Trash } from 'lucide-react-native';
+
+export function MenuWithDestructive() {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 10 }}>
+          <MoreVertical size={24} />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem onPress={() => console.log('Edit')}>Edit</MenuItem>
+        <MenuItem onPress={() => console.log('Duplicate')}>Duplicate</MenuItem>
+        <MenuSeparator />
+        <MenuItem
+          destructive
+          onPress={() => console.log('Delete')}
+        >
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Menu with Disabled Items
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+
+export function MenuWithDisabledItems() {
+  const canEdit = true;
+  const canShare = false;
+
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 10, backgroundColor: '#f0f0f0', borderRadius: 6 }}>
+          <Text>Options</Text>
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem onPress={() => console.log('View')} disabled={false}>
+          View
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Edit')} disabled={!canEdit}>
+          Edit
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Share')} disabled={!canShare}>
+          Share
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Menu Alignment
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+
+export function MenuAlignmentExample() {
+  return (
+    <>
+      <Menu>
+        <MenuTrigger>
+          <Pressable style={{ padding: 10, backgroundColor: '#f0f0f0', borderRadius: 6 }}>
+            <Text>Left Align</Text>
+          </Pressable>
+        </MenuTrigger>
+        <MenuContent align="start">
+          <MenuItem onPress={() => {}}>Option 1</MenuItem>
+          <MenuItem onPress={() => {}}>Option 2</MenuItem>
+        </MenuContent>
+      </Menu>
+
+      <Menu>
+        <MenuTrigger>
+          <Pressable style={{ padding: 10, backgroundColor: '#f0f0f0', borderRadius: 6 }}>
+            <Text>Right Align</Text>
+          </Pressable>
+        </MenuTrigger>
+        <MenuContent align="end">
+          <MenuItem onPress={() => {}}>Option 1</MenuItem>
+          <MenuItem onPress={() => {}}>Option 2</MenuItem>
+        </MenuContent>
+      </Menu>
+    </>
+  );
+}
+```
+
+## Components
+
+### Menu
+
+The root wrapper component that provides context for MenuTrigger and MenuContent.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | MenuTrigger and MenuContent components |
+
+### MenuTrigger
+
+Wraps the element that triggers the menu. Clones the child element and attaches press handlers.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactElement` | - | A single React element to use as the trigger (typically a Pressable or Button) |
+
+### MenuContent
+
+The container that displays the menu items. Appears as a modal below the trigger.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | MenuItem and MenuSeparator components |
+| `align` | `'start' \| 'end'` | `'start'` | Whether to align the menu to the start (left) or end (right) |
+
+### MenuItem
+
+An individual action in the menu.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Display text for the menu item |
+| `onPress` | `() => void` | - | Callback fired when the item is pressed |
+| `disabled` | `boolean` | `false` | Whether the item is disabled |
+| `destructive` | `boolean` | `false` | Whether to style as a destructive action (red text) |
+
+### MenuSeparator
+
+A visual separator line between menu items.
+
+#### Props
+
+No props - use directly as `<MenuSeparator />`
+
+## Features
+
+- **Compound Components**: Flexible structure allows for custom layouts
+- **Context Menu Positioning**: Automatically positions below the trigger element
+- **Modal Overlay**: Tapping outside the menu dismisses it
+- **Alignment Options**: Support for both start (left) and end (right) alignment
+- **Destructive Actions**: Red styling for delete/destructive actions
+- **Disabled Items**: Items can be disabled with visual feedback
+- **Separators**: Group related items with separator lines
+- **Theme Integration**: Automatically uses theme colors with fallback defaults
+- **Smooth Animations**: Fade in/out animations for menu appearance
+- **Auto-Close**: Menu automatically closes when an item is selected
+
+## Practical Examples
+
+### Post Options Menu
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text, View } from 'react-native';
+import { MoreVertical, Flag, Share, Trash } from 'lucide-react-native';
+
+interface Post {
+  id: string;
+  title: string;
+  author: string;
+}
+
+export function PostOptionsMenu({ post }: { post: Post }) {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 8 }}>
+          <MoreVertical size={20} />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent align="end">
+        <MenuItem onPress={() => console.log('Save post')}>
+          Save
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Share post')}>
+          Share
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Report post')}>
+          Report
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem
+          destructive
+          onPress={() => console.log('Delete post')}
+        >
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Profile Menu (Right Align)
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text, View } from 'react-native';
+import { User, Settings, LogOut } from 'lucide-react-native';
+
+export function ProfileMenu() {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: '#E4E4E7',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Text style={{ fontSize: 18, fontWeight: '600' }}>JD</Text>
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent align="end">
+        <MenuItem onPress={() => console.log('View profile')}>
+          View Profile
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Edit profile')}>
+          Edit Profile
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem onPress={() => console.log('Settings')}>
+          Settings
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Preferences')}>
+          Preferences
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem
+          destructive
+          onPress={() => console.log('Sign out')}
+        >
+          Sign Out
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Table/List Row Actions
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text, View } from 'react-native';
+import { MoreHorizontal, Edit, Copy, Archive, Trash } from 'lucide-react-native';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export function UserRowActions({ user }: { user: User }) {
+  const handleEdit = () => console.log('Edit user:', user.id);
+  const handleDuplicate = () => console.log('Duplicate user:', user.id);
+  const handleArchive = () => console.log('Archive user:', user.id);
+  const handleDelete = () => console.log('Delete user:', user.id);
+
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 8 }}>
+          <MoreHorizontal size={20} color="#666" />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent align="end">
+        <MenuItem onPress={handleEdit}>
+          Edit
+        </MenuItem>
+        <MenuItem onPress={handleDuplicate}>
+          Duplicate
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem onPress={handleArchive}>
+          Archive
+        </MenuItem>
+        <MenuItem destructive onPress={handleDelete}>
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Bulk Actions Menu
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+import { ChevronDown } from 'lucide-react-native';
+
+export function BulkActionsMenu({ selectedCount }: { selectedCount: number }) {
+  const isDisabled = selectedCount === 0;
+
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            padding: 10,
+            backgroundColor: '#f0f0f0',
+            borderRadius: 6,
+            opacity: isDisabled ? 0.5 : 1,
+          }}
+          disabled={isDisabled}
+        >
+          <Text style={{ fontWeight: '600' }}>
+            Actions ({selectedCount})
+          </Text>
+          <ChevronDown size={16} />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem
+          onPress={() => console.log('Assign tags')}
+          disabled={selectedCount === 0}
+        >
+          Assign Tags
+        </MenuItem>
+        <MenuItem
+          onPress={() => console.log('Add to group')}
+          disabled={selectedCount === 0}
+        >
+          Add to Group
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem
+          onPress={() => console.log('Export selected')}
+          disabled={selectedCount === 0}
+        >
+          Export
+        </MenuItem>
+        <MenuItem
+          destructive
+          onPress={() => console.log('Delete selected')}
+          disabled={selectedCount === 0}
+        >
+          Delete All
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### File/Document Menu
+
+```tsx
+import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@/components/ui/menu';
+import { Pressable, Text } from 'react-native';
+import { MoreVertical, Download, Share, Copy } from 'lucide-react-native';
+
+interface Document {
+  id: string;
+  name: string;
+  type: string;
+}
+
+export function DocumentMenu({ doc }: { doc: Document }) {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <Pressable style={{ padding: 8 }}>
+          <MoreVertical size={20} />
+        </Pressable>
+      </MenuTrigger>
+      <MenuContent align="end">
+        <MenuItem onPress={() => console.log('Open:', doc.id)}>
+          Open
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Copy link:', doc.id)}>
+          Copy Link
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Share:', doc.id)}>
+          Share
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Download:', doc.id)}>
+          Download
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem onPress={() => console.log('Rename:', doc.id)}>
+          Rename
+        </MenuItem>
+        <MenuItem onPress={() => console.log('Move:', doc.id)}>
+          Move
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem
+          destructive
+          onPress={() => console.log('Delete:', doc.id)}
+        >
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+## Animation Details
+
+The Menu component uses React Native Reanimated for smooth animations:
+
+- **Fade In**: Menu content fades in over 150ms when the menu opens
+- **Fade Out**: Menu content fades out over 100ms when the menu closes
+- **Modal Appearance**: Uses the same modal system as Select/Combobox for reliable positioning
+
+## Positioning
+
+The menu positions itself relative to its trigger:
+- **Vertical**: Below the trigger element with a 4px offset
+- **Horizontal Alignment**:
+  - `start`: Left edge aligned with trigger's left edge
+  - `end`: Right edge aligned with viewport's right edge
+- **Modal Overlay**: Covers the entire screen, allowing dismissal via outside tap
+
+## Best Practices
+
+1. **Use Consistent Trigger Icons**: Use icons like `MoreVertical`, `MoreHorizontal`, or `ChevronDown`
+2. **Logical Item Ordering**: Put primary actions first, destructive actions last
+3. **Use Separators Wisely**: Group related actions with separators, but avoid excessive separation
+4. **Disable Unavailable Actions**: Disable items that aren't applicable to the current state
+5. **Red for Destructive**: Always use the `destructive` prop for delete/remove actions
+6. **Accessibility**: Ensure disabled items are visually distinct
+7. **Mobile-Friendly**: Adequate spacing between items for touch interaction
+8. **Clear Labels**: Use concise, action-oriented labels (e.g., "Delete" not "Remove this item")
+9. **Alignment**: Use `align="end"` for menus in the top-right to prevent off-screen positioning
+10. **Context Awareness**: Only show relevant actions for the current context
+
+## Keyboard Navigation
+
+- Tap the trigger to open the menu
+- Tap an item to select it and close the menu
+- Tap outside to dismiss the menu
+- Disabled items cannot be tapped
+
+## Accessibility
+
+- Disabled items appear with reduced opacity (50%) and don't respond to presses
+- Destructive items are visually distinct with red text
+- Menu automatically closes after selection for clear feedback
+- Touch targets are adequate for easy interaction
+- Modal overlay allows easy dismissal
+- Clear visual hierarchy with separators grouping related actions

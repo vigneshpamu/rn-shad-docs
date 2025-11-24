@@ -1,0 +1,363 @@
+# Popover
+
+A flexible overlay component that displays contextual content positioned relative to a trigger element. Perfect for menus, additional information, or interactive content that should appear near the trigger action.
+
+## Installation
+
+```bash
+npx rn-shad-cli add popover
+```
+
+## Usage
+
+### Basic Popover
+
+```tsx
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+
+export function BasicPopover() {
+  return (
+    <Popover
+      trigger={<Button>Open Popover</Button>}
+      placement="bottom"
+    >
+      <PopoverContent>
+        <Text>This is popover content</Text>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Popover with Multiple Placements
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+
+export function PlacementExample() {
+  return (
+    <View style={{ gap: 16 }}>
+      <Popover
+        trigger={<Button>Top</Button>}
+        placement="top"
+      >
+        <PopoverContent>
+          <Text>Positioned above the trigger</Text>
+        </PopoverContent>
+      </Popover>
+
+      <Popover
+        trigger={<Button>Bottom</Button>}
+        placement="bottom"
+      >
+        <PopoverContent>
+          <Text>Positioned below the trigger</Text>
+        </PopoverContent>
+      </Popover>
+
+      <Popover
+        trigger={<Button>Left</Button>}
+        placement="left"
+      >
+        <PopoverContent>
+          <Text>Positioned to the left</Text>
+        </PopoverContent>
+      </Popover>
+
+      <Popover
+        trigger={<Button>Right</Button>}
+        placement="right"
+      >
+        <PopoverContent>
+          <Text>Positioned to the right</Text>
+        </PopoverContent>
+      </Popover>
+    </View>
+  );
+}
+```
+
+### Popover with Custom Content
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+import { Settings } from 'lucide-react-native';
+
+export function SettingsPopover() {
+  return (
+    <Popover
+      trigger={<Button icon={Settings} />}
+      placement="bottom"
+    >
+      <PopoverContent>
+        <View style={{ gap: 12 }}>
+          <Text weight="semibold">Settings</Text>
+          <Button variant="outline" onPress={() => {}}>
+            Preferences
+          </Button>
+          <Button variant="outline" onPress={() => {}}>
+            Account
+          </Button>
+          <Button variant="destructive" onPress={() => {}}>
+            Logout
+          </Button>
+        </View>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Popover with Info Section
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+import { AlertCircle } from 'lucide-react-native';
+
+export function InfoPopover() {
+  return (
+    <Popover
+      trigger={<Button icon={AlertCircle} variant="ghost" />}
+      placement="right"
+    >
+      <PopoverContent>
+        <View style={{ gap: 8, maxWidth: 280 }}>
+          <Text weight="semibold">Did you know?</Text>
+          <Text variant="caption" style={{ color: '#666' }}>
+            Popovers are great for displaying additional context or options related to UI elements.
+          </Text>
+        </View>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+## Props
+
+### Popover
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `trigger` | `React.ReactElement` | - | The element that triggers the popover to open |
+| `children` | `React.ReactNode` | - | The content to display inside the popover |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Where the popover appears relative to the trigger |
+| `style` | `ViewStyle` | - | Custom styles for the popover container |
+
+### PopoverContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Content inside the popover |
+| `style` | `ViewStyle` | - | Custom styles for the content |
+
+## Features
+
+- **Multiple Placements**: Position the popover above, below, left, or right of the trigger
+- **Smooth Animations**: Fade in/out animations with 200ms duration for opening, 150ms for closing
+- **Backdrop Overlay**: Semi-transparent overlay (30% opacity) that closes the popover when tapped
+- **Flexible Content**: Supports any React Native component as content
+- **Theme Support**: Automatically uses theme colors (popover background, border) when available
+- **Responsive**: Automatically measures trigger position and adjusts accordingly
+- **Touch Handling**: Prevents touch events from propagating through the popover
+- **Auto-Close**: Popover closes when tapping outside its content area
+
+## Dimensions
+
+The popover has the following default dimensions:
+- **Minimum Width**: 200px
+- **Maximum Width**: 320px
+- **Border Radius**: 8px
+- **Border Width**: 1px
+- **Content Padding**: 16px
+
+## Positioning Details
+
+### Offset
+All placements use an 8px offset from the trigger element to provide visual separation.
+
+### Top Placement
+- Positioned above the trigger
+- Translated up by 100% of its height for proper centering
+- Offset 8px above the trigger
+
+### Bottom Placement
+- Positioned below the trigger
+- No vertical translation needed
+- Offset 8px below the trigger
+
+### Left Placement
+- Positioned to the left of the trigger
+- Translated left by 100% of its width
+- Offset 8px to the left
+
+### Right Placement
+- Positioned to the right of the trigger
+- No horizontal translation needed
+- Offset 8px to the right
+
+## Shadow and Styling
+
+The popover includes:
+- **Shadow Color**: Black (#000)
+- **Shadow Offset**: 0px horizontal, 4px vertical
+- **Shadow Opacity**: 0.1
+- **Shadow Radius**: 8px
+- **Elevation**: 8 (for Android)
+
+## Examples
+
+### User Menu Popover
+
+```tsx
+import { View, Image } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+import { LogOut, User, Settings } from 'lucide-react-native';
+
+export function UserMenuPopover() {
+  const user = {
+    name: 'John Doe',
+    email: 'john@example.com',
+    avatar: 'https://example.com/avatar.jpg',
+  };
+
+  return (
+    <Popover
+      trigger={
+        <Button variant="ghost" size="icon">
+          <Image
+            source={{ uri: user.avatar }}
+            style={{ width: 32, height: 32, borderRadius: 16 }}
+          />
+        </Button>
+      }
+      placement="bottom"
+    >
+      <PopoverContent>
+        <View style={{ gap: 12 }}>
+          <View>
+            <Text weight="semibold">{user.name}</Text>
+            <Text variant="caption" style={{ color: '#666' }}>
+              {user.email}
+            </Text>
+          </View>
+          <View style={{ height: 1, backgroundColor: '#e4e4e7' }} />
+          <Button
+            icon={User}
+            variant="ghost"
+            style={{ justifyContent: 'flex-start' }}
+          >
+            Profile
+          </Button>
+          <Button
+            icon={Settings}
+            variant="ghost"
+            style={{ justifyContent: 'flex-start' }}
+          >
+            Settings
+          </Button>
+          <Button
+            icon={LogOut}
+            variant="destructive"
+            style={{ justifyContent: 'flex-start' }}
+          >
+            Sign Out
+          </Button>
+        </View>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Rich Content Popover
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+
+export function RichContentPopover() {
+  const features = ['Fast', 'Reliable', 'Beautiful'];
+
+  return (
+    <Popover
+      trigger={<Button>Learn More</Button>}
+      placement="right"
+    >
+      <PopoverContent>
+        <View style={{ gap: 12 }}>
+          <Text weight="semibold" size="lg">
+            Key Features
+          </Text>
+          {features.map((feature) => (
+            <View key={feature} style={{ flexDirection: 'row', gap: 8 }}>
+              <Text>✓</Text>
+              <Text>{feature}</Text>
+            </View>
+          ))}
+        </View>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Help/Documentation Popover
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+import { HelpCircle } from 'lucide-react-native';
+
+export function HelpPopover() {
+  return (
+    <Popover
+      trigger={<Button icon={HelpCircle} variant="ghost" size="sm" />}
+      placement="top"
+    >
+      <PopoverContent style={{ maxWidth: 280 }}>
+        <View style={{ gap: 8 }}>
+          <Text weight="semibold" size="sm">
+            How to use this feature
+          </Text>
+          <Text variant="caption" style={{ color: '#666' }}>
+            Click the button to trigger an action. The popover will appear with additional options or information.
+          </Text>
+          <Button
+            size="sm"
+            variant="outline"
+            onPress={() => console.log('Learn more')}
+            style={{ marginTop: 8 }}
+          >
+            Learn More
+          </Button>
+        </View>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+## Accessibility
+
+- Pressing outside the popover closes it
+- Popover automatically positions itself based on trigger location
+- Theme colors are respected for proper contrast
+- Shadow and elevation provide visual depth on both platforms

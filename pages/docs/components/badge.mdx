@@ -1,0 +1,295 @@
+# Badge
+
+A small, lightweight component for displaying labels, tags, or status indicators. The badge component supports multiple variants and sizes with optional icon support and theme integration.
+
+## Installation
+
+```bash
+npx rn-shad-cli add badge
+```
+
+## Usage
+
+### Basic Badge
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+
+<Badge>Default</Badge>
+```
+
+### With Icon
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle2 } from 'lucide-react-native';
+
+<Badge
+  variant="success"
+  icon={CheckCircle2}
+>
+  Completed
+</Badge>
+```
+
+### Different Sizes
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+
+<Badge size="sm">Small</Badge>
+<Badge size="md">Medium</Badge>
+<Badge size="lg">Large</Badge>
+```
+
+### Status Badge
+
+```tsx
+<Badge variant="destructive">
+  Critical
+</Badge>
+```
+
+## Variants
+
+The badge component supports 5 different variants for different visual styles:
+
+### Default
+```tsx
+<Badge variant="default">Default</Badge>
+```
+Dark background with white text. Perfect for primary badges.
+
+### Secondary
+```tsx
+<Badge variant="secondary">Secondary</Badge>
+```
+Light gray background with dark text and subtle border.
+
+### Destructive
+```tsx
+<Badge variant="destructive">Error</Badge>
+```
+Red background with white text. Use for error or critical states.
+
+### Outline
+```tsx
+<Badge variant="outline">Outline</Badge>
+```
+Transparent background with subtle border. Minimal visual weight.
+
+### Success
+```tsx
+<Badge variant="success">Active</Badge>
+```
+Green background with white text. Use for success or completion states.
+
+## Sizes
+
+### Small
+```tsx
+<Badge size="sm">Compact</Badge>
+```
+Reduced padding and smaller text. Use for dense layouts.
+
+### Medium
+```tsx
+<Badge size="md">Standard</Badge>
+```
+Default size. Best for most use cases.
+
+### Large
+```tsx
+<Badge size="lg">Large</Badge>
+```
+Increased padding. Use for prominent badges requiring more visibility.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Badge text or content |
+| `variant` | `'default' \| 'secondary' \| 'destructive' \| 'outline' \| 'success'` | `'default'` | Visual style variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Badge size |
+| `icon` | `LucideIcon` | - | Icon component from lucide-react-native |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Multiple Variants**: 5 different variants for different semantic meanings
+- **Size Options**: Small, medium, and large sizes for various contexts
+- **Icon Support**: Built-in support for Lucide icons with automatic sizing
+- **Theme Integration**: Automatic theme color support with sensible defaults
+- **Lightweight**: Minimal component with no animations or complex behavior
+- **Rounded**: Pill-shaped design with borderRadius of 999
+- **Composable**: Works well alongside other components like Cards and Lists
+
+## Examples
+
+### Status Indicators
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { View } from 'react-native';
+
+function StatusBadges() {
+  const statuses = [
+    { label: 'Active', variant: 'success' as const },
+    { label: 'Pending', variant: 'default' as const },
+    { label: 'Error', variant: 'destructive' as const },
+    { label: 'Inactive', variant: 'secondary' as const },
+  ];
+
+  return (
+    <View style={{ gap: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+      {statuses.map((status) => (
+        <Badge key={status.label} variant={status.variant}>
+          {status.label}
+        </Badge>
+      ))}
+    </View>
+  );
+}
+```
+
+### Category Tags
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { View, FlatList } from 'react-native';
+
+function CategoryTags() {
+  const categories = ['React Native', 'UI Components', 'TypeScript', 'Mobile'];
+
+  return (
+    <View style={{ gap: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <FlatList
+        data={categories}
+        horizontal
+        scrollEnabled={false}
+        renderItem={({ item }) => (
+          <Badge variant="outline" style={{ marginRight: 8 }}>
+            {item}
+          </Badge>
+        )}
+        keyExtractor={(item) => item}
+      />
+    </View>
+  );
+}
+```
+
+### Notification Count Badge
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { View } from 'react-native';
+import { Bell } from 'lucide-react-native';
+
+function NotificationBell() {
+  const unreadCount = 5;
+
+  return (
+    <View style={{ position: 'relative' }}>
+      <Bell size={24} />
+      {unreadCount > 0 && (
+        <Badge
+          variant="destructive"
+          size="sm"
+          style={{
+            position: 'absolute',
+            top: -8,
+            right: -8,
+          }}
+        >
+          {unreadCount}
+        </Badge>
+      )}
+    </View>
+  );
+}
+```
+
+### Product Tags with Icons
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { View } from 'react-native';
+import { Zap, Star } from 'lucide-react-native';
+
+function ProductBadges() {
+  return (
+    <View style={{ gap: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Badge
+        variant="success"
+        size="md"
+        icon={Zap}
+      >
+        New
+      </Badge>
+      <Badge
+        variant="default"
+        size="md"
+        icon={Star}
+      >
+        Featured
+      </Badge>
+    </View>
+  );
+}
+```
+
+### Form Field Indicators
+
+```tsx
+import { Badge } from '@/components/ui/badge';
+import { View, Text } from 'react-native';
+
+function FormField() {
+  const isRequired = true;
+  const hasError = false;
+
+  return (
+    <View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        <Text weight="semibold">Email</Text>
+        {isRequired && (
+          <Badge variant="secondary" size="sm">
+            Required
+          </Badge>
+        )}
+        {hasError && (
+          <Badge variant="destructive" size="sm">
+            Error
+          </Badge>
+        )}
+      </View>
+      {/* Input field */}
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Use Semantic Variants**: Choose variants that match the meaning:
+   - `default` for neutral/informational
+   - `success` for positive/completed states
+   - `destructive` for errors/critical states
+   - `secondary` for inactive/neutral tags
+   - `outline` for subtle/optional tags
+
+2. **Keep Text Short**: Badges work best with 1-3 words of text
+
+3. **Icon Usage**: Only add icons when they enhance understanding, not for decoration
+
+4. **Size Selection**:
+   - Use `sm` in dense lists or nested contexts
+   - Use `md` for standard content
+   - Use `lg` for prominent/standalone badges
+
+5. **Accessibility**: Ensure badge text is descriptive enough to understand without icons
+
+6. **Color Contrast**: Verify sufficient contrast between badge background and text

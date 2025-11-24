@@ -1,0 +1,521 @@
+# Toast
+
+A notification system component that displays temporary messages to the user. Features multiple variants (success, error, warning, info), automatic dismissal, customizable actions, and smooth animations.
+
+## Installation
+
+```bash
+npx rn-shad-cli add toast
+```
+
+## Usage
+
+### Setup Provider
+
+First, wrap your app with the `ToastProvider`:
+
+```tsx
+import { ToastProvider } from '@/components/ui/toast';
+
+export default function RootLayout() {
+  return (
+    <ToastProvider>
+      {/* Your app content */}
+    </ToastProvider>
+  );
+}
+```
+
+### Basic Toast
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { Button } from '@/components/ui/button';
+
+export function BasicToast() {
+  const { show } = useToast();
+
+  return (
+    <Button
+      onPress={() => {
+        show({
+          title: 'Hello',
+          description: 'This is a basic toast notification',
+        });
+      }}
+    >
+      Show Toast
+    </Button>
+  );
+}
+```
+
+### Toast Variants
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+
+export function ToastVariants() {
+  const { show } = useToast();
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Button
+        onPress={() => {
+          show({
+            title: 'Success',
+            description: 'Operation completed successfully',
+            variant: 'success',
+          });
+        }}
+      >
+        Success Toast
+      </Button>
+
+      <Button
+        variant="destructive"
+        onPress={() => {
+          show({
+            title: 'Error',
+            description: 'Something went wrong',
+            variant: 'error',
+          });
+        }}
+      >
+        Error Toast
+      </Button>
+
+      <Button
+        onPress={() => {
+          show({
+            title: 'Warning',
+            description: 'Please be careful',
+            variant: 'warning',
+          });
+        }}
+      >
+        Warning Toast
+      </Button>
+
+      <Button
+        onPress={() => {
+          show({
+            title: 'Info',
+            description: 'Here is some information',
+            variant: 'default',
+          });
+        }}
+      >
+        Info Toast
+      </Button>
+    </View>
+  );
+}
+```
+
+### Toast with Action
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { Button } from '@/components/ui/button';
+
+export function ToastWithAction() {
+  const { show } = useToast();
+
+  const handleUndo = () => {
+    console.log('Undo action performed');
+  };
+
+  return (
+    <Button
+      onPress={() => {
+        show({
+          title: 'Item deleted',
+          description: 'Your item has been removed.',
+          variant: 'default',
+          action: {
+            label: 'Undo',
+            onPress: handleUndo,
+          },
+        });
+      }}
+    >
+      Delete with Undo
+    </Button>
+  );
+}
+```
+
+### Helper Methods
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+
+export function ToastHelpers() {
+  const { show, dismiss, dismissAll } = useToast();
+
+  return (
+    <View style={{ gap: 12 }}>
+      <Button
+        onPress={() => {
+          show({
+            title: 'Saving',
+            duration: 0, // Won't auto-dismiss
+          });
+        }}
+      >
+        Show Persistent Toast
+      </Button>
+
+      <Button
+        onPress={() => {
+          show({
+            title: 'Quick notification',
+            duration: 1000, // Dismiss after 1 second
+          });
+        }}
+      >
+        Show Quick Toast
+      </Button>
+
+      <Button variant="outline" onPress={() => dismissAll()}>
+        Clear All Toasts
+      </Button>
+    </View>
+  );
+}
+```
+
+## Components & Hooks
+
+### ToastProvider
+
+The provider component that must wrap your application to enable toast functionality.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Your application content |
+
+### useToast Hook
+
+A hook to access toast functionality from any component within the ToastProvider.
+
+**Returns:**
+
+```tsx
+interface ToastContext {
+  show: (toast: Omit<ToastData, 'id'>) => void;
+  dismiss: (id: string) => void;
+  dismissAll: () => void;
+}
+```
+
+#### Methods:
+
+| Method | Parameters | Description |
+|--------|-----------|-------------|
+| `show` | `toast: ToastData` | Display a new toast notification |
+| `dismiss` | `id: string` | Dismiss a specific toast by ID |
+| `dismissAll` | - | Dismiss all currently visible toasts |
+
+## Toast Data
+
+```tsx
+interface ToastData {
+  id: string;
+  title?: string;
+  description?: string;
+  variant?: 'default' | 'success' | 'error' | 'warning';
+  duration?: number; // in milliseconds, 0 = no auto-dismiss, default = 3000
+  action?: {
+    label: string;
+    onPress: () => void;
+  };
+}
+```
+
+## Variants
+
+### Default (Info)
+
+```tsx
+show({
+  title: 'Information',
+  description: 'This is an info message',
+  variant: 'default',
+});
+```
+
+Blue/primary color with info icon.
+
+### Success
+
+```tsx
+show({
+  title: 'Success',
+  description: 'Operation completed successfully',
+  variant: 'success',
+});
+```
+
+Green color with checkmark icon.
+
+### Error
+
+```tsx
+show({
+  title: 'Error',
+  description: 'Something went wrong',
+  variant: 'error',
+});
+```
+
+Red color with alert icon.
+
+### Warning
+
+```tsx
+show({
+  title: 'Warning',
+  description: 'Please be careful',
+  variant: 'warning',
+});
+```
+
+Orange color with warning icon.
+
+## Features
+
+- **Multiple Variants**: Info, success, error, and warning with distinct colors and icons
+- **Auto-Dismiss**: Configurable auto-dismiss duration (default: 3 seconds)
+- **Action Buttons**: Add custom actions to toasts
+- **Icon Support**: Each variant includes an appropriate icon
+- **Smooth Animations**: Fade and slide animations with spring physics
+- **Stack Management**: Multiple toasts stack and layout automatically
+- **Theme Support**: Automatically uses theme colors
+- **Accessibility**: Proper semantics and close buttons
+- **Manual Control**: Programmatically dismiss specific or all toasts
+
+## Helper Functions
+
+For convenience, helper functions are available on the `toast` object:
+
+```tsx
+import { toast } from '@/components/ui/toast';
+
+// Quick success
+toast.success('Operation successful', 'Your changes have been saved');
+
+// Quick error
+toast.error('Error occurred', 'Please try again');
+
+// Quick warning
+toast.warning('Warning', 'This action cannot be undone');
+
+// Quick info
+toast.info('Information', 'Here is some helpful info');
+
+// Full control
+toast.show({
+  title: 'Custom toast',
+  description: 'With all options',
+  variant: 'success',
+  duration: 5000,
+  action: {
+    label: 'Retry',
+    onPress: () => console.log('Retrying...'),
+  },
+});
+```
+
+Note: Helper functions require the toast reference to be set via `setToastRef()`.
+
+## Animation Details
+
+Toasts use Reanimated animations for smooth transitions:
+
+- **Enter**: Fade in with slide up effect (spring: damping 15, stiffness 150)
+- **Exit**: Fade out with slide up (200ms duration)
+- **Layout**: Toast stack animates when items are added/removed
+
+## Styling
+
+The toast component respects your theme colors:
+
+- **card**: Background color
+- **foreground**: Text color
+- **mutedForeground**: Icon and close button color
+- **success**: Success variant border and icon
+- **destructive**: Error variant border and icon
+- **warning**: Warning variant border and icon
+- **border**: Default variant border
+
+## Examples
+
+### Form Submission Toast
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { Button } from '@/components/ui/button';
+
+export function FormSubmission() {
+  const { show } = useToast();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await submitForm();
+      show({
+        title: 'Success',
+        description: 'Your form has been submitted.',
+        variant: 'success',
+      });
+    } catch (error) {
+      show({
+        title: 'Error',
+        description: 'Failed to submit form. Please try again.',
+        variant: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Button loading={loading} onPress={handleSubmit}>
+      Submit
+    </Button>
+  );
+}
+```
+
+### Undo Action Toast
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { Button } from '@/components/ui/button';
+
+export function DeleteWithUndo() {
+  const { show } = useToast();
+  const [items, setItems] = useState<Item[]>([]);
+
+  const handleDelete = (id: string) => {
+    const deletedItem = items.find((item) => item.id === id);
+    setItems((prev) => prev.filter((item) => item.id !== id));
+
+    show({
+      title: 'Item deleted',
+      description: `"${deletedItem?.name}" was removed.`,
+      variant: 'default',
+      action: {
+        label: 'Undo',
+        onPress: () => {
+          if (deletedItem) {
+            setItems((prev) => [...prev, deletedItem]);
+            show({
+              title: 'Restored',
+              description: 'Item has been restored.',
+              variant: 'success',
+            });
+          }
+        },
+      },
+    });
+  };
+
+  return (
+    <Button onPress={() => handleDelete('item-1')}>
+      Delete Item
+    </Button>
+  );
+}
+```
+
+### Progress Tracking Toast
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { useEffect, useState } from 'react';
+
+export function ProgressTracking() {
+  const { show, dismiss } = useToast();
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const startUpload = async () => {
+    const toastId = Date.now().toString();
+
+    show({
+      title: 'Uploading file...',
+      description: '0%',
+      duration: 0, // Won't auto-dismiss
+    });
+
+    // Simulate upload progress
+    for (let i = 0; i <= 100; i += 10) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setUploadProgress(i);
+    }
+
+    dismiss(toastId);
+
+    show({
+      title: 'Upload complete',
+      description: 'Your file has been uploaded successfully.',
+      variant: 'success',
+    });
+  };
+
+  return (
+    <Button onPress={startUpload}>
+      Upload File
+    </Button>
+  );
+}
+```
+
+### Network Status Toast
+
+```tsx
+import { useToast } from '@/components/ui/toast';
+import { useEffect } from 'react';
+import { useNetInfo } from '@react-native-community/netinfo';
+
+export function NetworkStatusToast() {
+  const { show } = useToast();
+  const { isConnected } = useNetInfo();
+  const [previousState, setPreviousState] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (previousState === null) {
+      setPreviousState(isConnected ?? false);
+      return;
+    }
+
+    if (isConnected && !previousState) {
+      show({
+        title: 'Back online',
+        description: 'You are now connected to the internet.',
+        variant: 'success',
+      });
+    } else if (!isConnected && previousState) {
+      show({
+        title: 'No internet',
+        description: 'Check your connection and try again.',
+        variant: 'warning',
+        duration: 0, // Keep visible until reconnected
+      });
+    }
+
+    setPreviousState(isConnected ?? false);
+  }, [isConnected, previousState, show]);
+
+  return null;
+}
+```

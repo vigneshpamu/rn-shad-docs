@@ -1,0 +1,407 @@
+# Sheet
+
+A bottom sheet component that slides up from the bottom of the screen with support for snap points, gestures, and scrollable content. Perfect for menus, filters, and expandable content panels.
+
+## Installation
+
+```bash
+npx rn-shad-cli add sheet
+```
+
+## Usage
+
+### Basic Sheet
+
+```tsx
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
+
+export function BasicSheet() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button>Open Sheet</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Sheet Title</SheetTitle>
+          <SheetDescription>
+            This is a basic bottom sheet that slides up from the bottom.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Bottom Sheet Menu
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Edit, Download, Share, Trash } from 'lucide-react-native';
+
+export function MenuSheet() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button>Options</Button>
+      </SheetTrigger>
+      <SheetContent snapPoints={[50, 90]}>
+        <SheetHeader>
+          <SheetTitle>Choose an action</SheetTitle>
+        </SheetHeader>
+        <View style={{ gap: 12, marginTop: 24 }}>
+          <Button icon={Edit} variant="outline" onPress={() => setOpen(false)}>
+            Edit
+          </Button>
+          <Button icon={Download} variant="outline" onPress={() => setOpen(false)}>
+            Download
+          </Button>
+          <Button icon={Share} variant="outline" onPress={() => setOpen(false)}>
+            Share
+          </Button>
+          <Button
+            icon={Trash}
+            variant="destructive"
+            onPress={() => setOpen(false)}
+          >
+            Delete
+          </Button>
+        </View>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Scrollable Sheet
+
+```tsx
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+
+export function ScrollableSheet() {
+  const [open, setOpen] = useState(false);
+  const items = Array.from({ length: 20 }, (_, i) => `Item ${i + 1}`);
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button>Long List</Button>
+      </SheetTrigger>
+      <SheetContent scrollable snapPoints={[50, 90]}>
+        <SheetHeader>
+          <SheetTitle>Scrollable Content</SheetTitle>
+        </SheetHeader>
+        <View style={{ gap: 12, marginTop: 24 }}>
+          {items.map((item, index) => (
+            <View key={index} style={{ paddingVertical: 12, borderBottomWidth: 1 }}>
+              <Text>{item}</Text>
+            </View>
+          ))}
+        </View>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Multi-Snap Point Sheet
+
+```tsx
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetTrigger>
+    <Button>Multi-Snap</Button>
+  </SheetTrigger>
+  <SheetContent snapPoints={[30, 60, 90]}>
+    <SheetHeader>
+      <SheetTitle>Drag to expand</SheetTitle>
+      <SheetDescription>
+        Snap points at 30%, 60%, and 90% of screen height.
+      </SheetDescription>
+    </SheetHeader>
+    {/* Content */}
+  </SheetContent>
+</Sheet>
+```
+
+## Components
+
+### Sheet
+
+The root component that provides context for all child components.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | - | Controls whether the sheet is visible |
+| `onOpenChange` | `(open: boolean) => void` | - | Callback fired when sheet open state changes |
+| `children` | `React.ReactNode` | - | Child components (SheetTrigger, SheetContent, etc.) |
+| `snapPoints` | `number[]` | `[50, 90]` | Snap point percentages (e.g., [50, 90]) |
+
+### SheetTrigger
+
+A wrapper component that triggers the sheet to open. It must contain a pressable element.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactElement` | - | A pressable element (Button, Pressable, etc.) |
+
+### SheetContent
+
+The main content container of the sheet with drag gestures and snap point support.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Sheet content |
+| `snapPoints` | `number[]` | `[50, 90]` | Snap point percentages of screen height |
+| `scrollable` | `boolean` | `false` | Enable scrollable content inside sheet |
+| `style` | `ViewStyle` | - | Custom styles for the content container |
+
+### SheetHeader
+
+A container for the sheet header, typically containing the title and description.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Header content |
+| `style` | `ViewStyle` | - | Custom styles |
+
+### SheetTitle
+
+A heading component for the sheet title.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Title text |
+
+### SheetDescription
+
+A text component for the sheet description, styled with muted color.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Description text |
+
+## Features
+
+- **Drag Gestures**: Full swipe support for opening, closing, and snapping
+- **Snap Points**: Define multiple positions where the sheet "snaps" to when released
+- **Scrollable Content**: Built-in support for scrollable content with header drag
+- **Momentum**: Velocity-based snapping behavior for natural feel
+- **Backdrop Overlay**: Tap to close with interactive opacity based on sheet position
+- **Spring Animations**: Smooth animations using React Native Reanimated
+- **Accessibility**: Proper gesture handling and state management
+- **Theme Support**: Automatically uses theme colors when available
+
+## Snap Points Explained
+
+Snap points are percentages of screen height where the sheet can rest. For example:
+- `snapPoints={[50, 90]}` creates two snap points: 50% and 90% of screen height
+- The sheet starts at the smallest percentage (50%)
+- Users can drag to expand to 90% or pull down to close
+- The sheet intelligently snaps to the nearest point based on velocity
+
+## Gesture Behavior
+
+### Non-Scrollable Content
+- Pan anywhere on the sheet to drag
+- Release to snap to nearest snap point
+- Drag down beyond the lowest snap point to close
+
+### Scrollable Content
+- Scroll vertically to move content
+- Pan on the header handle area to resize the sheet
+- Header drag works the same as non-scrollable content
+
+### Velocity Detection
+- Fast upward swipes move to higher snap points
+- Fast downward swipes move to lower snap points
+- Very fast downward swipes (>1200 px/s) close the sheet
+
+## Animation Details
+
+The sheet uses spring animations with these physics settings:
+- **Damping**: 25 (controls oscillation)
+- **Stiffness**: 250 (controls responsiveness)
+- **Mass**: 0.5 (affects acceleration)
+
+The backdrop opacity interpolates smoothly based on the sheet's current position, creating a cohesive visual effect.
+
+## Styling
+
+The sheet component respects your theme colors. If a theme is available, it uses:
+- `card` color for the background
+- `border` color for the handle indicator
+
+Default fallback colors are used when no theme is available.
+
+## Examples
+
+### Filter Sheet
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Chip } from '@/components/ui/chip';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Filter } from 'lucide-react-native';
+
+export function FilterSheet() {
+  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useState<string[]>([]);
+
+  const handleApply = () => {
+    // Apply filters logic here
+    setOpen(false);
+  };
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button icon={Filter} variant="outline">
+          Filters
+        </Button>
+      </SheetTrigger>
+      <SheetContent snapPoints={[50, 90]}>
+        <SheetHeader>
+          <SheetTitle>Filter Results</SheetTitle>
+        </SheetHeader>
+        <View style={{ gap: 12, marginTop: 24 }}>
+          {/* Filter options */}
+          <Button onPress={handleApply}>Apply Filters</Button>
+        </View>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Share Sheet
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import {
+  MessageCircle,
+  Copy,
+  Mail,
+  Share2,
+} from 'lucide-react-native';
+
+export function ShareSheet() {
+  const [open, setOpen] = useState(false);
+
+  const handleShare = (platform: string) => {
+    console.log(`Sharing via ${platform}`);
+    setOpen(false);
+  };
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button icon={Share2}>Share</Button>
+      </SheetTrigger>
+      <SheetContent snapPoints={[40, 90]}>
+        <SheetHeader>
+          <SheetTitle>Share This</SheetTitle>
+        </SheetHeader>
+        <View style={{ gap: 12, marginTop: 24 }}>
+          <Button
+            icon={MessageCircle}
+            variant="outline"
+            onPress={() => handleShare('SMS')}
+          >
+            Send via Message
+          </Button>
+          <Button
+            icon={Mail}
+            variant="outline"
+            onPress={() => handleShare('Email')}
+          >
+            Send via Email
+          </Button>
+          <Button
+            icon={Copy}
+            variant="outline"
+            onPress={() => handleShare('Copy')}
+          >
+            Copy Link
+          </Button>
+        </View>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+### Settings Sheet
+
+```tsx
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetTrigger>
+    <Button>Settings</Button>
+  </SheetTrigger>
+  <SheetContent scrollable snapPoints={[50, 90]}>
+    <SheetHeader>
+      <SheetTitle>Preferences</SheetTitle>
+    </SheetHeader>
+    <View style={{ gap: 24, marginTop: 24 }}>
+      {/* Settings options and controls */}
+    </View>
+  </SheetContent>
+</Sheet>
+```

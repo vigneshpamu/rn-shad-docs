@@ -1,0 +1,412 @@
+# Avatar
+
+A composable component for displaying user profile images with automatic fallback to initials. The avatar component supports multiple sizes and gracefully handles missing or failed image loads.
+
+## Installation
+
+```bash
+npx rn-shad-cli add avatar
+```
+
+## Usage
+
+### Basic Avatar with Image
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+<Avatar>
+  <AvatarImage
+    source={{ uri: 'https://example.com/avatar.jpg' }}
+    alt="John Doe"
+  />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+
+### Avatar with Auto-Generated Initials
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+<Avatar>
+  <AvatarImage
+    source={{ uri: 'https://example.com/avatar.jpg' }}
+    alt="Sarah Anderson"
+  />
+  <AvatarFallback>Sarah Anderson</AvatarFallback>
+</Avatar>
+```
+
+### Avatar Fallback Only
+
+```tsx
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
+<Avatar>
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+
+### Different Sizes
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+<Avatar size="sm">
+  <AvatarImage source={{ uri: 'https://example.com/avatar.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+<Avatar size="md">
+  <AvatarImage source={{ uri: 'https://example.com/avatar.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+<Avatar size="lg">
+  <AvatarImage source={{ uri: 'https://example.com/avatar.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+<Avatar size="xl">
+  <AvatarImage source={{ uri: 'https://example.com/avatar.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+
+## Sizes
+
+The avatar component supports 4 different sizes:
+
+### Small (32x32)
+```tsx
+<Avatar size="sm">
+  <AvatarImage source={{ uri: 'image.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+Use in compact layouts or list items.
+
+### Medium (40x40)
+```tsx
+<Avatar size="md">
+  <AvatarImage source={{ uri: 'image.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+Default size. Best for most use cases and standard UI layouts.
+
+### Large (48x48)
+```tsx
+<Avatar size="lg">
+  <AvatarImage source={{ uri: 'image.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+Use for prominent profile sections or detail views.
+
+### Extra Large (64x64)
+```tsx
+<Avatar size="xl">
+  <AvatarImage source={{ uri: 'image.jpg' }} />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+```
+Use for full-screen profile pages or hero sections.
+
+## Props
+
+### Avatar Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | AvatarImage and AvatarFallback components |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Avatar size |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+### AvatarImage Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `source` | `ImageURISource \| ImageRequireSource` | - | Image source (URI or require) |
+| `alt` | `string` | - | Alt text for accessibility |
+| `onError` | `() => void` | - | Called when image fails to load |
+
+Plus all standard React Native `ImageProps`.
+
+### AvatarFallback Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `string \| React.ReactNode` | - | Fallback text or initials. If string, auto-generates initials from name |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Composable Design**: Separate Image and Fallback components for flexible composition
+- **Smart Fallbacks**: Automatically generates initials from full names (e.g., "John Doe" → "JD")
+- **Multiple Sizes**: 4 size options for different layout contexts
+- **Error Handling**: Gracefully handles image load failures with fallback display
+- **Circular Shape**: Pill-shaped design (borderRadius: 999) for avatars
+- **Theme Integration**: Fallback background and text colors from theme
+- **Accessibility**: Support for alt text and proper accessible labels
+- **Image Optimization**: Automatically sizes images to fill the container
+
+## Examples
+
+### User Profile Header
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { View, Text } from 'react-native';
+
+function ProfileHeader() {
+  const user = {
+    name: 'Sarah Anderson',
+    title: 'Product Designer',
+    image: 'https://example.com/sarah.jpg'
+  };
+
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+      <Avatar size="lg">
+        <AvatarImage
+          source={{ uri: user.image }}
+          alt={user.name}
+        />
+        <AvatarFallback>{user.name}</AvatarFallback>
+      </Avatar>
+      <View>
+        <Text weight="semibold">{user.name}</Text>
+        <Text color="muted">{user.title}</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### User List with Avatars
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { View, FlatList, Text, Pressable } from 'react-native';
+import { ChevronRight } from 'lucide-react-native';
+
+function UserList() {
+  const users = [
+    { id: '1', name: 'John Doe', avatar: 'https://example.com/john.jpg' },
+    { id: '2', name: 'Jane Smith', avatar: 'https://example.com/jane.jpg' },
+    { id: '3', name: 'Bob Johnson', avatar: null },
+  ];
+
+  return (
+    <FlatList
+      data={users}
+      renderItem={({ item }) => (
+        <Pressable style={{ flexDirection: 'row', alignItems: 'center', padding: 12, gap: 12 }}>
+          <Avatar size="md">
+            {item.avatar && (
+              <AvatarImage
+                source={{ uri: item.avatar }}
+                alt={item.name}
+              />
+            )}
+            <AvatarFallback>{item.name}</AvatarFallback>
+          </Avatar>
+          <View style={{ flex: 1 }}>
+            <Text weight="semibold">{item.name}</Text>
+          </View>
+          <ChevronRight size={20} color="#71717A" />
+        </Pressable>
+      )}
+      keyExtractor={(item) => item.id}
+    />
+  );
+}
+```
+
+### Avatar Group
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { View, Text } from 'react-native';
+
+function AvatarGroup() {
+  const users = [
+    { name: 'Alice Brown', image: 'https://example.com/alice.jpg' },
+    { name: 'Charlie Davis', image: 'https://example.com/charlie.jpg' },
+    { name: 'Eva Wilson', image: 'https://example.com/eva.jpg' },
+  ];
+
+  const maxVisible = 3;
+  const remaining = Math.max(0, users.length - maxVisible);
+
+  return (
+    <View style={{ flexDirection: 'row', marginHorizontal: -8 }}>
+      {users.slice(0, maxVisible).map((user, index) => (
+        <View
+          key={user.name}
+          style={{
+            marginLeft: index === 0 ? 0 : -12,
+            zIndex: maxVisible - index,
+            borderWidth: 2,
+            borderColor: '#FFFFFF',
+            borderRadius: 999,
+          }}
+        >
+          <Avatar size="md">
+            <AvatarImage
+              source={{ uri: user.image }}
+              alt={user.name}
+            />
+            <AvatarFallback>{user.name}</AvatarFallback>
+          </Avatar>
+        </View>
+      ))}
+      {remaining > 0 && (
+        <View
+          style={{
+            marginLeft: -12,
+            zIndex: 0,
+            borderWidth: 2,
+            borderColor: '#FFFFFF',
+            borderRadius: 999,
+          }}
+        >
+          <Avatar size="md">
+            <AvatarFallback>+{remaining}</AvatarFallback>
+          </Avatar>
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### Comment with Avatar
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { View, Text } from 'react-native';
+
+function Comment() {
+  const comment = {
+    author: 'John Doe',
+    avatar: 'https://example.com/john.jpg',
+    text: 'This is a great product! Really impressed with the quality.',
+    timestamp: '2 hours ago',
+  };
+
+  return (
+    <View style={{ flexDirection: 'row', gap: 12 }}>
+      <Avatar size="md">
+        <AvatarImage
+          source={{ uri: comment.avatar }}
+          alt={comment.author}
+        />
+        <AvatarFallback>{comment.author}</AvatarFallback>
+      </Avatar>
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Text weight="semibold">{comment.author}</Text>
+          <Text color="muted" style={{ fontSize: 12 }}>
+            {comment.timestamp}
+          </Text>
+        </View>
+        <Text style={{ marginTop: 4 }}>{comment.text}</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Team Member Card
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { View, Text } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Mail, MapPin } from 'lucide-react-native';
+
+function TeamMemberCard() {
+  const member = {
+    name: 'Sarah Anderson',
+    role: 'Product Manager',
+    location: 'San Francisco, CA',
+    email: 'sarah@example.com',
+    avatar: 'https://example.com/sarah.jpg',
+  };
+
+  return (
+    <View style={{ alignItems: 'center', padding: 20, gap: 12 }}>
+      <Avatar size="xl">
+        <AvatarImage
+          source={{ uri: member.avatar }}
+          alt={member.name}
+        />
+        <AvatarFallback>{member.name}</AvatarFallback>
+      </Avatar>
+
+      <Text variant="h3" weight="bold">
+        {member.name}
+      </Text>
+
+      <Text color="muted">{member.role}</Text>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+        <MapPin size={16} color="#71717A" />
+        <Text color="muted">{member.location}</Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+        <Mail size={16} color="#71717A" />
+        <Text color="muted">{member.email}</Text>
+      </View>
+
+      <Button
+        variant="default"
+        onPress={() => console.log('View profile')}
+      >
+        View Profile
+      </Button>
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Always Include Fallback**: Always provide an AvatarFallback for when images fail to load or are not available
+
+2. **Use String Initials**: Pass the full name to AvatarFallback to auto-generate initials:
+   ```tsx
+   // Good - auto-generates "JD"
+   <AvatarFallback>John Doe</AvatarFallback>
+
+   // Also valid - explicit initials
+   <AvatarFallback>JD</AvatarFallback>
+   ```
+
+3. **Size Guidelines**:
+   - Use `sm` for list items and mentions
+   - Use `md` for standard UI and profiles
+   - Use `lg` for highlighted sections
+   - Use `xl` for full-screen profile views
+
+4. **Alt Text**: Always provide meaningful alt text for accessibility:
+   ```tsx
+   <AvatarImage
+     source={{ uri: url }}
+     alt={user.name}
+   />
+   ```
+
+5. **Fallback Content**: Use 2-letter initials or first+last name for best results
+
+6. **Image Source**: Prefer HTTPS URIs for better performance and security
+
+7. **Error Handling**: The component automatically handles image load failures, showing fallback instead

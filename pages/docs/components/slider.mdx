@@ -1,0 +1,390 @@
+# Slider
+
+An interactive slider component for selecting values within a range. Features smooth gesture-based interactions with both pan and tap gestures, customizable sizes, and step support.
+
+## Installation
+
+```bash
+npx rn-shad-cli add slider
+```
+
+## Usage
+
+### Basic Slider
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function BasicSlider() {
+  const [value, setValue] = useState(50);
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <Slider
+        value={value}
+        onValueChange={setValue}
+        min={0}
+        max={100}
+      />
+      <Text style={{ fontSize: 14, textAlign: 'center' }}>
+        Value: {value}
+      </Text>
+    </View>
+  );
+}
+```
+
+### Controlled Slider
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function ControlledSlider() {
+  const [volume, setVolume] = useState(50);
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <View>
+        <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+          Volume Control
+        </Text>
+        <Slider
+          value={volume}
+          onValueChange={setVolume}
+          min={0}
+          max={100}
+          step={1}
+          size="md"
+        />
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: '#71717A' }}>0%</Text>
+        <Text style={{ fontSize: 18, fontWeight: '700' }}>
+          {volume}%
+        </Text>
+        <Text style={{ fontSize: 14, color: '#71717A' }}>100%</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Volume Slider
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { Volume2, Mute2 } from 'lucide-react-native';
+
+export function VolumeSlider() {
+  const [volume, setVolume] = useState(70);
+
+  const handleMute = () => {
+    setVolume(0);
+  };
+
+  const handleUnmute = () => {
+    setVolume(70);
+  };
+
+  return (
+    <View style={{ gap: 16, padding: 16, alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, width: '100%' }}>
+        <Pressable onPress={handleMute}>
+          <Mute2 size={24} color="#18181B" />
+        </Pressable>
+
+        <View style={{ flex: 1 }}>
+          <Slider
+            value={volume}
+            onValueChange={setVolume}
+            min={0}
+            max={100}
+            step={5}
+            size="md"
+          />
+        </View>
+
+        <Pressable onPress={handleUnmute}>
+          <Volume2 size={24} color="#18181B" />
+        </Pressable>
+      </View>
+
+      <Text style={{ fontSize: 14, color: '#71717A' }}>
+        {volume === 0 ? 'Muted' : `${volume}%`}
+      </Text>
+    </View>
+  );
+}
+```
+
+### Brightness Slider with Steps
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function BrightnessSlider() {
+  const [brightness, setBrightness] = useState(50);
+
+  const getBrightnessLabel = (value: number) => {
+    if (value < 20) return 'Very Dim';
+    if (value < 40) return 'Dim';
+    if (value < 60) return 'Normal';
+    if (value < 80) return 'Bright';
+    return 'Very Bright';
+  };
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <View>
+        <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+          Brightness
+        </Text>
+        <View
+          style={{
+            height: 100,
+            backgroundColor: `rgba(0, 0, 0, ${1 - brightness / 100})`,
+            borderRadius: 8,
+            marginBottom: 12,
+          }}
+        />
+        <Slider
+          value={brightness}
+          onValueChange={setBrightness}
+          min={0}
+          max={100}
+          step={10}
+          size="lg"
+        />
+      </View>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 12, color: '#71717A' }}>
+          {getBrightnessLabel(brightness)}
+        </Text>
+        <Text style={{ fontSize: 12, fontWeight: '600' }}>
+          {brightness}
+        </Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Price Range Slider
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+import { FormLabel, FormDescription } from '@/components/ui/form';
+
+export function PriceRangeSlider() {
+  const [price, setPrice] = useState(500);
+  const maxPrice = 2000;
+
+  const getPercentage = (price / maxPrice) * 100;
+
+  return (
+    <View style={{ gap: 12, padding: 16 }}>
+      <FormLabel>Budget: ${price}</FormLabel>
+      <Slider
+        value={price}
+        onValueChange={setPrice}
+        min={0}
+        max={maxPrice}
+        step={50}
+        size="md"
+      />
+      <FormDescription>
+        Set your maximum budget for this project
+      </FormDescription>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
+        <Text style={{ fontSize: 12, color: '#71717A' }}>$0</Text>
+        <Text style={{ fontSize: 12, fontWeight: '600', color: '#18181B' }}>
+          ${price}
+        </Text>
+        <Text style={{ fontSize: 12, color: '#71717A' }}>
+          ${maxPrice}
+        </Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Disabled Slider
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { View, Text } from 'react-native';
+
+export function DisabledSlider() {
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <View>
+        <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+          Disabled Slider
+        </Text>
+        <Slider
+          value={50}
+          min={0}
+          max={100}
+          disabled={true}
+        />
+      </View>
+      <Text style={{ fontSize: 12, color: '#71717A' }}>
+        This slider is disabled and cannot be adjusted
+      </Text>
+    </View>
+  );
+}
+```
+
+### Different Sizes
+
+```tsx
+import { Slider } from '@/components/ui/slider';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+
+export function SliderSizes() {
+  const [values, setValues] = useState({
+    small: 50,
+    medium: 50,
+    large: 50,
+  });
+
+  return (
+    <View style={{ gap: 24, padding: 16 }}>
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontSize: 14, fontWeight: '600' }}>Small</Text>
+        <Slider
+          value={values.small}
+          onValueChange={(val) => setValues(prev => ({ ...prev, small: val }))}
+          min={0}
+          max={100}
+          size="sm"
+        />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontSize: 14, fontWeight: '600' }}>Medium</Text>
+        <Slider
+          value={values.medium}
+          onValueChange={(val) => setValues(prev => ({ ...prev, medium: val }))}
+          min={0}
+          max={100}
+          size="md"
+        />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontSize: 14, fontWeight: '600' }}>Large</Text>
+        <Slider
+          value={values.large}
+          onValueChange={(val) => setValues(prev => ({ ...prev, large: val }))}
+          min={0}
+          max={100}
+          size="lg"
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | - | Current slider value |
+| `onValueChange` | `(value: number) => void` | - | Callback when value changes |
+| `min` | `number` | `0` | Minimum value |
+| `max` | `number` | `100` | Maximum value |
+| `step` | `number` | `1` | Step increment for value changes |
+| `disabled` | `boolean` | `false` | Disables the slider |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the slider |
+| `style` | `ViewStyle` | - | Custom styles for the slider container |
+
+## Features
+
+- **Smooth Gesture Handling**: Uses React Native Gesture Handler for smooth pan and tap interactions
+- **Spring Animations**: Animated transitions using Reanimated for smooth visual feedback
+- **Multiple Sizes**: Small, medium, and large slider sizes
+- **Step Support**: Snap to specific step increments
+- **Range Support**: Configurable min and max values
+- **Tap to Position**: Tap anywhere on the track to jump to that value
+- **Pan Gestures**: Smooth dragging with spring physics
+- **Disabled State**: Disables interaction when needed
+- **Theme Integration**: Automatically uses theme colors
+- **Accessibility**: Proper gesture handling and interaction feedback
+
+## Gesture Interactions
+
+The Slider component supports two gesture types:
+
+- **Pan Gesture**: Drag the thumb along the track for continuous value adjustment
+- **Tap Gesture**: Tap anywhere on the track to jump to that position
+
+Both gestures work together in a Race condition, allowing for flexible interaction.
+
+## Size Configuration
+
+| Size | Track Height | Thumb Size |
+|------|--------------|-----------|
+| `sm` | 4px | 16px |
+| `md` | 6px | 20px |
+| `lg` | 8px | 24px |
+
+## Color Scheme
+
+The component uses theme colors:
+- **Primary Color**: Used for the filled track and thumb border
+- **Border Color**: Used for the empty track background
+- **Background Color**: Used for the thumb background
+
+## Animation Configuration
+
+The slider uses spring-based animations with the following configuration:
+- **Damping**: 15 (controls oscillation)
+- **Stiffness**: 150 (controls responsiveness)
+
+This creates natural, smooth motion that feels responsive without being jarring.
+
+## Best Practices
+
+1. **Meaningful Ranges**: Set min, max, and step values that make sense for your use case
+2. **Visual Feedback**: Display the current value near the slider
+3. **Provide Labels**: Always label what the slider controls
+4. **Use Steps**: Use step increments for discrete values (volume: 5%, brightness: 10%)
+5. **Show Bounds**: Display min and max values to indicate the range
+6. **Disable Appropriately**: Disable sliders when the value shouldn't be changed
+7. **Consider Size**: Use appropriate sizes based on context (sm for compact, lg for emphasis)
+8. **Mobile Friendly**: Ensure the thumb is large enough (20px+) for easy touch interaction
+9. **Real-time Updates**: Use onValueChange for immediate feedback, not just on release
+10. **Accessibility**: Provide context about what the slider controls
+
+## Common Use Cases
+
+- **Volume Control**: Adjust audio levels from 0-100%
+- **Brightness Control**: Adjust screen brightness or app themes
+- **Price/Budget Selection**: Allow users to set budget limits
+- **Rating/Score**: Let users provide ratings or scores
+- **Progress Indicators**: Show adjustable progress or completion
+- **Performance Settings**: Adjust quality, detail level, or performance
+
+## Related Components
+
+- **Form** - For consistent form styling
+- **FormLabel** - For slider labels
+- **FormDescription** - For additional information
+- **Button** - For supplementary actions (mute, reset, etc.)

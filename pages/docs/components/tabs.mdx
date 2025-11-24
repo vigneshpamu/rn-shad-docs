@@ -1,0 +1,440 @@
+# Tabs
+
+A flexible and animated tabs component for organizing content into separate panels. The Tabs component features smooth transitions with spring animations, theme integration, and support for both controlled and uncontrolled states.
+
+## Installation
+
+```bash
+npx rn-shad-cli add tabs
+```
+
+## Usage
+
+### Basic Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View } from 'react-native';
+
+export function BasicTabs() {
+  return (
+    <Tabs defaultValue="tab1">
+      <TabsList>
+        <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1">
+        <View style={{ padding: 16 }}>
+          <Text>Content for tab 1</Text>
+        </View>
+      </TabsContent>
+      <TabsContent value="tab2">
+        <View style={{ padding: 16 }}>
+          <Text>Content for tab 2</Text>
+        </View>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <View style={{ padding: 16 }}>
+          <Text>Content for tab 3</Text>
+        </View>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+### Controlled Tabs
+
+```tsx
+import { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text } from 'react-native';
+
+export function ControlledTabs() {
+  const [activeTab, setActiveTab] = useState('overview');
+
+  return (
+    <View>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <View style={{ padding: 16 }}>
+            <Text>Overview content</Text>
+          </View>
+        </TabsContent>
+        <TabsContent value="details">
+          <View style={{ padding: 16 }}>
+            <Text>Details content</Text>
+          </View>
+        </TabsContent>
+        <TabsContent value="settings">
+          <View style={{ padding: 16 }}>
+            <Text>Settings content</Text>
+          </View>
+        </TabsContent>
+      </Tabs>
+      <Text>Active tab: {activeTab}</Text>
+    </View>
+  );
+}
+```
+
+### Disabled Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text } from 'react-native';
+
+export function DisabledTabs() {
+  return (
+    <Tabs defaultValue="available">
+      <TabsList>
+        <TabsTrigger value="available">Available</TabsTrigger>
+        <TabsTrigger value="coming" disabled>Coming Soon</TabsTrigger>
+        <TabsTrigger value="beta" disabled>Beta</TabsTrigger>
+      </TabsList>
+      <TabsContent value="available">
+        <View style={{ padding: 16 }}>
+          <Text>This feature is available now</Text>
+        </View>
+      </TabsContent>
+      <TabsContent value="coming">
+        <View style={{ padding: 16 }}>
+          <Text>Coming soon</Text>
+        </View>
+      </TabsContent>
+      <TabsContent value="beta">
+        <View style={{ padding: 16 }}>
+          <Text>Beta features</Text>
+        </View>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+## Sub-Components
+
+### Tabs (Root)
+
+The root component that provides context to all child components.
+
+### TabsList
+
+Container for the tab triggers.
+
+### TabsTrigger
+
+Individual tab button that can be pressed to change the active tab.
+
+### TabsContent
+
+Container for the content associated with a specific tab value.
+
+## Props
+
+### Tabs Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `defaultValue` | `string` | `''` | The initially active tab value (uncontrolled) |
+| `value` | `string` | - | The active tab value (controlled) |
+| `onValueChange` | `(value: string) => void` | - | Callback fired when the active tab changes |
+| `children` | `React.ReactNode` | - | Tab content including TabsList and TabsContent components |
+
+### TabsList Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Tab triggers |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+### TabsTrigger Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Unique identifier for this tab |
+| `children` | `React.ReactNode` | - | Tab label text or content |
+| `disabled` | `boolean` | `false` | Whether the tab is disabled |
+
+### TabsContent Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | - | Must match a TabsTrigger value to display when that tab is active |
+| `children` | `React.ReactNode` | - | Content to display when this tab is active |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+### Smooth Animations
+The TabsTrigger component uses React Native Reanimated to provide smooth, 60fps spring animations. The active tab's background animates in with a spring effect while the text weight changes from regular to semibold.
+
+### Theme Integration
+Automatically integrates with the theme system if available, using semantic colors from the theme. Falls back to sensible defaults if theme is not available (Zinc Light theme).
+
+### Flexible State Management
+Support for both controlled (via `value` and `onValueChange`) and uncontrolled (via `defaultValue`) components, allowing integration with different state management patterns.
+
+### Responsive Design
+Full-width layout with flex distribution ensures tabs work on different screen sizes. Each trigger takes equal space in the TabsList.
+
+### Accessibility
+- Proper touch targets for easy interaction
+- Disabled state with reduced opacity
+- Text weight changes to indicate active state
+- Works with accessibility labels and descriptions
+
+### Visual Feedback
+- Active tab shows white background with smooth animation
+- Inactive tabs show transparent background
+- Active text is darker (foreground color) with semibold weight
+- Inactive text is lighter (muted foreground color) with regular weight
+- Disabled tabs show reduced opacity
+
+## Examples
+
+### Profile Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text, Image } from 'react-native';
+import { Mail, MapPin, Briefcase } from 'lucide-react-native';
+
+export function ProfileTabs() {
+  return (
+    <Tabs defaultValue="about">
+      <TabsList>
+        <TabsTrigger value="about">About</TabsTrigger>
+        <TabsTrigger value="posts">Posts</TabsTrigger>
+        <TabsTrigger value="gallery">Gallery</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="about">
+        <View style={{ padding: 16, gap: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: '600' }}>John Doe</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Mail size={16} color="#71717A" />
+            <Text style={{ color: '#71717A' }}>john@example.com</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <MapPin size={16} color="#71717A" />
+            <Text style={{ color: '#71717A' }}>San Francisco, CA</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Briefcase size={16} color="#71717A" />
+            <Text style={{ color: '#71717A' }}>Product Designer</Text>
+          </View>
+        </View>
+      </TabsContent>
+
+      <TabsContent value="posts">
+        <View style={{ padding: 16 }}>
+          <Text>Recent posts from this user</Text>
+        </View>
+      </TabsContent>
+
+      <TabsContent value="gallery">
+        <View style={{ padding: 16 }}>
+          <Text>Photo gallery</Text>
+        </View>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+### Settings Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text, Switch, ScrollView } from 'react-native';
+import { useState } from 'react';
+
+export function SettingsTabs() {
+  const [notifications, setNotifications] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [dataSync, setDataSync] = useState(true);
+
+  return (
+    <Tabs defaultValue="account">
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="privacy">Privacy</TabsTrigger>
+        <TabsTrigger value="notifications">Notifications</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="account">
+        <ScrollView style={{ padding: 16, gap: 16 }}>
+          <View style={{ gap: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: '#71717A' }}>Email</Text>
+            <Text>user@example.com</Text>
+          </View>
+          <View style={{ gap: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: '#71717A' }}>Language</Text>
+            <Text>English</Text>
+          </View>
+        </ScrollView>
+      </TabsContent>
+
+      <TabsContent value="privacy">
+        <ScrollView style={{ padding: 16 }}>
+          <View style={{ gap: 16 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text>Make profile public</Text>
+              <Switch value={true} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text>Allow messages</Text>
+              <Switch value={true} />
+            </View>
+          </View>
+        </ScrollView>
+      </TabsContent>
+
+      <TabsContent value="notifications">
+        <ScrollView style={{ padding: 16 }}>
+          <View style={{ gap: 16 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text>Push Notifications</Text>
+              <Switch value={notifications} onValueChange={setNotifications} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text>Dark Mode</Text>
+              <Switch value={darkMode} onValueChange={setDarkMode} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text>Data Sync</Text>
+              <Switch value={dataSync} onValueChange={setDataSync} />
+            </View>
+          </View>
+        </ScrollView>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+### Product Details Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text, ScrollView } from 'react-native';
+import { Star } from 'lucide-react-native';
+
+export function ProductTabs() {
+  const reviews = [
+    { author: 'Sarah M.', rating: 5, text: 'Great quality!' },
+    { author: 'John D.', rating: 4, text: 'Good value for money' },
+  ];
+
+  return (
+    <Tabs defaultValue="description">
+      <TabsList>
+        <TabsTrigger value="description">Description</TabsTrigger>
+        <TabsTrigger value="specs">Specs</TabsTrigger>
+        <TabsTrigger value="reviews">Reviews</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="description">
+        <View style={{ padding: 16 }}>
+          <Text style={{ lineHeight: 24 }}>
+            This is a high-quality product designed with premium materials and attention to detail.
+            Perfect for everyday use with modern aesthetics.
+          </Text>
+        </View>
+      </TabsContent>
+
+      <TabsContent value="specs">
+        <ScrollView style={{ padding: 16, gap: 12 }}>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: '#E4E4E7', paddingBottom: 12 }}>
+            <Text style={{ fontSize: 12, color: '#71717A', fontWeight: '600' }}>Dimensions</Text>
+            <Text>10 x 15 x 5 cm</Text>
+          </View>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: '#E4E4E7', paddingBottom: 12 }}>
+            <Text style={{ fontSize: 12, color: '#71717A', fontWeight: '600' }}>Weight</Text>
+            <Text>500g</Text>
+          </View>
+          <View>
+            <Text style={{ fontSize: 12, color: '#71717A', fontWeight: '600' }}>Material</Text>
+            <Text>Premium Stainless Steel</Text>
+          </View>
+        </ScrollView>
+      </TabsContent>
+
+      <TabsContent value="reviews">
+        <ScrollView style={{ padding: 16, gap: 16 }}>
+          {reviews.map((review, index) => (
+            <View key={index} style={{ borderBottomWidth: 1, borderBottomColor: '#E4E4E7', paddingBottom: 12 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+                <Text style={{ fontWeight: '600' }}>{review.author}</Text>
+                <View style={{ flexDirection: 'row', gap: 2 }}>
+                  {Array(review.rating).fill(0).map((_, i) => (
+                    <Star key={i} size={16} color="#FCD34D" fill="#FCD34D" />
+                  ))}
+                </View>
+              </View>
+              <Text style={{ color: '#71717A' }}>{review.text}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+### Horizontal Scroll Tabs
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { View, Text, ScrollView } from 'react-native';
+
+export function HorizontalScrollTabs() {
+  const categories = ['All', 'Electronics', 'Fashion', 'Home', 'Sports', 'Books'];
+
+  return (
+    <Tabs defaultValue="All">
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <TabsList style={{ width: 'auto', minWidth: '100%' }}>
+          {categories.map((cat) => (
+            <TabsTrigger key={cat} value={cat}>
+              {cat}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </ScrollView>
+
+      {categories.map((cat) => (
+        <TabsContent key={cat} value={cat}>
+          <View style={{ padding: 16 }}>
+            <Text>Products in {cat}</Text>
+          </View>
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+}
+```
+
+## Best Practices
+
+1. **Meaningful Tab Labels**: Use clear, concise labels that describe the content
+2. **Logical Organization**: Group related content together in tabs
+3. **Consistent Ordering**: Keep tab order consistent across the app
+4. **Accessible Labels**: Use descriptive labels that work for screen readers
+5. **Content Consistency**: Ensure all tab content has similar structure and styling
+6. **Responsive Design**: Consider how tabs behave on different screen sizes
+7. **Don't Overuse**: Limit to 3-5 tabs for better usability
+8. **Default Tab**: Always set a meaningful default tab value
+9. **Loading States**: Show loading indicators when tab content is asynchronously loaded
+10. **Keyboard Support**: Ensure tabs are easily navigable with keyboard navigation where applicable

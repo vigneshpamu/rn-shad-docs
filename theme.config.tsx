@@ -2,16 +2,31 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>RN Shad UI</span>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/yourusername/rn-shad',
   },
-  chat: {
-    link: 'https://discord.com',
-  },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/yourusername/rn-shad/tree/main/apps/docs',
   footer: {
-    text: 'Nextra Docs Template',
+    content: (
+      <span>
+        {new Date().getFullYear()} © RN Shad UI - React Native shadcn/ui Components
+      </span>
+    ),
+  },
+  head: (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta property="og:title" content="RN Shad UI" />
+      <meta property="og:description" content="Beautiful and accessible React Native components" />
+      <link rel="icon" href="/favicon.ico" />
+    </>
+  ),
+  sidebar: {
+    defaultMenuCollapseLevel: 1,
+  },
+  toc: {
+    backToTop: true
   },
 }
 

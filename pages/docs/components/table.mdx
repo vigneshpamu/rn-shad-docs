@@ -1,0 +1,367 @@
+# Table
+
+A flexible, scrollable table component for displaying structured data in rows and columns. Features horizontal and vertical scrolling, customizable columns with flexible rendering, alternating row colors, and full theme support.
+
+## Installation
+
+```bash
+npx rn-shad-cli add table
+```
+
+## Usage
+
+### Basic Table
+
+```tsx
+import { Table } from '@/components/ui/table';
+
+const data = [
+  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', status: 'Active' },
+  { id: 2, name: 'Bob Smith', email: 'bob@example.com', status: 'Inactive' },
+  { id: 3, name: 'Carol White', email: 'carol@example.com', status: 'Active' },
+];
+
+const columns = [
+  { key: 'name', title: 'Name', width: 150 },
+  { key: 'email', title: 'Email', width: 200 },
+  { key: 'status', title: 'Status', width: 100 },
+];
+
+<Table columns={columns} data={data} />
+```
+
+### Table with Custom Rendering
+
+```tsx
+import { Table } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+
+const data = [
+  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', status: 'Active' },
+  { id: 2, name: 'Bob Smith', email: 'bob@example.com', status: 'Pending' },
+  { id: 3, name: 'Carol White', email: 'carol@example.com', status: 'Inactive' },
+];
+
+const columns = [
+  { key: 'name', title: 'Name', width: 150 },
+  { key: 'email', title: 'Email', width: 200 },
+  {
+    key: 'status',
+    title: 'Status',
+    width: 100,
+    render: (item) => (
+      <Badge variant={item.status === 'Active' ? 'success' : 'secondary'}>
+        {item.status}
+      </Badge>
+    ),
+  },
+];
+
+<Table columns={columns} data={data} />
+```
+
+### Table with Empty State
+
+```tsx
+import { Table } from '@/components/ui/table';
+
+<Table
+  columns={columns}
+  data={[]}
+  emptyText="No users found. Try adjusting your filters."
+/>
+```
+
+### Table with Styling
+
+```tsx
+import { Table } from '@/components/ui/table';
+
+<Table
+  columns={columns}
+  data={data}
+  style={{ marginVertical: 16 }}
+  headerStyle={{ backgroundColor: '#f0f0f0' }}
+  rowStyle={{ paddingHorizontal: 20 }}
+/>
+```
+
+## Table Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `TableColumn<T>[]` | - | Array of column configuration objects |
+| `data` | `T[]` | - | Array of data items to display |
+| `keyExtractor` | `(item: T, index: number) => string` | `row-${index}` | Function to extract unique key for each row |
+| `emptyText` | `string` | `'No data available'` | Text to display when data array is empty |
+| `style` | `ViewStyle` | - | Additional styles for the table container |
+| `headerStyle` | `ViewStyle` | - | Additional styles for the header row |
+| `rowStyle` | `ViewStyle` | - | Additional styles for data rows |
+
+## TableColumn Interface
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `key` | `string` | - | Unique identifier for the column, matches data object key |
+| `title` | `string` | - | Column header title text |
+| `width` | `number \| string` | `150` | Width of the column |
+| `render` | `(item: T, index: number) => React.ReactNode` | - | Optional custom render function for cell content |
+| `headerStyle` | `ViewStyle` | - | Additional styles for the header cell |
+| `cellStyle` | `ViewStyle` | - | Additional styles for data cells |
+
+## Composition Components
+
+The Table component also exports helper components for manual table construction:
+
+### TableHeader
+
+```tsx
+import { TableHeader } from '@/components/ui/table';
+
+<TableHeader>
+  {/* Header content */}
+</TableHeader>
+```
+
+**Props:**
+- `children`: `React.ReactNode` - Header content
+- `style`: `ViewStyle` - Additional style overrides
+
+### TableRow
+
+```tsx
+import { TableRow } from '@/components/ui/table';
+
+<TableRow>
+  {/* Row cells */}
+</TableRow>
+```
+
+**Props:**
+- `children`: `React.ReactNode` - Row cells
+- `style`: `ViewStyle` - Additional style overrides
+
+### TableCell
+
+```tsx
+import { TableCell } from '@/components/ui/table';
+
+<TableCell>Cell content</TableCell>
+```
+
+**Props:**
+- `children`: `React.ReactNode` - Cell content (string or component)
+- `style`: `ViewStyle` - Additional style overrides
+
+## Features
+
+- **Flexible Column Configuration**: Define columns with custom widths and render functions
+- **Horizontal Scrolling**: Automatically handles content wider than screen
+- **Vertical Scrolling**: Scrollable table body with independent header
+- **Alternating Row Colors**: Even rows have subtle background color for better readability
+- **Custom Rendering**: Use render functions for complex cell content like badges, buttons, etc.
+- **Theme Integration**: Automatic theme color support with sensible defaults
+- **Empty State**: Customizable message when no data is available
+- **Responsive**: Adapts to different screen sizes with scrolling
+- **Type-Safe**: Full TypeScript support with generic types
+
+## Examples
+
+### User Management Table
+
+```tsx
+import { Table } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { View } from 'react-native';
+import { Edit, Trash } from 'lucide-react-native';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: 'Active' | 'Inactive' | 'Suspended';
+}
+
+function UserManagementTable() {
+  const users: User[] = [
+    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active' },
+    { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User', status: 'Active' },
+    { id: 3, name: 'Carol White', email: 'carol@example.com', role: 'Moderator', status: 'Inactive' },
+    { id: 4, name: 'David Brown', email: 'david@example.com', role: 'User', status: 'Active' },
+  ];
+
+  const statusVariant = (status: User['status']) => {
+    switch (status) {
+      case 'Active': return 'success';
+      case 'Inactive': return 'secondary';
+      case 'Suspended': return 'destructive';
+    }
+  };
+
+  const columns = [
+    { key: 'name', title: 'Name', width: 150 },
+    { key: 'email', title: 'Email', width: 180 },
+    { key: 'role', title: 'Role', width: 120 },
+    {
+      key: 'status',
+      title: 'Status',
+      width: 110,
+      render: (item: User) => (
+        <Badge variant={statusVariant(item.status)}>
+          {item.status}
+        </Badge>
+      ),
+    },
+    {
+      key: 'actions',
+      title: 'Actions',
+      width: 120,
+      render: (item: User) => (
+        <View style={{ flexDirection: 'row', gap: 8 }}>
+          <Button size="sm" variant="ghost" icon={Edit} />
+          <Button size="sm" variant="ghost" icon={Trash} />
+        </View>
+      ),
+    },
+  ];
+
+  return <Table columns={columns} data={users} />;
+}
+```
+
+### Product Inventory Table
+
+```tsx
+import { Table } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Text, View } from 'react-native';
+
+interface Product {
+  id: string;
+  name: string;
+  sku: string;
+  quantity: number;
+  price: number;
+}
+
+function ProductInventoryTable() {
+  const products: Product[] = [
+    { id: '1', name: 'Wireless Headphones', sku: 'WH-1000', quantity: 45, price: 199.99 },
+    { id: '2', name: 'USB-C Cable', sku: 'UC-500', quantity: 150, price: 9.99 },
+    { id: '3', name: 'Phone Stand', sku: 'PS-200', quantity: 5, price: 29.99 },
+    { id: '4', name: 'Screen Protector', sku: 'SP-100', quantity: 200, price: 4.99 },
+  ];
+
+  const getStockStatus = (quantity: number) => {
+    if (quantity <= 10) return { text: 'Low Stock', variant: 'destructive' };
+    if (quantity <= 50) return { text: 'Medium Stock', variant: 'default' };
+    return { text: 'In Stock', variant: 'success' };
+  };
+
+  const columns = [
+    { key: 'name', title: 'Product Name', width: 180 },
+    { key: 'sku', title: 'SKU', width: 130 },
+    {
+      key: 'quantity',
+      title: 'Quantity',
+      width: 100,
+      render: (item: Product) => {
+        const status = getStockStatus(item.quantity);
+        return (
+          <View style={{ gap: 4 }}>
+            <Text weight="semibold">{item.quantity}</Text>
+            <Badge variant={status.variant} size="sm">
+              {status.text}
+            </Badge>
+          </View>
+        );
+      },
+    },
+    {
+      key: 'price',
+      title: 'Price',
+      width: 100,
+      render: (item: Product) => <Text weight="semibold">${item.price.toFixed(2)}</Text>,
+    },
+  ];
+
+  return <Table columns={columns} data={products} />;
+}
+```
+
+### Sales Data Table
+
+```tsx
+import { Table } from '@/components/ui/table';
+import { Text, View } from 'react-native';
+
+interface SalesRecord {
+  id: string;
+  date: string;
+  product: string;
+  quantity: number;
+  total: number;
+  revenue: number;
+}
+
+function SalesDataTable() {
+  const sales: SalesRecord[] = [
+    { id: '1', date: '2024-11-24', product: 'Headphones', quantity: 3, total: 599.97, revenue: 399.98 },
+    { id: '2', date: '2024-11-24', product: 'Cables', quantity: 20, total: 199.80, revenue: 99.90 },
+    { id: '3', date: '2024-11-23', product: 'Phone Stand', quantity: 5, total: 149.95, revenue: 74.98 },
+  ];
+
+  const columns = [
+    { key: 'date', title: 'Date', width: 120 },
+    { key: 'product', title: 'Product', width: 150 },
+    {
+      key: 'quantity',
+      title: 'Qty',
+      width: 80,
+      render: (item: SalesRecord) => <Text align="center">{item.quantity}</Text>,
+    },
+    {
+      key: 'total',
+      title: 'Total',
+      width: 100,
+      render: (item: SalesRecord) => <Text weight="semibold">${item.total.toFixed(2)}</Text>,
+    },
+    {
+      key: 'revenue',
+      title: 'Revenue',
+      width: 100,
+      render: (item: SalesRecord) => (
+        <Text style={{ color: '#16A34A', fontWeight: '600' }}>
+          ${item.revenue.toFixed(2)}
+        </Text>
+      ),
+    },
+  ];
+
+  return <Table columns={columns} data={sales} />;
+}
+```
+
+## Best Practices
+
+1. **Column Width**: Set appropriate widths for columns to avoid overflow. Use flexible values for content-dependent widths.
+
+2. **Data Keys**: Ensure column keys exactly match your data object keys for default rendering.
+
+3. **Custom Rendering**: Use render functions for:
+   - Status indicators (badges)
+   - Currency formatting
+   - Date formatting
+   - Interactive elements (buttons)
+
+4. **Performance**: For large datasets, consider pagination or virtualization at the application level.
+
+5. **Accessibility**: Include descriptive headers and ensure custom cell content is accessible.
+
+6. **Empty States**: Always provide meaningful empty state text to guide users.
+
+7. **Scrolling**: The component handles both horizontal and vertical scrolling automatically. Structure your columns with reasonable widths.
+
+8. **Key Extraction**: Use `keyExtractor` when data doesn't have stable IDs or when rows can be reordered.

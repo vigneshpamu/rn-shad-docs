@@ -1,0 +1,684 @@
+# Command
+
+A command palette component with real-time search and filtering capabilities. Features grouped commands, keyboard support, animated modal overlay, and customizable styling for building command palettes, search interfaces, and action menus.
+
+## Installation
+
+```bash
+npx rn-shad-cli add command
+```
+
+## Usage
+
+### Basic Command Palette
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+import { Bell, Settings, LogOut } from 'lucide-react-native';
+
+export default function BasicCommandPalette() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const groups = [
+    {
+      heading: 'Actions',
+      items: [
+        {
+          id: '1',
+          label: 'Notifications',
+          icon: Bell,
+          onSelect: () => console.log('Notifications'),
+        },
+        {
+          id: '2',
+          label: 'Settings',
+          icon: Settings,
+          onSelect: () => console.log('Settings'),
+        },
+        {
+          id: '3',
+          label: 'Logout',
+          icon: LogOut,
+          onSelect: () => console.log('Logout'),
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button onPress={() => setIsOpen(true)}>
+        Open Commands
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+      />
+    </>
+  );
+}
+```
+
+### Command Palette with Search Keywords
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+import { FileText, Image, Music, Archive } from 'lucide-react-native';
+
+export default function CommandWithKeywords() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const groups = [
+    {
+      heading: 'Create',
+      items: [
+        {
+          id: '1',
+          label: 'New Document',
+          icon: FileText,
+          keywords: ['create', 'document', 'doc', 'text'],
+          onSelect: () => console.log('Create document'),
+        },
+        {
+          id: '2',
+          label: 'New Image',
+          icon: Image,
+          keywords: ['create', 'image', 'picture', 'photo'],
+          onSelect: () => console.log('Create image'),
+        },
+        {
+          id: '3',
+          label: 'New Music',
+          icon: Music,
+          keywords: ['create', 'music', 'audio', 'track'],
+          onSelect: () => console.log('Create music'),
+        },
+      ],
+    },
+    {
+      heading: 'Tools',
+      items: [
+        {
+          id: '4',
+          label: 'Compress Files',
+          icon: Archive,
+          keywords: ['compress', 'zip', 'archive', 'pack'],
+          onSelect: () => console.log('Compress files'),
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button onPress={() => setIsOpen(true)}>
+        Open Command Palette
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+      />
+    </>
+  );
+}
+```
+
+### Command Palette with Custom Placeholder
+
+```tsx
+<Command
+  visible={isOpen}
+  onClose={() => setIsOpen(false)}
+  groups={groups}
+  placeholder="Search for commands or actions..."
+  emptyText="No commands found. Try a different search."
+/>
+```
+
+### Themed Command Palette
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+
+export default function ThemedCommand() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Command
+      visible={isOpen}
+      onClose={() => setIsOpen(false)}
+      groups={groups}
+      style={{
+        maxWidth: 600,
+        borderRadius: 16,
+      }}
+    />
+  );
+}
+```
+
+## Props
+
+### Command Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `visible` | `boolean` | - | Whether the command modal is visible |
+| `onClose` | `() => void` | - | Callback when command is closed |
+| `groups` | `CommandGroup[]` | - | Grouped command items to display |
+| `placeholder` | `string` | `'Type a command or search...'` | Search input placeholder text |
+| `emptyText` | `string` | `'No results found.'` | Text shown when no commands match search |
+| `style` | `ViewStyle` | - | Custom style overrides for modal container |
+
+### CommandGroup Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `heading` | `string` | Group heading/category name |
+| `items` | `CommandItem[]` | Array of command items in this group |
+
+### CommandItem Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `id` | `string` | Unique identifier for the command |
+| `label` | `string` | Display text for the command |
+| `icon` | `LucideIcon` | Optional icon component from lucide-react-native |
+| `keywords` | `string[]` | Optional keywords for improved search matching |
+| `onSelect` | `() => void` | Callback function when command is selected |
+
+## Features
+
+- **Modal Overlay**: Centered modal dialog with semi-transparent backdrop
+- **Real-time Search**: Instant filtering as users type
+- **Keyword Matching**: Search by command label or custom keywords
+- **Grouped Commands**: Organize commands into logical categories
+- **Icons**: Built-in support for Lucide React Native icons
+- **Smooth Animations**: Fade animations for modal entrance/exit
+- **Auto Focus**: Search input automatically focused when opened
+- **Touch Handling**: Proper event handling for touch interactions
+- **Theme Support**: Automatic theme color integration
+- **Responsive**: Adaptive sizing with max constraints for various screen sizes
+
+## Search and Filtering
+
+The command palette features intelligent search that:
+- Matches against command labels (case-insensitive)
+- Matches against provided keywords
+- Filters groups, hiding empty groups
+- Returns results in real-time as user types
+- Clears search on command selection
+
+## Examples
+
+### App Navigation Command Palette
+
+```tsx
+import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
+import { useState } from 'react';
+import { Home, Users, Settings, BarChart, FileText } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
+
+export default function NavigationCommandPalette() {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigation = useNavigation();
+
+  const groups: CommandGroup[] = [
+    {
+      heading: 'Navigation',
+      items: [
+        {
+          id: 'home',
+          label: 'Home',
+          icon: Home,
+          keywords: ['dashboard', 'main'],
+          onSelect: () => {
+            navigation.navigate('Home');
+            setIsOpen(false);
+          },
+        },
+        {
+          id: 'users',
+          label: 'Users',
+          icon: Users,
+          keywords: ['people', 'team'],
+          onSelect: () => {
+            navigation.navigate('Users');
+            setIsOpen(false);
+          },
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: BarChart,
+          keywords: ['charts', 'data', 'stats'],
+          onSelect: () => {
+            navigation.navigate('Analytics');
+            setIsOpen(false);
+          },
+        },
+        {
+          id: 'reports',
+          label: 'Reports',
+          icon: FileText,
+          keywords: ['documents', 'pdf'],
+          onSelect: () => {
+            navigation.navigate('Reports');
+            setIsOpen(false);
+          },
+        },
+      ],
+    },
+    {
+      heading: 'Settings',
+      items: [
+        {
+          id: 'settings',
+          label: 'Preferences',
+          icon: Settings,
+          keywords: ['config', 'options'],
+          onSelect: () => {
+            navigation.navigate('Settings');
+            setIsOpen(false);
+          },
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button
+        onPress={() => setIsOpen(true)}
+        variant="ghost"
+        icon={Settings}
+      >
+        Commands
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+      />
+    </>
+  );
+}
+```
+
+### Document Action Command Palette
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+import {
+  Copy,
+  Trash,
+  Share2,
+  Download,
+  Edit,
+  Eye,
+  MoreVertical,
+} from 'lucide-react-native';
+import { Button } from '@/components/ui/button';
+
+export default function DocumentActionPalette() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
+
+  const groups = [
+    {
+      heading: 'View & Edit',
+      items: [
+        {
+          id: 'view',
+          label: 'View Document',
+          icon: Eye,
+          keywords: ['open', 'preview'],
+          onSelect: () => console.log('View document'),
+        },
+        {
+          id: 'edit',
+          label: 'Edit Document',
+          icon: Edit,
+          keywords: ['modify', 'change'],
+          onSelect: () => console.log('Edit document'),
+        },
+      ],
+    },
+    {
+      heading: 'Share & Export',
+      items: [
+        {
+          id: 'download',
+          label: 'Download',
+          icon: Download,
+          keywords: ['save', 'export'],
+          onSelect: () => console.log('Download document'),
+        },
+        {
+          id: 'share',
+          label: 'Share',
+          icon: Share2,
+          keywords: ['send', 'collaborate'],
+          onSelect: () => console.log('Share document'),
+        },
+        {
+          id: 'copy',
+          label: 'Copy Link',
+          icon: Copy,
+          keywords: ['duplicate', 'url'],
+          onSelect: () => console.log('Copy link'),
+        },
+      ],
+    },
+    {
+      heading: 'Danger',
+      items: [
+        {
+          id: 'delete',
+          label: 'Delete Document',
+          icon: Trash,
+          keywords: ['remove', 'discard'],
+          onSelect: () => console.log('Delete document'),
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button
+        size="icon"
+        variant="ghost"
+        icon={MoreVertical}
+        onPress={() => setIsOpen(true)}
+      />
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+      />
+    </>
+  );
+}
+```
+
+### Global Search Command
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState, useMemo } from 'react';
+import { Search, MessageCircle, MapPin, Building } from 'lucide-react-native';
+import { Button } from '@/components/ui/button';
+
+interface Searchable {
+  id: string;
+  name: string;
+  type: 'person' | 'location' | 'company';
+  icon: any;
+}
+
+export default function GlobalSearchCommand() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const items: Searchable[] = [
+    { id: '1', name: 'John Doe', type: 'person', icon: MessageCircle },
+    { id: '2', name: 'Jane Smith', type: 'person', icon: MessageCircle },
+    { id: '3', name: 'New York', type: 'location', icon: MapPin },
+    { id: '4', name: 'San Francisco', type: 'location', icon: MapPin },
+    { id: '5', name: 'Tech Corp', type: 'company', icon: Building },
+    { id: '6', name: 'Design Studio', type: 'company', icon: Building },
+  ];
+
+  const groups = [
+    {
+      heading: 'People',
+      items: items
+        .filter(i => i.type === 'person')
+        .map(item => ({
+          id: item.id,
+          label: item.name,
+          icon: item.icon,
+          keywords: [item.type, 'contact'],
+          onSelect: () => console.log('Selected person:', item.name),
+        })),
+    },
+    {
+      heading: 'Locations',
+      items: items
+        .filter(i => i.type === 'location')
+        .map(item => ({
+          id: item.id,
+          label: item.name,
+          icon: item.icon,
+          keywords: [item.type, 'place'],
+          onSelect: () => console.log('Selected location:', item.name),
+        })),
+    },
+    {
+      heading: 'Companies',
+      items: items
+        .filter(i => i.type === 'company')
+        .map(item => ({
+          id: item.id,
+          label: item.name,
+          icon: item.icon,
+          keywords: [item.type, 'organization'],
+          onSelect: () => console.log('Selected company:', item.name),
+        })),
+    },
+  ];
+
+  return (
+    <>
+      <Button
+        variant="outline"
+        icon={Search}
+        onPress={() => setIsOpen(true)}
+      >
+        Search...
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+        placeholder="Search people, locations, companies..."
+        emptyText="No results found"
+      />
+    </>
+  );
+}
+```
+
+### Keyboard Shortcuts Help Command
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+import { Keyboard, Save, Trash, Copy, Plus } from 'lucide-react-native';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { View } from 'react-native';
+
+export default function KeyboardShortcutsCommand() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const groups = [
+    {
+      heading: 'File Operations',
+      items: [
+        {
+          id: 'save',
+          label: 'Save',
+          icon: Save,
+          keywords: ['ctrl+s', 'cmd+s'],
+          onSelect: () => console.log('Save'),
+        },
+        {
+          id: 'new',
+          label: 'New',
+          icon: Plus,
+          keywords: ['ctrl+n', 'cmd+n'],
+          onSelect: () => console.log('New'),
+        },
+      ],
+    },
+    {
+      heading: 'Editing',
+      items: [
+        {
+          id: 'copy',
+          label: 'Copy',
+          icon: Copy,
+          keywords: ['ctrl+c', 'cmd+c'],
+          onSelect: () => console.log('Copy'),
+        },
+        {
+          id: 'delete',
+          label: 'Delete',
+          icon: Trash,
+          keywords: ['del', 'backspace'],
+          onSelect: () => console.log('Delete'),
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        icon={Keyboard}
+        onPress={() => setIsOpen(true)}
+      >
+        Shortcuts
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+        placeholder="Search shortcuts..."
+      />
+    </>
+  );
+}
+```
+
+### Settings Command Menu
+
+```tsx
+import { Command } from '@/components/ui/command';
+import { useState } from 'react';
+import {
+  Bell,
+  Lock,
+  Palette,
+  Volume2,
+  Eye,
+  Zap,
+} from 'lucide-react-native';
+import { Button } from '@/components/ui/button';
+
+export default function SettingsCommandMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const groups = [
+    {
+      heading: 'Notifications',
+      items: [
+        {
+          id: 'notifications',
+          label: 'Notification Settings',
+          icon: Bell,
+          keywords: ['alerts', 'sounds'],
+          onSelect: () => console.log('Open notifications'),
+        },
+      ],
+    },
+    {
+      heading: 'Appearance',
+      items: [
+        {
+          id: 'theme',
+          label: 'Theme',
+          icon: Palette,
+          keywords: ['dark', 'light', 'colors'],
+          onSelect: () => console.log('Open theme'),
+        },
+        {
+          id: 'display',
+          label: 'Display Settings',
+          icon: Eye,
+          keywords: ['brightness', 'contrast'],
+          onSelect: () => console.log('Open display'),
+        },
+      ],
+    },
+    {
+      heading: 'Security',
+      items: [
+        {
+          id: 'privacy',
+          label: 'Privacy Settings',
+          icon: Lock,
+          keywords: ['security', 'access'],
+          onSelect: () => console.log('Open privacy'),
+        },
+      ],
+    },
+    {
+      heading: 'Performance',
+      items: [
+        {
+          id: 'performance',
+          label: 'Performance',
+          icon: Zap,
+          keywords: ['speed', 'optimization'],
+          onSelect: () => console.log('Open performance'),
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Button onPress={() => setIsOpen(true)}>
+        Open Settings
+      </Button>
+      <Command
+        visible={isOpen}
+        onClose={() => setIsOpen(false)}
+        groups={groups}
+        placeholder="Find settings..."
+      />
+    </>
+  );
+}
+```
+
+## Best Practices
+
+1. **Organize Logically**: Group related commands under meaningful category headings
+2. **Use Keywords**: Add keywords for better searchability (e.g., 'save' for 'Save As')
+3. **Include Icons**: Use icons to make commands more visually recognizable
+4. **Short Labels**: Keep command labels concise and action-oriented
+5. **Clear Actions**: Each command should trigger a specific, well-defined action
+6. **Empty State**: Customize empty state message to guide users
+7. **Keyboard Focus**: Takes auto-focus; ideal for keyboard-driven interactions
+8. **Modal Placement**: Consider visibility when showing command palette
+9. **Callback Cleanup**: Reset state in onSelect callbacks if needed (e.g., close modals)
+10. **Accessibility**: Ensure icons have alt text or are accompanied by clear labels
+
+## Performance Considerations
+
+- Command groups are filtered dynamically based on search query
+- Empty groups are automatically hidden from results
+- Search operates on label and keywords (case-insensitive)
+- Consider memoizing command groups if they're large or frequently updated
+- Avoid complex onSelect callbacks that might block the UI

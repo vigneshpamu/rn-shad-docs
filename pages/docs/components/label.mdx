@@ -1,0 +1,402 @@
+# Label
+
+A text label component for form fields and other UI elements. The Label component provides consistent typography and styling for labels across your application, with support for required indicators, disabled states, and error states.
+
+## Installation
+
+```bash
+npx rn-shad-cli add label
+```
+
+## Usage
+
+```tsx
+import { Label } from '@/components/ui/label';
+```
+
+## Examples
+
+### Basic Label
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function BasicLabel() {
+  return (
+    <View>
+      <Label>Email Address</Label>
+    </View>
+  );
+}
+```
+
+### Required Field Label
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function RequiredLabel() {
+  return (
+    <View>
+      <Label required>Password</Label>
+    </View>
+  );
+}
+```
+
+### Disabled Label
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function DisabledLabel() {
+  return (
+    <View>
+      <Label disabled>Unavailable Field</Label>
+    </View>
+  );
+}
+```
+
+### Error Label
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function ErrorLabel() {
+  return (
+    <View>
+      <Label error>Invalid Email</Label>
+    </View>
+  );
+}
+```
+
+### Label with Input
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View, TextInput } from 'react-native';
+
+export function LabelWithInput() {
+  return (
+    <View style={{ gap: 8 }}>
+      <Label required>Full Name</Label>
+      <TextInput
+        placeholder="John Doe"
+        style={{
+          borderWidth: 1,
+          borderColor: '#E4E4E7',
+          borderRadius: 6,
+          padding: 12,
+          fontSize: 16,
+        }}
+      />
+    </View>
+  );
+}
+```
+
+### Form with Multiple Labels
+
+```tsx
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { View, TextInput, Pressable, Text } from 'react-native';
+
+export function SignupForm() {
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (field: string, value: string) => {
+    setForm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: '',
+      }));
+    }
+  };
+
+  const handleSubmit = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!form.email) {
+      newErrors.email = 'Email is required';
+    }
+    if (!form.password) {
+      newErrors.password = 'Password is required';
+    }
+    if (form.password !== form.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Form submitted:', form);
+  };
+
+  return (
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 8 }}>
+        <Label required error={!!errors.email}>
+          Email Address
+        </Label>
+        <TextInput
+          placeholder="you@example.com"
+          value={form.email}
+          onChangeText={(value) => handleChange('email', value)}
+          style={{
+            borderWidth: 1,
+            borderColor: errors.email ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            fontSize: 16,
+          }}
+        />
+        {errors.email && (
+          <Text style={{ fontSize: 12, color: '#EF4444' }}>
+            {errors.email}
+          </Text>
+        )}
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Label required error={!!errors.password}>
+          Password
+        </Label>
+        <TextInput
+          placeholder="Enter your password"
+          value={form.password}
+          onChangeText={(value) => handleChange('password', value)}
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: errors.password ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            fontSize: 16,
+          }}
+        />
+        {errors.password && (
+          <Text style={{ fontSize: 12, color: '#EF4444' }}>
+            {errors.password}
+          </Text>
+        )}
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Label required error={!!errors.confirmPassword}>
+          Confirm Password
+        </Label>
+        <TextInput
+          placeholder="Confirm your password"
+          value={form.confirmPassword}
+          onChangeText={(value) => handleChange('confirmPassword', value)}
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: errors.confirmPassword ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            fontSize: 16,
+          }}
+        />
+        {errors.confirmPassword && (
+          <Text style={{ fontSize: 12, color: '#EF4444' }}>
+            {errors.confirmPassword}
+          </Text>
+        )}
+      </View>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Sign Up
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Label with Help Text
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View, Text } from 'react-native';
+
+export function LabelWithHelpText() {
+  return (
+    <View style={{ gap: 8 }}>
+      <Label required>Username</Label>
+      <Text style={{ fontSize: 12, color: '#71717A' }}>
+        Choose a unique username for your account. You can use letters, numbers, and underscores.
+      </Text>
+    </View>
+  );
+}
+```
+
+### Grouped Labels
+
+```tsx
+import { Label } from '@/components/ui/label';
+import { View, TextInput } from 'react-native';
+
+export function GroupedLabels() {
+  return (
+    <View style={{ gap: 24 }}>
+      <View>
+        <Label style={{ marginBottom: 16 }} required>
+          Personal Information
+        </Label>
+        <View style={{ gap: 16 }}>
+          <View style={{ gap: 8 }}>
+            <Label>First Name</Label>
+            <TextInput
+              placeholder="John"
+              style={{
+                borderWidth: 1,
+                borderColor: '#E4E4E7',
+                borderRadius: 6,
+                padding: 12,
+              }}
+            />
+          </View>
+          <View style={{ gap: 8 }}>
+            <Label>Last Name</Label>
+            <TextInput
+              placeholder="Doe"
+              style={{
+                borderWidth: 1,
+                borderColor: '#E4E4E7',
+                borderRadius: 6,
+                padding: 12,
+              }}
+            />
+          </View>
+        </View>
+      </View>
+
+      <View>
+        <Label style={{ marginBottom: 16 }} required>
+          Address
+        </Label>
+        <View style={{ gap: 16 }}>
+          <View style={{ gap: 8 }}>
+            <Label>Street Address</Label>
+            <TextInput
+              placeholder="123 Main St"
+              style={{
+                borderWidth: 1,
+                borderColor: '#E4E4E7',
+                borderRadius: 6,
+                padding: 12,
+              }}
+            />
+          </View>
+          <View style={{ gap: 8 }}>
+            <Label>City</Label>
+            <TextInput
+              placeholder="San Francisco"
+              style={{
+                borderWidth: 1,
+                borderColor: '#E4E4E7',
+                borderRadius: 6,
+                padding: 12,
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | The label text content |
+| `required` | `boolean` | `false` | Shows a red asterisk (*) to indicate a required field |
+| `disabled` | `boolean` | `false` | Applies disabled styling and reduces opacity |
+| `error` | `boolean` | `false` | Applies error styling with red text color |
+| `style` | `TextStyle` | - | Custom style overrides for the label |
+| `htmlFor` | `string` | - | Associates the label with a form field (for accessibility) |
+
+## Features
+
+### Visual States
+The Label component supports multiple visual states:
+- **Default**: Standard label styling with foreground color
+- **Required**: Shows a red asterisk (*) next to the label text
+- **Disabled**: Reduced opacity (50%) to indicate non-interactive state
+- **Error**: Text color changes to red (destructive color) to highlight validation errors
+
+### Theme Integration
+The component automatically uses the theme system to apply appropriate colors:
+- Foreground color for normal labels
+- Destructive color for required indicators and error states
+- Muted appearance for disabled labels
+
+### Typography
+Labels use the "label" variant with medium font weight for consistent, readable text that stands out from body text.
+
+### Custom Styling
+Full support for custom styles through the `style` prop, allowing you to override default spacing and text properties as needed.
+
+### Accessibility
+- Supports `htmlFor` prop to associate labels with form inputs
+- Works with semantic text structure
+- Disabled and error states provide clear visual feedback
+
+## Component Details
+
+### Spacing
+The default label has 6px bottom margin to provide proper spacing from form inputs or other content below.
+
+### Visual Hierarchy
+- **Medium font weight**: Makes labels stand out from body text
+- **Label variant**: Uses a specialized typography variant optimized for label text
+- **Color consistency**: Follows theme color system for predictable styling
+
+### Required Indicator
+When the `required` prop is true, the component appends a red asterisk (*) using the destructive color from the theme.
+
+### Error State
+The error state changes the label text color to red (destructive color) to clearly indicate validation issues, providing visual feedback before showing error messages.
+
+### Disabled State
+When disabled, the label's opacity is reduced to 50%, clearly indicating that the associated field is not interactive.
+
+## Best Practices
+
+1. **Pair with Form Fields**: Always use Label with form inputs like TextInput, Checkbox, Switch, etc.
+2. **Indicate Required Fields**: Use the `required` prop on mandatory fields to set expectations
+3. **Provide Help Text**: Add descriptive text below labels for complex fields or requirements
+4. **Use Error State**: Show error styling on labels that have validation errors
+5. **Clear Labels**: Write concise, descriptive label text that clearly identifies the field
+6. **Consistent Spacing**: Maintain consistent spacing between labels and form inputs
+7. **Disable When Needed**: Use the `disabled` prop to indicate unavailable fields
+8. **Group Related Labels**: Use visual hierarchy and spacing to group related form fields
+9. **Accessibility**: Use the `htmlFor` prop to semantically associate labels with form fields
+10. **Color Meaning**: Remember that the red color for required/error fields communicates importance and problems

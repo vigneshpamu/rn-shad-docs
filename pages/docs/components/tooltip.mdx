@@ -1,0 +1,420 @@
+# Tooltip
+
+A lightweight overlay component that displays a brief, helpful label when users interact with an element. Perfect for providing hints, explanations, or keyboard shortcuts without cluttering the UI.
+
+## Installation
+
+```bash
+npx rn-shad-cli add tooltip
+```
+
+## Usage
+
+### Basic Tooltip
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+
+export function BasicTooltip() {
+  return (
+    <Tooltip content="Click to submit">
+      <Button>Submit</Button>
+    </Tooltip>
+  );
+}
+```
+
+### Tooltip with Different Placements
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+
+export function PlacementExample() {
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <Tooltip content="Help text above" placement="top">
+        <Button>Top</Button>
+      </Tooltip>
+
+      <Tooltip content="Help text below" placement="bottom">
+        <Button>Bottom</Button>
+      </Tooltip>
+
+      <Tooltip content="Help text to the left" placement="left">
+        <Button>Left</Button>
+      </Tooltip>
+
+      <Tooltip content="Help text to the right" placement="right">
+        <Button>Right</Button>
+      </Tooltip>
+    </View>
+  );
+}
+```
+
+### Tooltip with Custom Delay
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+
+export function CustomDelayTooltip() {
+  return (
+    <View style={{ gap: 12 }}>
+      <Tooltip
+        content="Shows immediately"
+        delayDuration={0}
+      >
+        <Button>No Delay</Button>
+      </Tooltip>
+
+      <Tooltip
+        content="Shows after 300ms"
+        delayDuration={300}
+      >
+        <Button>Quick Delay</Button>
+      </Tooltip>
+
+      <Tooltip
+        content="Shows after 1 second"
+        delayDuration={1000}
+      >
+        <Button>Longer Delay</Button>
+      </Tooltip>
+    </View>
+  );
+}
+```
+
+### Tooltip with Icons
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Download, Copy, Settings } from 'lucide-react-native';
+
+export function IconTooltips() {
+  return (
+    <View style={{ gap: 8, flexDirection: 'row' }}>
+      <Tooltip content="Download file">
+        <Button icon={Download} variant="ghost" size="icon" />
+      </Tooltip>
+
+      <Tooltip content="Copy to clipboard">
+        <Button icon={Copy} variant="ghost" size="icon" />
+      </Tooltip>
+
+      <Tooltip content="Preferences">
+        <Button icon={Settings} variant="ghost" size="icon" />
+      </Tooltip>
+    </View>
+  );
+}
+```
+
+### Tooltip with Custom Styling
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+
+export function StyledTooltip() {
+  return (
+    <Tooltip
+      content="This is a custom tooltip"
+      placement="top"
+      delayDuration={500}
+      style={{
+        backgroundColor: '#1f2937',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 8,
+      }}
+    >
+      <Button variant="outline">Hover me</Button>
+    </Tooltip>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `content` | `string` | - | The text content to display in the tooltip |
+| `children` | `React.ReactElement` | - | The element that triggers the tooltip |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | Where the tooltip appears relative to the trigger |
+| `delayDuration` | `number` | `700` | Milliseconds to wait before showing the tooltip |
+| `style` | `ViewStyle` | - | Custom styles for the tooltip container |
+
+## Features
+
+- **Hover Activation**: Tooltips appear on press-in and disappear on press-out
+- **Configurable Delay**: Control when the tooltip appears with `delayDuration` (default: 700ms)
+- **Multiple Placements**: Position above, below, left, or right of the trigger element
+- **Smart Centering**: Automatically centers tooltips horizontally or vertically depending on placement
+- **Smooth Animations**: Fade in (150ms) and fade out (100ms) animations using React Native Reanimated
+- **Dark Theme**: Uses dark background (#09090B) with white text by default
+- **Theme Support**: Automatically uses theme colors when available
+- **Responsive**: Adapts position based on trigger element measurements
+- **Max Width**: Limited to 200px maximum width to keep text concise
+- **Touch-Friendly**: Designed for touch interactions with built-in delay to prevent accidental triggers
+
+## Dimensions
+
+The tooltip has the following default dimensions:
+- **Maximum Width**: 200px (keeps content concise)
+- **Horizontal Padding**: 12px
+- **Vertical Padding**: 6px
+- **Border Radius**: 6px
+- **Text Variant**: Caption (smaller text size)
+
+## Positioning Details
+
+### Offset
+All placements use an 8px offset from the trigger element.
+
+### Top Placement
+- Positioned above the trigger
+- Centered horizontally (translated -50% on X-axis)
+- Translated up by 100% of its height for proper positioning
+- Offset 8px above the trigger
+
+### Bottom Placement
+- Positioned below the trigger
+- Centered horizontally (translated -50% on X-axis)
+- No vertical translation needed (hangs from positioning)
+- Offset 8px below the trigger
+
+### Left Placement
+- Positioned to the left of the trigger
+- Translated left by 100% of its width
+- Centered vertically (translated -50% on Y-axis)
+- Offset 8px to the left
+
+### Right Placement
+- Positioned to the right of the trigger
+- No horizontal translation needed
+- Centered vertically (translated -50% on Y-axis)
+- Offset 8px to the right
+
+## Gesture Behavior
+
+The tooltip uses press gesture detection:
+- **onPressIn**: Starts a timer after `delayDuration` milliseconds
+- **onPressOut**: Immediately cancels the timer and hides the tooltip
+- If the timer completes, the tooltip becomes visible
+- Touching anywhere outside closes the tooltip
+
+## Animation Details
+
+### Entering Animation
+- Type: Fade in
+- Duration: 150ms
+- Creates smooth appearance
+
+### Exiting Animation
+- Type: Fade out
+- Duration: 100ms
+- Quick disappearance
+
+## Shadow and Styling
+
+The tooltip includes:
+- **Background Color**: #09090B (dark, theme-aware)
+- **Text Color**: #FFFFFF (white, theme-aware)
+- **Shadow Color**: Black (#000)
+- **Shadow Offset**: 0px horizontal, 2px vertical
+- **Shadow Opacity**: 0.1
+- **Shadow Radius**: 4px
+- **Elevation**: 4 (for Android)
+
+## Delay Duration Guidelines
+
+- **0ms**: Appears immediately (use sparingly)
+- **300-500ms**: Quick feedback, good for frequent interactions
+- **700ms**: Default, balanced for most use cases
+- **1000ms+**: For less critical information
+
+## Examples
+
+### Help Icon Tooltip
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import { HelpCircle } from 'lucide-react-native';
+
+export function HelpTooltip() {
+  return (
+    <Tooltip
+      content="Additional information about this field"
+      placement="top"
+      delayDuration={500}
+    >
+      <Button icon={HelpCircle} variant="ghost" size="sm" />
+    </Tooltip>
+  );
+}
+```
+
+### Keyboard Shortcut Tooltip
+
+```tsx
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Command } from 'lucide-react-native';
+
+export function KeyboardShortcutTooltip() {
+  return (
+    <Tooltip
+      content="Cmd + S to save"
+      placement="bottom"
+      delayDuration={800}
+    >
+      <Button variant="ghost">Save</Button>
+    </Tooltip>
+  );
+}
+```
+
+### Feature Explanation Tooltip
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Zap } from 'lucide-react-native';
+
+export function FeatureTooltip() {
+  return (
+    <Tooltip
+      content="Premium feature that requires a paid subscription"
+      placement="right"
+      delayDuration={700}
+    >
+      <Button
+        icon={Zap}
+        variant="outline"
+        disabled
+      >
+        Premium Action
+      </Button>
+    </Tooltip>
+  );
+}
+```
+
+### Action Button Tooltips
+
+```tsx
+import { View } from 'react-native';
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import {
+  Trash,
+  Copy,
+  Share,
+  Download
+} from 'lucide-react-native';
+
+export function ActionButtonTooltips() {
+  return (
+    <View style={{
+      flexDirection: 'row',
+      gap: 8,
+      alignItems: 'center'
+    }}>
+      <Tooltip content="Delete permanently" placement="top">
+        <Button icon={Trash} variant="destructive" size="sm" />
+      </Tooltip>
+
+      <Tooltip content="Copy to clipboard" placement="top">
+        <Button icon={Copy} variant="outline" size="sm" />
+      </Tooltip>
+
+      <Tooltip content="Share this" placement="top">
+        <Button icon={Share} variant="outline" size="sm" />
+      </Tooltip>
+
+      <Tooltip content="Save to device" placement="top">
+        <Button icon={Download} variant="outline" size="sm" />
+      </Tooltip>
+    </View>
+  );
+}
+```
+
+### Disabled Button with Explanation
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Lock } from 'lucide-react-native';
+
+export function DisabledButtonTooltip() {
+  const hasPermission = false;
+
+  return (
+    <Tooltip
+      content={!hasPermission ? "You don't have permission to perform this action" : ""}
+      placement="bottom"
+      delayDuration={500}
+    >
+      <Button
+        icon={Lock}
+        disabled={!hasPermission}
+      >
+        Admin Action
+      </Button>
+    </Tooltip>
+  );
+}
+```
+
+### Link Preview Tooltip
+
+```tsx
+import { Text } from '@/components/ui/text';
+import { Tooltip } from '@/components/ui/tooltip';
+
+export function LinkPreviewTooltip() {
+  return (
+    <Tooltip
+      content="Opens in external browser"
+      placement="top"
+      delayDuration={600}
+    >
+      <Text
+        style={{
+          color: '#3b82f6',
+          textDecorationLine: 'underline'
+        }}
+      >
+        Visit our website
+      </Text>
+    </Tooltip>
+  );
+}
+```
+
+## Best Practices
+
+1. **Keep Content Brief**: Tooltips work best with short, helpful text
+2. **Use Consistent Delay**: Default 700ms is recommended to avoid distraction
+3. **Placement Strategy**: Place above/below for vertical layouts, left/right for horizontal
+4. **Icon Tooltips**: Perfect for icon-only buttons to explain their function
+5. **Non-Critical Info**: Use for hints and explanations, not essential information
+6. **Accessibility**: Always ensure the underlying element is self-explanatory
+
+## Accessibility Considerations
+
+- Tooltip content is hidden by default and only shown on interaction
+- Use clear, concise language in tooltip text
+- Avoid redundant information that's already visible
+- Theme colors ensure proper contrast for readability
+- Touch-friendly with adequate delay to prevent accidental triggers

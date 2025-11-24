@@ -1,0 +1,455 @@
+# Form
+
+A composable form component system for building structured forms with built-in validation support, error messages, and descriptions. The Form component provides a collection of subcomponents for creating organized, accessible form layouts with consistent styling.
+
+## Installation
+
+```bash
+npx rn-shad-cli add form
+```
+
+## Usage
+
+### Basic Form
+
+```tsx
+import { Form, FormField, FormLabel, FormDescription, FormMessage } from '@/components/ui/form';
+import { View, TextInput } from 'react-native';
+
+export function BasicForm() {
+  const [email, setEmail] = React.useState('');
+
+  return (
+    <Form>
+      <FormField>
+        <FormLabel>Email Address</FormLabel>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Enter your email"
+          style={{
+            borderWidth: 1,
+            borderColor: '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        <FormDescription>We'll never share your email with anyone else.</FormDescription>
+      </FormField>
+    </Form>
+  );
+}
+```
+
+### Uncontrolled Form with Validation
+
+```tsx
+import { Form, FormField, FormLabel, FormMessage } from '@/components/ui/form';
+import { View, TextInput, Pressable, Text } from 'react-native';
+import { useState } from 'react';
+
+export function FormWithValidation() {
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateEmail = (value: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value) {
+      return 'Email is required';
+    }
+    if (!regex.test(value)) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  };
+
+  const handleBlur = () => {
+    const error = validateEmail(email);
+    setErrors(prev => ({
+      ...prev,
+      email: error,
+    }));
+  };
+
+  const handleSubmit = () => {
+    const error = validateEmail(email);
+    if (!error) {
+      console.log('Form submitted:', { email });
+    }
+  };
+
+  return (
+    <Form>
+      <FormField>
+        <FormLabel required>Email Address</FormLabel>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          onBlur={handleBlur}
+          placeholder="your@email.com"
+          style={{
+            borderWidth: 1,
+            borderColor: errors.email ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        {errors.email && (
+          <FormMessage error>{errors.email}</FormMessage>
+        )}
+      </FormField>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, marginTop: 16 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Submit
+        </Text>
+      </Pressable>
+    </Form>
+  );
+}
+```
+
+### Multi-Field Login Form
+
+```tsx
+import { Form, FormField, FormLabel, FormDescription, FormMessage } from '@/components/ui/form';
+import { View, TextInput, Pressable, Text } from 'react-native';
+import { useState } from 'react';
+
+export function LoginForm() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: '',
+      }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Invalid email address';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = () => {
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Form submitted:', formData);
+  };
+
+  return (
+    <Form>
+      <FormField>
+        <FormLabel required>Email</FormLabel>
+        <TextInput
+          value={formData.email}
+          onChangeText={(value) => handleChange('email', value)}
+          placeholder="you@example.com"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          style={{
+            borderWidth: 1,
+            borderColor: errors.email ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        {errors.email && (
+          <FormMessage error>{errors.email}</FormMessage>
+        )}
+      </FormField>
+
+      <FormField>
+        <FormLabel required>Password</FormLabel>
+        <TextInput
+          value={formData.password}
+          onChangeText={(value) => handleChange('password', value)}
+          placeholder="Enter your password"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: errors.password ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        <FormDescription>Must be at least 8 characters long.</FormDescription>
+        {errors.password && (
+          <FormMessage error>{errors.password}</FormMessage>
+        )}
+      </FormField>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, marginTop: 20 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Sign In
+        </Text>
+      </Pressable>
+    </Form>
+  );
+}
+```
+
+### Form with Field Descriptions and Help Text
+
+```tsx
+import { Form, FormField, FormLabel, FormDescription, FormMessage } from '@/components/ui/form';
+import { View, TextInput, Pressable, Text } from 'react-native';
+import { useState } from 'react';
+
+export function SignupForm() {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: '',
+      }));
+    }
+  };
+
+  const handleSubmit = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.username) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Signup submitted:', formData);
+  };
+
+  return (
+    <Form>
+      <FormField>
+        <FormLabel required>Username</FormLabel>
+        <TextInput
+          value={formData.username}
+          onChangeText={(value) => handleChange('username', value)}
+          placeholder="john_doe"
+          autoCapitalize="none"
+          style={{
+            borderWidth: 1,
+            borderColor: errors.username ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        <FormDescription>
+          Choose a unique username. You can use letters, numbers, and underscores.
+        </FormDescription>
+        {errors.username && (
+          <FormMessage error>{errors.username}</FormMessage>
+        )}
+      </FormField>
+
+      <FormField>
+        <FormLabel required>Password</FormLabel>
+        <TextInput
+          value={formData.password}
+          onChangeText={(value) => handleChange('password', value)}
+          placeholder="Enter your password"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: errors.password ? '#EF4444' : '#E4E4E7',
+            borderRadius: 6,
+            padding: 12,
+            marginTop: 8,
+          }}
+        />
+        <FormDescription>
+          Must contain at least 8 characters. Consider using a mix of uppercase, lowercase, numbers, and symbols for better security.
+        </FormDescription>
+        {errors.password && (
+          <FormMessage error>{errors.password}</FormMessage>
+        )}
+      </FormField>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6, marginTop: 20 }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Create Account
+        </Text>
+      </Pressable>
+    </Form>
+  );
+}
+```
+
+## Components
+
+### Form
+
+The main container component that wraps all form fields.
+
+```tsx
+<Form>
+  {/* Form fields go here */}
+</Form>
+```
+
+### FormField
+
+A container for a single form field that manages vertical spacing.
+
+```tsx
+<FormField>
+  <FormLabel>Label</FormLabel>
+  <TextInput placeholder="Input" />
+</FormField>
+```
+
+### FormLabel
+
+A label component for form fields with support for required indicators.
+
+```tsx
+<FormLabel required>Email Address</FormLabel>
+```
+
+### FormDescription
+
+A helper text component that displays additional information about a field.
+
+```tsx
+<FormDescription>This will help us contact you.</FormDescription>
+```
+
+### FormMessage
+
+A component for displaying validation errors and other messages.
+
+```tsx
+<FormMessage error>This field is required</FormMessage>
+```
+
+## Props
+
+### Form Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Form content |
+| `style` | `ViewStyle` | - | Custom styles for the form container |
+
+### FormField Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Field content (label, input, messages) |
+| `style` | `ViewStyle` | - | Custom styles for the field container |
+
+### FormLabel Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Label text content |
+| `required` | `boolean` | `false` | Shows a red asterisk to indicate required field |
+| `style` | `TextStyle` | - | Custom styles for the label |
+
+### FormDescription Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Description text content |
+| `style` | `TextStyle` | - | Custom styles for the description |
+
+### FormMessage Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Message text content |
+| `error` | `boolean` | `true` | Style as error message (red color) |
+| `style` | `TextStyle` | - | Custom styles for the message |
+
+## Features
+
+- **Composable Structure**: Use subcomponents to build flexible form layouts
+- **Validation Support**: Built-in support for error messages and validation states
+- **Required Field Indicators**: Automatic asterisk display for required fields
+- **Helper Text**: FormDescription for additional field information
+- **Error Styling**: Automatic error color for validation messages using theme colors
+- **Theme Integration**: Automatically uses theme colors for consistent styling
+- **Consistent Spacing**: Built-in margins and padding for proper visual hierarchy
+- **Accessible**: Proper semantic structure with labels and error associations
+- **Flexible Layout**: Works with any input component (TextInput, Checkbox, Switch, etc.)
+
+## Best Practices
+
+1. **Always Wrap in Form**: Keep form fields within the Form component for consistent spacing
+2. **Use FormLabel**: Associate every input with a FormLabel for accessibility
+3. **Add Descriptions**: Use FormDescription to provide helpful context about fields
+4. **Validate on Blur**: Validate fields as users leave them, not just on submit
+5. **Show Clear Errors**: Use FormMessage to display specific, actionable error messages
+6. **Mark Required Fields**: Always use the `required` prop on required fields
+7. **Group Related Fields**: Use spacing to group related form sections
+8. **Provide Feedback**: Show loading states and success messages for form submission
+9. **Test Accessibility**: Ensure labels are properly associated with inputs
+10. **Mobile Friendly**: Consider input types and keyboard behaviors for mobile
+
+## Related Components
+
+- **Label** - Individual label component (used within FormLabel)
+- **TextInput** - Native React Native input field
+- **Button** - For form submit buttons

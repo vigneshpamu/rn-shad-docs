@@ -1,11 +1,54 @@
-# Introduction
- 
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+# RN Shad UI
 
-## What is Nextra?
+Beautiful and accessible React Native components inspired by shadcn/ui.
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+## Features
 
-## Documentation
+- 🎨 **30+ Components** - Comprehensive component library
+- 📦 **Copy & Paste** - No npm install, components are copied to your project
+- 🎯 **TypeScript** - Full TypeScript support with type definitions
+- ⚡ **Animated** - Smooth animations with Reanimated
+- 🎭 **Customizable** - Easy to customize and extend
+- 📱 **Cross-platform** - Works on iOS and Android
+- 🌙 **Themed** - Light and dark mode support
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+## Quick Start
+
+```bash
+# Initialize rn-shad in your project
+npx rn-shad-cli@latest init
+
+# Add components
+npx rn-shad-cli add button input card
+```
+
+## Philosophy
+
+Just like shadcn/ui for the web, RN Shad UI is **not a traditional component library**. Components are:
+
+- ✅ **Copied to your project** - You own the code
+- ✅ **Fully customizable** - Modify as needed
+- ✅ **No dependencies** - Only peer dependencies
+- ✅ **Production ready** - Tested and ready to use
+
+## Example
+
+```tsx
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+
+export default function LoginScreen() {
+  return (
+    <Card>
+      <Input label="Email" placeholder="you@example.com" />
+      <Input label="Password" secureTextEntry />
+      <Button onPress={handleLogin}>Login</Button>
+    </Card>
+  );
+}
+```
+
+## Get Started
+
+Check out the [Installation Guide](/docs/installation) to begin using RN Shad UI in your project.

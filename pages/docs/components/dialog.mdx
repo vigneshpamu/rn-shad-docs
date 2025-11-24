@@ -1,0 +1,316 @@
+# Dialog
+
+A versatile modal dialog component that displays centered content with a backdrop overlay. Features smooth animations, customizable sizing, and accessibility support for confirmation dialogs, alerts, and more.
+
+## Installation
+
+```bash
+npx rn-shad-cli add dialog
+```
+
+## Usage
+
+### Basic Dialog
+
+```tsx
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+
+export function BasicDialog() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <Button>Open Dialog</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Welcome</DialogTitle>
+          <DialogDescription>
+            This is a basic dialog with a title and description.
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+### Confirmation Dialog
+
+```tsx
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Trash } from 'lucide-react-native';
+
+export function ConfirmationDialog() {
+  const [open, setOpen] = useState(false);
+
+  const handleDelete = () => {
+    Alert.alert('Success', 'Item deleted successfully');
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <Button variant="destructive" icon={Trash}>
+          Delete Item
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this item? This action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onPress={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onPress={handleDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+### Custom Sized Dialog
+
+```tsx
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>
+    <Button>Custom Size</Button>
+  </DialogTrigger>
+  <DialogContent width={380} height={500}>
+    <DialogHeader>
+      <DialogTitle>Custom Dimensions</DialogTitle>
+    </DialogHeader>
+    {/* Content goes here */}
+  </DialogContent>
+</Dialog>
+```
+
+### Dialog Without Close Button
+
+```tsx
+<DialogContent showClose={false}>
+  <DialogHeader>
+    <DialogTitle>Required Action</DialogTitle>
+    <DialogDescription>
+      Complete this action to continue.
+    </DialogDescription>
+  </DialogHeader>
+  <DialogFooter>
+    <Button onPress={handleAction}>Continue</Button>
+  </DialogFooter>
+</DialogContent>
+```
+
+## Components
+
+### Dialog
+
+The root component that provides context for all child components.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | - | Controls whether the dialog is visible |
+| `onOpenChange` | `(open: boolean) => void` | - | Callback fired when dialog open state changes |
+| `children` | `React.ReactNode` | - | Child components (DialogTrigger, DialogContent, etc.) |
+
+### DialogTrigger
+
+A wrapper component that triggers the dialog to open. It must contain a pressable element.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactElement` | - | A pressable element (Button, Pressable, etc.) |
+
+### DialogContent
+
+The main content container of the dialog with animation and backdrop.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Dialog content |
+| `showClose` | `boolean` | `true` | Show close button in top-right corner |
+| `width` | `number \| string` | `320` | Width of the dialog |
+| `height` | `number \| string` | - | Height of the dialog (optional) |
+| `style` | `ViewStyle` | - | Custom styles for the content container |
+
+### DialogHeader
+
+A container for the dialog header, typically containing the title and description.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Header content |
+| `style` | `ViewStyle` | - | Custom styles |
+
+### DialogFooter
+
+A container for action buttons, typically positioned at the bottom of the dialog.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Footer content (usually buttons) |
+| `style` | `ViewStyle` | - | Custom styles |
+
+### DialogTitle
+
+A heading component for the dialog title.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Title text |
+
+### DialogDescription
+
+A text component for the dialog description, styled with muted color.
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | - | Description text |
+
+## Features
+
+- **Smooth Animations**: Scale and fade animations using React Native Reanimated
+- **Customizable Size**: Control width and height with simple props
+- **Backdrop Overlay**: Semi-transparent overlay that closes dialog on tap
+- **Close Button**: Optional X button in the top-right corner for easy dismissal
+- **Accessibility**: Proper press handling and focus management
+- **Theme Support**: Automatically uses theme colors when available
+- **Responsive**: Adapts to different screen sizes with padding
+
+## Animation Details
+
+The dialog features two key animations:
+
+1. **Content Scale Animation**: The dialog content scales from 0.95 to 1.0 with spring physics (damping: 15, stiffness: 150)
+2. **Backdrop Fade**: The overlay fades in on open (200ms) and fades out on close (150ms)
+
+These animations create a natural, polished appearance while keeping the interaction smooth.
+
+## Styling
+
+The dialog component respects your theme colors. If a theme is available, it uses:
+- `card` color for the background
+- `mutedForeground` color for the close icon
+
+Default fallback colors are used when no theme is available.
+
+## Examples
+
+### Alert Dialog
+
+```tsx
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>
+    <Button>Show Alert</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Alert</DialogTitle>
+      <DialogDescription>
+        This is an important notification.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button onPress={() => setOpen(false)}>
+        Acknowledge
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Form Dialog
+
+```tsx
+import { View } from 'react-native';
+
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>
+    <Button>Create New</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Create New Item</DialogTitle>
+    </DialogHeader>
+    <View style={{ gap: 12 }}>
+      {/* Form fields go here */}
+    </View>
+    <DialogFooter>
+      <Button variant="outline" onPress={() => setOpen(false)}>
+        Cancel
+      </Button>
+      <Button onPress={handleSubmit}>
+        Create
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Settings Dialog
+
+```tsx
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>
+    <Button icon={Settings} size="icon" />
+  </DialogTrigger>
+  <DialogContent width={340}>
+    <DialogHeader>
+      <DialogTitle>Settings</DialogTitle>
+      <DialogDescription>
+        Manage your preferences.
+      </DialogDescription>
+    </DialogHeader>
+    {/* Settings content */}
+    <DialogFooter>
+      <Button variant="outline" onPress={() => setOpen(false)}>
+        Close
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```

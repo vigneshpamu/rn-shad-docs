@@ -1,0 +1,356 @@
+# Skeleton
+
+A loading skeleton component that displays a placeholder while content is loading. Perfect for creating skeleton screens that mimic your content layout with smooth pulse animations.
+
+## Installation
+
+```bash
+npx rn-shad-cli add skeleton
+```
+
+## Usage
+
+### Basic Skeleton
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+
+<Skeleton />
+```
+
+### Different Sizes
+
+```tsx
+<Skeleton height={16} width="100%" />
+<Skeleton height={20} width="100%" />
+<Skeleton height={40} width="100%" />
+```
+
+### Different Variants
+
+```tsx
+{/* Rectangular (default) */}
+<Skeleton variant="rectangular" width="100%" height={40} />
+
+{/* Text lines */}
+<Skeleton variant="text" width="100%" height={20} />
+
+{/* Circular avatars */}
+<Skeleton variant="circular" width={48} height={48} />
+```
+
+## Variants
+
+The skeleton component supports three shape variants:
+
+### Rectangular
+Used for images, cards, and content blocks.
+
+```tsx
+<Skeleton variant="rectangular" width="100%" height={180} />
+```
+Default rounded corners (8px) for a natural appearance.
+
+### Text
+Used for text lines and paragraph placeholders.
+
+```tsx
+<Skeleton variant="text" width="100%" height={20} />
+```
+Smaller border radius (4px) perfect for text-like content.
+
+### Circular
+Used for avatars, profile images, and circular icons.
+
+```tsx
+<Skeleton variant="circular" width={56} height={56} />
+```
+Fully rounded (50% radius) for circular content.
+
+## Sizes
+
+Control the skeleton dimensions with `width` and `height` props:
+
+```tsx
+{/* Small */}
+<Skeleton height={16} width="100%" />
+
+{/* Medium (default) */}
+<Skeleton height={20} width="100%" />
+
+{/* Large */}
+<Skeleton height={40} width="100%" />
+
+{/* Extra Large */}
+<Skeleton height={100} width="100%" />
+```
+
+## Width Options
+
+Use percentage or fixed width values:
+
+```tsx
+{/* Full width */}
+<Skeleton width="100%" height={20} />
+
+{/* Percentage width */}
+<Skeleton width="80%" height={20} />
+<Skeleton width="60%" height={20} />
+
+{/* Fixed width */}
+<Skeleton width={200} height={20} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number \| string` | `'100%'` | Width of the skeleton. Accepts pixels as number or percentage as string. |
+| `height` | `number` | `20` | Height of the skeleton in pixels. |
+| `variant` | `'text' \| 'circular' \| 'rectangular'` | `'rectangular'` | Shape variant - affects border radius. |
+| `style` | `ViewStyle` | - | Additional styles to apply to the skeleton. |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Smooth Pulse Animation**: Continuous fade in/out opacity animation
+- **Three Shape Variants**: Text, circular, and rectangular for different content types
+- **Responsive Design**: Supports percentage-based and fixed widths
+- **Theme Integration**: Uses theme colors with fallback defaults
+- **Lightweight**: Optimized with react-native-reanimated for performance
+- **Customizable**: Full style override support
+
+## Animation Details
+
+The skeleton uses a pulsing animation:
+- **Total Duration**: 1600ms (800ms fade + 800ms fade)
+- **Opacity Range**: 1.0 (full) to 0.5 (dim)
+- **Loop**: Infinite repetition
+- **Easing**: Linear fade transitions
+
+## Examples
+
+### Loading Card
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonCard() {
+  return (
+    <View style={{
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      padding: 16,
+      gap: 12
+    }}>
+      {/* Image placeholder */}
+      <Skeleton variant="rectangular" width="100%" height={180} />
+
+      {/* Title */}
+      <Skeleton variant="text" width="80%" height={20} />
+
+      {/* Description lines */}
+      <Skeleton variant="text" width="100%" height={16} />
+      <Skeleton variant="text" width="90%" height={16} />
+
+      {/* Button area */}
+      <Skeleton variant="rectangular" width="100%" height={40} />
+    </View>
+  );
+}
+```
+
+### Loading User Profile
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonProfile() {
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      {/* Avatar and name */}
+      <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+        <Skeleton variant="circular" width={56} height={56} />
+        <View style={{ flex: 1, gap: 8 }}>
+          <Skeleton variant="text" width="60%" height={16} />
+          <Skeleton variant="text" width="40%" height={12} />
+        </View>
+      </View>
+
+      {/* Bio content */}
+      <Skeleton variant="text" width="100%" height={16} />
+      <Skeleton variant="text" width="95%" height={16} />
+      <Skeleton variant="text" width="70%" height={16} />
+    </View>
+  );
+}
+```
+
+### Loading List Items
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonList() {
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      {[1, 2, 3].map((index) => (
+        <View key={index} style={{ flexDirection: 'row', gap: 12 }}>
+          <Skeleton variant="circular" width={40} height={40} />
+          <View style={{ flex: 1, gap: 8 }}>
+            <Skeleton variant="text" width="70%" height={16} />
+            <Skeleton variant="text" width="90%" height={12} />
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Loading Grid Layout
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonGrid() {
+  return (
+    <View style={{ flexDirection: 'row', gap: 12, padding: 16 }}>
+      {[1, 2].map((index) => (
+        <View key={index} style={{ flex: 1, gap: 12 }}>
+          <Skeleton variant="rectangular" width="100%" height={150} />
+          <Skeleton variant="text" width="100%" height={16} />
+          <Skeleton variant="text" width="80%" height={14} />
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Loading Blog Post
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonBlogPost() {
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      {/* Featured image */}
+      <Skeleton variant="rectangular" width="100%" height={250} />
+
+      {/* Title */}
+      <Skeleton variant="text" width="90%" height={24} />
+
+      {/* Meta info */}
+      <View style={{ flexDirection: 'row', gap: 8 }}>
+        <Skeleton variant="circular" width={32} height={32} />
+        <View style={{ flex: 1, gap: 4 }}>
+          <Skeleton variant="text" width="50%" height={12} />
+          <Skeleton variant="text" width="40%" height={12} />
+        </View>
+      </View>
+
+      {/* Content paragraphs */}
+      {[1, 2, 3].map((index) => (
+        <View key={index} style={{ gap: 8 }}>
+          <Skeleton variant="text" width="100%" height={14} />
+          <Skeleton variant="text" width="100%" height={14} />
+          <Skeleton variant="text" width="85%" height={14} />
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Loading Feed with Mixed Content
+
+```tsx
+import { Skeleton } from '@/components/ui/skeleton';
+import { View } from 'react-native';
+
+function SkeletonFeed() {
+  return (
+    <View style={{ gap: 20, padding: 16 }}>
+      {[1, 2, 3].map((index) => (
+        <View key={index} style={{ gap: 12, borderBottomWidth: 1, borderBottomColor: '#e5e5e5', paddingBottom: 16 }}>
+          {/* Author header */}
+          <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <Skeleton variant="circular" width={40} height={40} />
+            <View style={{ flex: 1 }}>
+              <Skeleton variant="text" width="40%" height={14} />
+            </View>
+          </View>
+
+          {/* Content image */}
+          <Skeleton variant="rectangular" width="100%" height={200} />
+
+          {/* Text content */}
+          <View style={{ gap: 8 }}>
+            <Skeleton variant="text" width="100%" height={14} />
+            <Skeleton variant="text" width="95%" height={14} />
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+## Customization
+
+You can customize the skeleton appearance using the `style` prop:
+
+```tsx
+<Skeleton
+  width="100%"
+  height={40}
+  variant="rectangular"
+  style={{
+    borderRadius: 16
+  }}
+/>
+```
+
+## Color Customization
+
+The skeleton uses the `border` color from your theme by default. Customize with the `style` prop:
+
+```tsx
+<Skeleton
+  width="100%"
+  height={40}
+  style={{
+    backgroundColor: '#e0e0e0'
+  }}
+/>
+```
+
+## Best Practices
+
+1. **Match Content Layout**: Structure skeletons to match your final content exactly
+2. **Avoid Overloading**: Don't show too many skeletons at once to prevent cognitive overload
+3. **Use Correct Variants**: Choose the right shape (text/circular/rectangular) for the content type
+4. **Appropriate Sizing**: Match skeleton heights to your actual content heights
+5. **Group Related Items**: Wrap skeletons in containers to show related content loading together
+6. **Remove Promptly**: Replace skeletons with actual content as soon as it's ready
+7. **Progressive Loading**: Show partial content while other parts load
+8. **Avoid Flashing**: Use skeletons for initial loads, not every update
+
+## Accessibility
+
+Skeleton components are decorative placeholders and don't require accessibility attributes. When content loads, ensure the actual content has proper accessibility labels and support.
+
+## Performance Notes
+
+- Skeletons use react-native-reanimated for smooth 60fps animations
+- Minimal layout impact as they're static elements
+- Safe to display multiple skeletons in lists without performance degradation
+- Consider memoizing skeleton components in long lists for optimal performance

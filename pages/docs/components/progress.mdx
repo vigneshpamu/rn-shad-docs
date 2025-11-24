@@ -1,0 +1,424 @@
+# Progress
+
+A progress bar component that displays the progress of a task with smooth spring animations, multiple size variants, and semantic color variants (default, success, warning, destructive).
+
+## Installation
+
+```bash
+npx rn-shad-cli add progress
+```
+
+## Usage
+
+### Basic Progress Bar
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+
+<Progress value={65} />
+```
+
+### Progress Variants
+
+```tsx
+{/* Default */}
+<Progress value={50} variant="default" />
+
+{/* Success */}
+<Progress value={100} variant="success" />
+
+{/* Warning */}
+<Progress value={75} variant="warning" />
+
+{/* Destructive */}
+<Progress value={25} variant="destructive" />
+```
+
+### Progress Sizes
+
+```tsx
+{/* Small */}
+<Progress value={50} size="sm" />
+
+{/* Medium (default) */}
+<Progress value={50} size="md" />
+
+{/* Large */}
+<Progress value={50} size="lg" />
+```
+
+## Variants
+
+The progress component supports four semantic color variants:
+
+### Default
+Primary color for standard progress indication.
+
+```tsx
+<Progress value={60} variant="default" />
+```
+Uses the primary color from your theme.
+
+### Success
+Green color for completed or positive progress.
+
+```tsx
+<Progress value={100} variant="success" />
+```
+Uses the success color to indicate completion.
+
+### Warning
+Orange color for caution or intermediate states.
+
+```tsx
+<Progress value={75} variant="warning" />
+```
+Uses the warning color to draw attention.
+
+### Destructive
+Red color for errors or critical states.
+
+```tsx
+<Progress value={25} variant="destructive" />
+```
+Uses the destructive color for error states.
+
+## Sizes
+
+Control the height of the progress bar:
+
+### Small
+```tsx
+<Progress value={50} size="sm" />
+```
+4px height - subtle progress bar.
+
+### Medium
+```tsx
+<Progress value={50} size="md" />
+```
+8px height (default) - standard progress bar.
+
+### Large
+```tsx
+<Progress value={50} size="lg" />
+```
+12px height - prominent progress bar.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | - | Progress value from 0-100. Values outside this range are clamped. |
+| `variant` | `'default' \| 'success' \| 'warning' \| 'destructive'` | `'default'` | Color variant for different semantic meanings. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Height of the progress bar. |
+| `animationDuration` | `number` | `300` | Duration of the spring animation in milliseconds. |
+| `style` | `ViewStyle` | - | Additional styles to apply. |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Smooth Spring Animation**: Spring-based animation for natural, fluid motion
+- **Semantic Variants**: Four variants for different progress states (default, success, warning, destructive)
+- **Three Sizes**: Small, medium, and large progress bar heights
+- **Value Clamping**: Automatically clamps values to 0-100 range
+- **Theme Integration**: Uses theme colors with fallback defaults
+- **Customizable Animation**: Control animation duration
+- **Responsive**: Full-width by default, customizable via style prop
+
+## Animation Details
+
+The progress bar uses spring animation:
+- **Default Duration**: 300ms
+- **Animation Type**: Spring-based for natural motion
+- **Value Range**: 0-100 (clamped automatically)
+- **Width Animation**: Smooth width transitions as percentage
+
+## Examples
+
+### File Upload Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function UploadProgress() {
+  const [progress, setProgress] = useState(0);
+
+  const handleUpload = () => {
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += Math.random() * 30;
+      if (currentProgress >= 100) {
+        setProgress(100);
+        clearInterval(interval);
+      } else {
+        setProgress(currentProgress);
+      }
+    }, 500);
+  };
+
+  return (
+    <View style={{ gap: 12, padding: 16 }}>
+      <Text>Uploading file...</Text>
+      <Progress value={progress} size="md" />
+      <Text>{Math.round(progress)}%</Text>
+    </View>
+  );
+}
+```
+
+### Download Progress with Status
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function DownloadProgress() {
+  const [downloadProgress, setDownloadProgress] = useState(0);
+
+  return (
+    <View style={{ gap: 8, padding: 16 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontWeight: 'semibold' }}>Download: app.zip</Text>
+        <Text style={{ color: '#71717A' }}>
+          {Math.round(downloadProgress)} MB / 150 MB
+        </Text>
+      </View>
+      <Progress value={downloadProgress} size="md" />
+    </View>
+  );
+}
+```
+
+### Multi-Step Installation Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function InstallationProgress() {
+  const steps = [
+    { label: 'Downloading', progress: 100 },
+    { label: 'Extracting', progress: 100 },
+    { label: 'Installing', progress: 65 },
+    { label: 'Configuring', progress: 0 },
+  ];
+
+  const totalProgress = steps.reduce((sum, s) => sum + s.progress, 0) / (steps.length * 100) * 100;
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+          <Text style={{ fontWeight: 'semibold' }}>Installation Progress</Text>
+          <Text style={{ color: '#71717A' }}>{Math.round(totalProgress)}%</Text>
+        </View>
+        <Progress value={totalProgress} size="md" />
+      </View>
+
+      {steps.map((step, index) => (
+        <View key={index} style={{ gap: 4 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={{ color: '#71717A' }}>{step.label}</Text>
+            <Text style={{ color: '#71717A', fontSize: 12 }}>{step.progress}%</Text>
+          </View>
+          <Progress value={step.progress} size="sm" />
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Form Completion Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function FormProgress({ completedFields, totalFields }) {
+  const progress = (completedFields / totalFields) * 100;
+
+  return (
+    <View style={{ gap: 12, padding: 16, backgroundColor: '#f9f9f9', borderRadius: 8 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontWeight: 'semibold' }}>Form Completion</Text>
+        <Text style={{ color: '#71717A' }}>
+          {completedFields}/{totalFields}
+        </Text>
+      </View>
+      <Progress
+        value={progress}
+        variant={progress === 100 ? 'success' : 'default'}
+        size="md"
+      />
+      <Text style={{ fontSize: 12, color: '#71717A' }}>
+        {Math.round(progress)}% complete
+      </Text>
+    </View>
+  );
+}
+```
+
+### Batch Processing Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text, FlatList } from 'react-native';
+import { useState } from 'react';
+
+function BatchProcessing() {
+  const items = [
+    { id: '1', name: 'Image 1.jpg', progress: 100, status: 'success' },
+    { id: '2', name: 'Image 2.jpg', progress: 85, status: 'processing' },
+    { id: '3', name: 'Image 3.jpg', progress: 0, status: 'pending' },
+  ];
+
+  return (
+    <View style={{ gap: 16, padding: 16 }}>
+      <Text style={{ fontWeight: 'semibold' }}>Batch Processing</Text>
+      {items.map((item) => (
+        <View key={item.id} style={{ gap: 4 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text>{item.name}</Text>
+            <Text style={{ color: '#71717A', fontSize: 12 }}>{item.progress}%</Text>
+          </View>
+          <Progress
+            value={item.progress}
+            variant={
+              item.status === 'success'
+                ? 'success'
+                : item.status === 'pending'
+                ? 'warning'
+                : 'default'
+            }
+            size="sm"
+          />
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Data Sync Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function DataSyncProgress() {
+  const [syncProgress, setSyncProgress] = useState(45);
+  const estimatedTime = Math.ceil((100 - syncProgress) * 0.5);
+
+  return (
+    <View style={{ gap: 12, padding: 16, backgroundColor: '#fff', borderRadius: 8 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View>
+          <Text style={{ fontWeight: 'semibold' }}>Syncing Data</Text>
+          <Text style={{ color: '#71717A', fontSize: 12, marginTop: 4 }}>
+            {syncProgress}% complete
+          </Text>
+        </View>
+        {syncProgress < 100 && (
+          <Text style={{ fontSize: 12, color: '#71717A' }}>
+            ~{estimatedTime}s remaining
+          </Text>
+        )}
+      </View>
+      <Progress
+        value={syncProgress}
+        variant={syncProgress === 100 ? 'success' : 'default'}
+        size="md"
+      />
+    </View>
+  );
+}
+```
+
+### Error State Progress
+
+```tsx
+import { Progress } from '@/components/ui/progress';
+import { View, Text } from 'react-native';
+
+function ErrorProgress() {
+  return (
+    <View style={{ gap: 12, padding: 16, backgroundColor: '#fff5f5', borderRadius: 8 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ color: '#DC2626', fontWeight: 'semibold' }}>
+          Upload Failed
+        </Text>
+        <Text style={{ color: '#71717A', fontSize: 12 }}>25%</Text>
+      </View>
+      <Progress
+        value={25}
+        variant="destructive"
+        size="md"
+      />
+      <Text style={{ color: '#71717A', fontSize: 12 }}>
+        Connection lost. Retrying...
+      </Text>
+    </View>
+  );
+}
+```
+
+## Customization
+
+You can customize the progress bar using the `style` prop:
+
+```tsx
+<Progress
+  value={60}
+  size="md"
+  style={{
+    marginVertical: 8
+  }}
+/>
+```
+
+## Animation Control
+
+Adjust the animation duration for different effects:
+
+```tsx
+{/* Faster animation */}
+<Progress value={50} animationDuration={150} />
+
+{/* Slower animation for emphasis */}
+<Progress value={50} animationDuration={600} />
+```
+
+## Best Practices
+
+1. **Show Progress Early**: Start showing the progress bar as soon as a task begins
+2. **Use Appropriate Variants**: Match the variant to the status (success for completion, warning for caution, destructive for errors)
+3. **Provide Context**: Always show what is being progressed (label, percentage, or steps)
+4. **Estimate Accurately**: If showing time remaining, ensure estimates are realistic
+5. **Avoid Jumping**: Use smooth animations to avoid jarring visual changes
+6. **Complete Feedback**: Always show 100% when the task is done, then optionally replace with success state
+7. **Responsive Sizing**: Use appropriate sizes for the context (small for lists, medium for main content, large for emphasis)
+8. **Combine with Status Text**: Pair progress bars with descriptive text for clarity
+
+## Accessibility
+
+The Progress component provides semantic meaning through variants:
+- Use `success` variant to indicate task completion
+- Use `warning` variant for caution states
+- Use `destructive` variant for error states
+- Consider adding accessible labels or descriptions alongside progress bars
+
+## Performance Notes
+
+- Progress bars use spring animation with react-native-reanimated
+- Efficient width-only animation (no layout recalculation)
+- Safe to display multiple progress bars simultaneously
+- Consider throttling progress updates for high-frequency changes

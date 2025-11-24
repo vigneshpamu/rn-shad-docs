@@ -1,0 +1,462 @@
+# Divider
+
+A versatile component for creating visual dividers with optional labels. Supports horizontal and vertical orientations with customizable colors and thickness. Perfect for separating content sections with descriptive labels or as simple divider lines.
+
+## Installation
+
+```bash
+npx rn-shad-cli add divider
+```
+
+## Usage
+
+### Basic Horizontal Divider
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { View, Text } from 'react-native';
+
+<View>
+  <Text>Section One</Text>
+  <Divider />
+  <Text>Section Two</Text>
+</View>
+```
+
+### Divider with Label
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+
+<Divider label="OR" />
+```
+
+### Vertical Divider
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+
+<Divider orientation="vertical" />
+```
+
+### Custom Color
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+
+<Divider color="#FF0000" />
+<Divider label="Continue" color="#3B82F6" />
+```
+
+### Custom Thickness
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+
+<Divider thickness={2} />
+<Divider label="Separator" thickness={1.5} />
+```
+
+### Combined Props
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+
+<Divider
+  label="Advanced Settings"
+  orientation="horizontal"
+  color="#9333EA"
+  thickness={2}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Optional text label to display in the center of horizontal divider |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction of the divider |
+| `color` | `string` | `'#E4E4E7'` | Color of the divider line |
+| `thickness` | `number` | `1` | Height (horizontal) or width (vertical) in pixels |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+## Features
+
+- **Label Support**: Optional text labels centered on horizontal dividers
+- **Flexible Orientation**: Support for both horizontal and vertical layouts
+- **Customizable**: Full control over color and thickness
+- **Semantic Dividers**: Ideal for separating form sections with labels
+- **Lightweight**: Minimal component with no animations
+- **Type-Safe**: Full TypeScript support
+
+## Examples
+
+### Authentication Divider
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { Button } from '@/components/ui/button';
+import { View } from 'react-native';
+import { Mail } from 'lucide-react-native';
+
+function AuthenticationOptions() {
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      <Button icon={Mail}>
+        Sign in with Email
+      </Button>
+
+      <Divider label="OR" />
+
+      <Button variant="outline">
+        Sign in with Phone
+      </Button>
+    </View>
+  );
+}
+```
+
+### Form Section Dividers
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { View, Text } from 'react-native';
+import { Input } from '@/components/ui/input';
+
+function CompleteProfileForm() {
+  return (
+    <View style={{ padding: 16, gap: 20 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 12 }}>
+          Personal Details
+        </Text>
+        <Input placeholder="First Name" style={{ marginBottom: 8 }} />
+        <Input placeholder="Last Name" />
+      </View>
+
+      <Divider label="Contact Information" />
+
+      <View>
+        <Input placeholder="Email" style={{ marginBottom: 8 }} />
+        <Input placeholder="Phone Number" />
+      </View>
+
+      <Divider label="Address" />
+
+      <View>
+        <Input placeholder="Street Address" style={{ marginBottom: 8 }} />
+        <Input placeholder="City" style={{ marginBottom: 8 }} />
+        <Input placeholder="State" style={{ marginBottom: 8 }} />
+        <Input placeholder="ZIP Code" />
+      </View>
+    </View>
+  );
+}
+```
+
+### Multi-Step Process
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { Card, CardContent } from '@/components/ui/card';
+import { View, Text } from 'react-native';
+
+function CheckoutProcess() {
+  return (
+    <Card>
+      <CardContent>
+        <View>
+          <View style={{ paddingVertical: 16 }}>
+            <Text weight="semibold" style={{ marginBottom: 8 }}>
+              Step 1: Shipping Address
+            </Text>
+            <Text color="muted">123 Main Street, City, State 12345</Text>
+          </View>
+
+          <Divider label="Next" />
+
+          <View style={{ paddingVertical: 16 }}>
+            <Text weight="semibold" style={{ marginBottom: 8 }}>
+              Step 2: Payment Method
+            </Text>
+            <Text color="muted">Visa ending in 4242</Text>
+          </View>
+
+          <Divider label="Final Step" />
+
+          <View style={{ paddingVertical: 16 }}>
+            <Text weight="semibold" style={{ marginBottom: 8 }}>
+              Step 3: Order Summary
+            </Text>
+            <Text color="muted">Total: $99.99</Text>
+          </View>
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Settings with Grouped Sections
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { View, Text, Switch } from 'react-native';
+
+function SettingsScreen() {
+  const [darkMode, setDarkMode] = View.useState(false);
+  const [notifications, setNotifications] = View.useState(true);
+
+  return (
+    <View style={{ padding: 16, gap: 20 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 12 }}>
+          Appearance
+        </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text>Dark Mode</Text>
+          <Switch value={darkMode} onValueChange={setDarkMode} />
+        </View>
+      </View>
+
+      <Divider label="Notifications" />
+
+      <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <Text>Enable All</Text>
+          <Switch value={notifications} onValueChange={setNotifications} />
+        </View>
+        <Text color="muted" style={{ fontSize: 12 }}>
+          Get notified about important updates
+        </Text>
+      </View>
+
+      <Divider label="About" />
+
+      <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
+          <Text>Version</Text>
+          <Text color="muted">2.1.0</Text>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text>Build</Text>
+          <Text color="muted">1024</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+### Timeline View
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { View, Text } from 'react-native';
+import { CheckCircle } from 'lucide-react-native';
+
+function TimelineView() {
+  const events = [
+    { title: 'Order Placed', date: 'Nov 24, 2024', status: 'complete' },
+    { title: 'Processing', date: 'Nov 24, 2024', status: 'complete' },
+    { title: 'Shipped', date: 'Nov 25, 2024', status: 'complete' },
+    { title: 'In Transit', date: 'Nov 27, 2024', status: 'pending' },
+    { title: 'Delivered', date: 'Est. Nov 29, 2024', status: 'pending' },
+  ];
+
+  return (
+    <View style={{ padding: 16 }}>
+      {events.map((event, index) => (
+        <View key={event.title}>
+          <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <CheckCircle
+              size={24}
+              color={event.status === 'complete' ? '#16A34A' : '#A1A1AA'}
+            />
+            <View>
+              <Text weight="semibold">{event.title}</Text>
+              <Text color="muted" style={{ fontSize: 12 }}>
+                {event.date}
+              </Text>
+            </View>
+          </View>
+
+          {index < events.length - 1 && (
+            <View style={{ marginLeft: 12, marginVertical: 12 }}>
+              <Divider
+                orientation="vertical"
+                color={event.status === 'complete' ? '#16A34A' : '#E4E4E7'}
+                thickness={2}
+              />
+            </View>
+          )}
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Card Comparison
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { Card, CardContent } from '@/components/ui/card';
+import { View, Text } from 'react-native';
+import { Check, X } from 'lucide-react-native';
+
+function ComparisonCard() {
+  const features = [
+    { name: 'Basic Storage', basic: true, pro: true },
+    { name: 'Advanced Analytics', basic: false, pro: true },
+    { name: '24/7 Support', basic: false, pro: true },
+    { name: 'Custom Domain', basic: false, pro: true },
+  ];
+
+  return (
+    <Card>
+      <CardContent>
+        <View style={{ gap: 16 }}>
+          <View style={{ flexDirection: 'row', gap: 16 }}>
+            <View style={{ flex: 1 }}>
+              <Text weight="semibold">Basic</Text>
+            </View>
+            <Divider orientation="vertical" />
+            <View style={{ flex: 1 }}>
+              <Text weight="semibold">Pro</Text>
+            </View>
+          </View>
+
+          <Divider />
+
+          {features.map((feature) => (
+            <View key={feature.name}>
+              <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                  <Text>{feature.name}</Text>
+                </View>
+                <Divider orientation="vertical" />
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  {feature.pro ? (
+                    <Check size={20} color="#16A34A" />
+                  ) : (
+                    <X size={20} color="#A1A1AA" />
+                  )}
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Login/Signup Toggle
+
+```tsx
+import { Divider } from '@/components/ui/divider';
+import { View, Text, Pressable } from 'react-native';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+function LoginSignupForm() {
+  const [isLogin, setIsLogin] = View.useState(true);
+
+  return (
+    <View style={{ padding: 16, gap: 20 }}>
+      <View style={{ flexDirection: 'row', gap: 12 }}>
+        <Pressable
+          style={{ flex: 1, paddingVertical: 8 }}
+          onPress={() => setIsLogin(true)}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: isLogin ? '600' : '400',
+              color: isLogin ? '#18181B' : '#A1A1AA',
+            }}
+          >
+            Sign In
+          </Text>
+        </Pressable>
+
+        <Divider orientation="vertical" />
+
+        <Pressable
+          style={{ flex: 1, paddingVertical: 8 }}
+          onPress={() => setIsLogin(false)}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: !isLogin ? '600' : '400',
+              color: !isLogin ? '#18181B' : '#A1A1AA',
+            }}
+          >
+            Sign Up
+          </Text>
+        </Pressable>
+      </View>
+
+      <Divider />
+
+      <View style={{ gap: 12 }}>
+        <Input
+          placeholder={isLogin ? 'Email' : 'Full Name'}
+        />
+        <Input
+          placeholder="Password"
+          secureTextEntry
+        />
+        {!isLogin && (
+          <Input
+            placeholder="Confirm Password"
+            secureTextEntry
+          />
+        )}
+      </View>
+
+      <Button>
+        {isLogin ? 'Sign In' : 'Create Account'}
+      </Button>
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Label Text**: Keep labels short and descriptive (1-3 words):
+   ```tsx
+   <Divider label="OR" />
+   <Divider label="Next Step" />
+   ```
+
+2. **Horizontal vs Vertical**:
+   - Use `horizontal` for separating stacked sections
+   - Use `vertical` for separating side-by-side content (requires explicit height)
+
+3. **Semantic Labels**: Use descriptive labels that indicate what comes next:
+   - "OR" for alternative options
+   - "Next" for progression
+   - Section names for grouped content
+
+4. **Color Usage**: Match divider colors to content semantics:
+   - Default/border color for neutral dividers
+   - Success colors for completed steps
+   - Warning colors for important sections
+
+5. **Spacing**: Provide margin around dividers with labels:
+   ```tsx
+   <View style={{ marginVertical: 16, gap: 16 }}>
+     <SectionOne />
+     <Divider label="Section Two" />
+     <SectionTwo />
+   </View>
+   ```
+
+6. **Without Labels**: For simple separators without semantic meaning, use `Separator` component instead.
+
+7. **Accessibility**: Ensure label text is concise and descriptive for screen readers.

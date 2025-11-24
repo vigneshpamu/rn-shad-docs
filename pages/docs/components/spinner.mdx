@@ -1,0 +1,485 @@
+# Spinner
+
+An animated loading spinner component with multiple size options and customizable colors. Perfect for indicating ongoing operations with smooth continuous rotation.
+
+## Installation
+
+```bash
+npx rn-shad-cli add spinner
+```
+
+## Usage
+
+### Basic Spinner
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+
+<Spinner />
+```
+
+### Different Sizes
+
+```tsx
+{/* Small */}
+<Spinner size="sm" />
+
+{/* Medium (default) */}
+<Spinner size="md" />
+
+{/* Large */}
+<Spinner size="lg" />
+
+{/* Custom size */}
+<Spinner size={48} />
+```
+
+### Custom Colors
+
+```tsx
+{/* Primary color (default) */}
+<Spinner color="#18181B" />
+
+{/* Success color */}
+<Spinner color="#16A34A" />
+
+{/* Custom color */}
+<Spinner color="#3B82F6" />
+```
+
+## Sizes
+
+The spinner component has three built-in sizes, or you can pass a custom number:
+
+### Small
+```tsx
+<Spinner size="sm" />
+```
+16px diameter - subtle loading indicator.
+
+### Medium
+```tsx
+<Spinner size="md" />
+```
+24px diameter (default) - standard loading indicator.
+
+### Large
+```tsx
+<Spinner size="lg" />
+```
+32px diameter - prominent loading indicator.
+
+### Custom Size
+```tsx
+<Spinner size={40} />
+```
+Pass a number for any custom size in pixels.
+
+## Colors
+
+Customize the spinner color to match your design:
+
+### Default (Primary)
+```tsx
+<Spinner color="#18181B" />
+```
+Uses the primary theme color by default.
+
+### Custom Colors
+```tsx
+<Spinner color="#3B82F6" />
+<Spinner color="#EC4899" />
+<Spinner color="#F59E0B" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'sm' \| 'md' \| 'lg' \| number` | `'md'` | Size of the spinner. Accepts string presets (16, 24, 32px) or custom number in pixels. |
+| `color` | `string` | `primary` | Color of the spinner's top border. Accepts hex, rgb, or color names. |
+| `thickness` | `number` | `2` | Width of the spinner ring in pixels. |
+| `style` | `ViewStyle` | - | Additional styles to apply. |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Smooth Rotation**: Continuous 360-degree rotation with linear easing
+- **Multiple Sizes**: Three preset sizes (small, medium, large) plus custom sizes
+- **Customizable Color**: Full control over spinner color
+- **Adjustable Thickness**: Configure the ring thickness
+- **Theme Integration**: Uses primary color from theme with fallback
+- **Lightweight**: Optimized with react-native-reanimated
+- **Centered**: Automatically centers content
+
+## Animation Details
+
+The spinner uses continuous rotation animation:
+- **Duration**: 1000ms per rotation
+- **Rotation**: 360 degrees
+- **Easing**: Linear for smooth, consistent speed
+- **Loop**: Infinite repetition until component unmounts
+
+## Examples
+
+### Simple Loading Screen
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function LoadingScreen() {
+  return (
+    <View style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 16
+    }}>
+      <Spinner size="lg" />
+      <Text style={{ fontSize: 16, color: '#71717A' }}>
+        Loading...
+      </Text>
+    </View>
+  );
+}
+```
+
+### Data Fetching with Spinner
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+
+function DataFetcher() {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setData({ name: 'John Doe', email: 'john@example.com' });
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={{ padding: 16, justifyContent: 'center', gap: 12 }}>
+        <Text style={{ fontWeight: 'semibold' }}>Fetching user data...</Text>
+        <Spinner size="md" />
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ padding: 16 }}>
+      <Text>Name: {data.name}</Text>
+      <Text>Email: {data.email}</Text>
+    </View>
+  );
+}
+```
+
+### Loading Overlay
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function LoadingOverlay({ message = 'Processing...' }) {
+  return (
+    <View style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 16
+    }}>
+      <Spinner size="lg" color="#FFFFFF" />
+      <Text style={{ color: '#FFFFFF', fontSize: 16 }}>
+        {message}
+      </Text>
+    </View>
+  );
+}
+```
+
+### Button Loading State
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text, Pressable } from 'react-native';
+import { useState } from 'react';
+
+function SubmitButton() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePress = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Pressable
+      onPress={handlePress}
+      disabled={isLoading}
+      style={{
+        backgroundColor: isLoading ? '#E4E4E7' : '#18181B',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        alignItems: 'center',
+        opacity: isLoading ? 0.7 : 1
+      }}
+    >
+      {isLoading ? (
+        <Spinner size="sm" color="#FFFFFF" />
+      ) : (
+        <Text style={{ color: '#FFFFFF', fontWeight: 'semibold' }}>
+          Submit
+        </Text>
+      )}
+    </Pressable>
+  );
+}
+```
+
+### Page Transition Loading
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function PageTransitionLoader() {
+  return (
+    <View style={{
+      paddingVertical: 40,
+      paddingHorizontal: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 12
+    }}>
+      <Spinner size="md" />
+      <Text style={{ color: '#71717A', fontSize: 14 }}>
+        Loading content...
+      </Text>
+    </View>
+  );
+}
+```
+
+### List Item Loading
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function LoadingListItem() {
+  return (
+    <View style={{
+      flexDirection: 'row',
+      gap: 12,
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: '#E4E4E7',
+      alignItems: 'center'
+    }}>
+      <Spinner size="sm" />
+      <Text style={{ color: '#71717A', flex: 1 }}>
+        Loading item...
+      </Text>
+    </View>
+  );
+}
+```
+
+### Multiple Spinners with Different Sizes
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function SpinnerShowcase() {
+  return (
+    <View style={{ padding: 16, gap: 24 }}>
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontWeight: 'semibold' }}>Small</Text>
+        <Spinner size="sm" />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontWeight: 'semibold' }}>Medium</Text>
+        <Spinner size="md" />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontWeight: 'semibold' }}>Large</Text>
+        <Spinner size="lg" />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text style={{ fontWeight: 'semibold' }}>Custom (40px)</Text>
+        <Spinner size={40} />
+      </View>
+    </View>
+  );
+}
+```
+
+### Card with Loading State
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function LoadingCard() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <View style={{
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: '#E4E4E7'
+    }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontWeight: 'semibold' }}>Data Processing</Text>
+          <Text style={{ color: '#71717A', fontSize: 12, marginTop: 4 }}>
+            {isLoading ? 'In progress...' : 'Complete'}
+          </Text>
+        </View>
+        {isLoading && <Spinner size="md" />}
+      </View>
+    </View>
+  );
+}
+```
+
+### Colored Spinners
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function ColoredSpinners() {
+  const spinners = [
+    { label: 'Primary', color: '#18181B' },
+    { label: 'Success', color: '#16A34A' },
+    { label: 'Warning', color: '#D97706' },
+    { label: 'Destructive', color: '#EF4444' },
+  ];
+
+  return (
+    <View style={{ gap: 24, padding: 16 }}>
+      {spinners.map((spinner) => (
+        <View key={spinner.label} style={{ gap: 8 }}>
+          <Text style={{ fontWeight: 'semibold' }}>{spinner.label}</Text>
+          <Spinner color={spinner.color} />
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Spinner with Custom Thickness
+
+```tsx
+import { Spinner } from '@/components/ui/spinner';
+import { View, Text } from 'react-native';
+
+function ThicknessVariations() {
+  return (
+    <View style={{ gap: 24, padding: 16 }}>
+      <View style={{ gap: 8 }}>
+        <Text>Thin (1px)</Text>
+        <Spinner size="md" thickness={1} />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text>Default (2px)</Text>
+        <Spinner size="md" thickness={2} />
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <Text>Thick (4px)</Text>
+        <Spinner size="md" thickness={4} />
+      </View>
+    </View>
+  );
+}
+```
+
+## Customization
+
+You can customize the spinner appearance using props:
+
+```tsx
+<Spinner
+  size={48}
+  color="#3B82F6"
+  thickness={3}
+  style={{
+    marginVertical: 16
+  }}
+/>
+```
+
+## Semantic Colors
+
+Use theme colors for semantic meaning:
+
+```tsx
+{/* Success state */}
+<Spinner color="#16A34A" />
+
+{/* Warning state */}
+<Spinner color="#D97706" />
+
+{/* Error state */}
+<Spinner color="#EF4444" />
+```
+
+## Best Practices
+
+1. **Use Appropriate Sizes**: Small for inline loading, medium for standard, large for prominent
+2. **Pair with Text**: Always include text describing what's loading
+3. **Consistent Color**: Match spinner color to your app's theme
+4. **Avoid Infinite Loading**: Set timeouts or error states to prevent indefinite loading
+5. **Overlay Usage**: Use semi-transparent backgrounds for loading overlays
+6. **Multiple Spinners**: Limit multiple spinners on the same screen to avoid visual clutter
+7. **Position Carefully**: Center spinners or place them where user attention should focus
+8. **Combine with Progress**: Use spinner for indeterminate loading, progress bar for determinate
+
+## Accessibility
+
+Spinner components are visual indicators. For accessibility:
+- Pair spinners with descriptive text labels
+- Use loading states in your component logic
+- Provide alternative content or error states
+- Consider adding accessible announcements for screen readers
+
+## Performance Notes
+
+- Spinners use react-native-reanimated for smooth 60fps animation
+- Minimal performance impact even with multiple spinners
+- Rotation is the only animated property (no layout recalculation)
+- Safe to use in lists and complex layouts
+- Consider hiding spinners when not needed (loading complete) to free resources

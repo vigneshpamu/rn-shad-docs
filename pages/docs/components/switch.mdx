@@ -1,0 +1,285 @@
+# Switch
+
+A toggle switch component that allows users to turn a feature or setting on and off. The Switch component features smooth animations and supports multiple sizes with optional theme integration.
+
+## Installation
+
+```bash
+npx rn-shad-cli add switch
+```
+
+## Usage
+
+```tsx
+import { Switch } from '@/components/ui/switch';
+```
+
+## Examples
+
+### Basic Switch
+
+```tsx
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { View } from 'react-native';
+
+export function BasicSwitch() {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  return (
+    <View>
+      <Switch
+        value={isEnabled}
+        onValueChange={setIsEnabled}
+      />
+    </View>
+  );
+}
+```
+
+### Switch Sizes
+
+```tsx
+import { Switch } from '@/components/ui/switch';
+import { View } from 'react-native';
+
+export function SwitchSizes() {
+  return (
+    <View style={{ gap: 16 }}>
+      <Switch value={true} size="sm" />
+      <Switch value={true} size="md" />
+      <Switch value={true} size="lg" />
+    </View>
+  );
+}
+```
+
+### Disabled Switch
+
+```tsx
+import { Switch } from '@/components/ui/switch';
+import { View } from 'react-native';
+
+export function DisabledSwitch() {
+  return (
+    <View style={{ gap: 12 }}>
+      <Switch value={true} disabled />
+      <Switch value={false} disabled />
+    </View>
+  );
+}
+```
+
+### Switch with Label
+
+```tsx
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { View } from 'react-native';
+
+export function SwitchWithLabel() {
+  const [notifications, setNotifications] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+
+  return (
+    <View style={{ gap: 16 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Label>Enable Notifications</Label>
+        <Switch
+          value={notifications}
+          onValueChange={setNotifications}
+        />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Label>Dark Mode</Label>
+        <Switch
+          value={darkMode}
+          onValueChange={setDarkMode}
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+### In a Form
+
+```tsx
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { View, Pressable, Text } from 'react-native';
+
+export function SettingsForm() {
+  const [settings, setSettings] = useState({
+    emailNotifications: true,
+    smsAlerts: false,
+    marketingEmails: true,
+    twoFactorAuth: true,
+  });
+
+  const handleToggle = (key: keyof typeof settings) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const handleSave = () => {
+    console.log('Settings saved:', settings);
+  };
+
+  return (
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label>Email Notifications</Label>
+          <Switch
+            value={settings.emailNotifications}
+            onValueChange={() => handleToggle('emailNotifications')}
+          />
+        </View>
+        <Text style={{ fontSize: 12, color: '#666' }}>
+          Receive notifications via email
+        </Text>
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label>SMS Alerts</Label>
+          <Switch
+            value={settings.smsAlerts}
+            onValueChange={() => handleToggle('smsAlerts')}
+          />
+        </View>
+        <Text style={{ fontSize: 12, color: '#666' }}>
+          Get alerts via text message
+        </Text>
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label>Marketing Emails</Label>
+          <Switch
+            value={settings.marketingEmails}
+            onValueChange={() => handleToggle('marketingEmails')}
+          />
+        </View>
+        <Text style={{ fontSize: 12, color: '#666' }}>
+          Receive promotional content
+        </Text>
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label>Two-Factor Authentication</Label>
+          <Switch
+            value={settings.twoFactorAuth}
+            onValueChange={() => handleToggle('twoFactorAuth')}
+          />
+        </View>
+        <Text style={{ fontSize: 12, color: '#666' }}>
+          Add an extra layer of security
+        </Text>
+      </View>
+
+      <Pressable
+        style={{ backgroundColor: '#18181B', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 6 }}
+        onPress={handleSave}
+      >
+        <Text style={{ color: '#FAFAFA', textAlign: 'center', fontWeight: '600' }}>
+          Save Settings
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Custom Animation Duration
+
+```tsx
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { View } from 'react-native';
+
+export function SwitchWithCustomAnimation() {
+  const [slow, setSlow] = useState(false);
+  const [fast, setFast] = useState(false);
+
+  return (
+    <View style={{ gap: 16 }}>
+      <Switch
+        value={slow}
+        onValueChange={setSlow}
+        animationDuration={600}
+      />
+      <Switch
+        value={fast}
+        onValueChange={setFast}
+        animationDuration={100}
+      />
+    </View>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `boolean` | - | Whether the switch is turned on |
+| `onValueChange` | `(value: boolean) => void` | - | Callback fired when the switch is toggled |
+| `disabled` | `boolean` | `false` | Disables the switch and reduces opacity |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the switch component |
+| `animationDuration` | `number` | `300` | Duration of the toggle animation in milliseconds |
+
+## Features
+
+### Smooth Animations
+The Switch component uses React Native Reanimated to provide smooth, 60fps animations powered by spring physics. The animation duration is configurable to match your app's interaction style.
+
+### Multiple Sizes
+Three size options (small, medium, large) allow the switch to fit different UI contexts while maintaining proper accessibility.
+
+### Theme Support
+The component automatically integrates with the theme system if available, allowing colors to respond to theme changes. Falls back to sensible defaults if theme is not available.
+
+### Accessibility
+- Fully pressable with proper touch targets
+- Support for disabled state with visual feedback (opacity reduction)
+- Works with React Native's accessibility props when needed
+
+### Responsive Visual Feedback
+- Track color changes smoothly from border color (off) to primary color (on)
+- Thumb shadow provides depth and visual polish
+- Disabled state shows reduced opacity for clear affordance
+
+## Component Details
+
+### Animation Behavior
+The switch uses a spring animation configured via the `animationDuration` prop. Lower values (100-150ms) provide snappy interactions, while higher values (400-600ms) give a more deliberate feel.
+
+### Size Configuration
+
+| Size | Track Width | Track Height | Thumb Size |
+|------|-------------|--------------|-----------|
+| `sm` | 36px | 20px | 16px |
+| `md` | 44px | 24px | 20px |
+| `lg` | 52px | 28px | 24px |
+
+### Disabled State
+When disabled, the switch:
+- Reduces opacity to 50%
+- Sets track color to muted color
+- Does not respond to press events
+- Maintains the current value visually
+
+## Best Practices
+
+1. **Use with Labels**: Always pair with a `<Label>` component for clarity about what the switch controls
+2. **Provide Context**: Show a description below the switch explaining what happens when toggled
+3. **Accessible Spacing**: Ensure sufficient spacing between multiple switches for easy tapping
+4. **Form Integration**: Combine with other form components for complete settings interfaces
+5. **Loading States**: Disable the switch while processing changes to prevent duplicate toggles

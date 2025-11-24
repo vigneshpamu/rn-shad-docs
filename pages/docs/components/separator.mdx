@@ -1,0 +1,374 @@
+# Separator
+
+A simple, lightweight component for creating visual dividers between content. Supports horizontal and vertical orientations with customizable thickness and color. Perfect for organizing content visually with minimal styling overhead.
+
+## Installation
+
+```bash
+npx rn-shad-cli add separator
+```
+
+## Usage
+
+### Basic Horizontal Separator
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text } from 'react-native';
+
+<View>
+  <Text>Section One</Text>
+  <Separator />
+  <Text>Section Two</Text>
+</View>
+```
+
+### Horizontal Separator
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+
+<Separator orientation="horizontal" />
+```
+
+### Vertical Separator
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+
+<Separator orientation="vertical" />
+```
+
+### Custom Thickness
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+
+<Separator thickness={2} />
+<Separator thickness={0.5} />
+```
+
+### Custom Color
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+
+<Separator color="#FF0000" />
+```
+
+### Combined Props
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+
+<Separator
+  orientation="vertical"
+  thickness={2}
+  color="#3B82F6"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction of the separator |
+| `thickness` | `number` | `1` | Height (horizontal) or width (vertical) in pixels |
+| `color` | `string` | Theme border color | Color of the separator line |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Lightweight**: Minimal component with no animations or complex behavior
+- **Flexible Orientation**: Support for both horizontal and vertical layouts
+- **Customizable**: Full control over color and thickness
+- **Theme Integration**: Automatic theme color support with border color default
+- **Layout Support**: Works seamlessly with flexbox layouts
+- **Type-Safe**: Full TypeScript support
+
+## Examples
+
+### List Separators
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text, FlatList } from 'react-native';
+
+function ListWithSeparators() {
+  const items = [
+    { id: '1', title: 'Item One' },
+    { id: '2', title: 'Item Two' },
+    { id: '3', title: 'Item Three' },
+  ];
+
+  return (
+    <View>
+      {items.map((item, index) => (
+        <View key={item.id}>
+          <Text style={{ paddingVertical: 12 }}>{item.title}</Text>
+          {index < items.length - 1 && <Separator />}
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+### Multi-Section Layout
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text } from 'react-native';
+
+function MultiSectionLayout() {
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>
+          Account Information
+        </Text>
+        <Text color="muted">email@example.com</Text>
+        <Text color="muted">Premium Member</Text>
+      </View>
+
+      <Separator />
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>
+          Preferences
+        </Text>
+        <Text color="muted">Dark Mode: On</Text>
+        <Text color="muted">Notifications: Enabled</Text>
+      </View>
+
+      <Separator />
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>
+          Help & Support
+        </Text>
+        <Text color="muted">Contact Us</Text>
+        <Text color="muted">Privacy Policy</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Side-by-Side Content Separator
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text } from 'react-native';
+
+function SideBySideLayout() {
+  return (
+    <View style={{ flexDirection: 'row', height: 100 }}>
+      <View style={{ flex: 1, paddingRight: 12 }}>
+        <Text weight="semibold">Left Panel</Text>
+        <Text color="muted" style={{ marginTop: 8 }}>
+          Content goes here
+        </Text>
+      </View>
+
+      <Separator orientation="vertical" thickness={1} />
+
+      <View style={{ flex: 1, paddingLeft: 12 }}>
+        <Text weight="semibold">Right Panel</Text>
+        <Text color="muted" style={{ marginTop: 8 }}>
+          Content goes here
+        </Text>
+      </View>
+    </View>
+  );
+}
+```
+
+### Form Section Dividers
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text } from 'react-native';
+import { Input } from '@/components/ui/input';
+
+function FormWithSections() {
+  return (
+    <View style={{ padding: 16, gap: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 12 }}>
+          Personal Information
+        </Text>
+        <Input placeholder="First Name" style={{ marginBottom: 8 }} />
+        <Input placeholder="Last Name" style={{ marginBottom: 8 }} />
+        <Input placeholder="Email" style={{ marginBottom: 8 }} />
+      </View>
+
+      <Separator />
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 12 }}>
+          Address
+        </Text>
+        <Input placeholder="Street Address" style={{ marginBottom: 8 }} />
+        <Input placeholder="City" style={{ marginBottom: 8 }} />
+        <Input placeholder="ZIP Code" />
+      </View>
+
+      <Separator />
+
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 12 }}>
+          Preferences
+        </Text>
+        <Input placeholder="Preferred Language" />
+      </View>
+    </View>
+  );
+}
+```
+
+### Card Content Dividers
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
+import { View, Text } from 'react-native';
+
+function CardWithDividedContent() {
+  return (
+    <Card>
+      <CardContent>
+        <View>
+          <View style={{ paddingVertical: 12 }}>
+            <Text weight="semibold">Downloads: 1,234</Text>
+            <Text color="muted" style={{ marginTop: 4 }}>
+              Across all platforms
+            </Text>
+          </View>
+
+          <Separator />
+
+          <View style={{ paddingVertical: 12 }}>
+            <Text weight="semibold">Rating: 4.8/5</Text>
+            <Text color="muted" style={{ marginTop: 4 }}>
+              Based on 567 reviews
+            </Text>
+          </View>
+
+          <Separator />
+
+          <View style={{ paddingVertical: 12 }}>
+            <Text weight="semibold">Last Updated: Today</Text>
+            <Text color="muted" style={{ marginTop: 4 }}>
+              Version 2.1.0
+            </Text>
+          </View>
+        </View>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### Navigation Menu Separator
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Pressable, Text } from 'react-native';
+import { Settings, LogOut, User } from 'lucide-react-native';
+
+function NavigationMenu() {
+  const menuItems = [
+    { icon: User, label: 'Profile' },
+    { icon: Settings, label: 'Settings' },
+  ];
+
+  return (
+    <View style={{ borderWidth: 1, borderColor: '#E4E4E7', borderRadius: 8 }}>
+      {menuItems.map((item, index) => (
+        <View key={item.label}>
+          <Pressable
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 12, gap: 12 }}
+          >
+            <item.icon size={20} />
+            <Text>{item.label}</Text>
+          </Pressable>
+          {index < menuItems.length - 1 && <Separator />}
+        </View>
+      ))}
+
+      <Separator />
+
+      <Pressable
+        style={{ flexDirection: 'row', alignItems: 'center', padding: 12, gap: 12 }}
+      >
+        <LogOut size={20} color="#EF4444" />
+        <Text style={{ color: '#EF4444' }}>Log Out</Text>
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Progress Steps
+
+```tsx
+import { Separator } from '@/components/ui/separator';
+import { View, Text } from 'react-native';
+import { CheckCircle, Circle } from 'lucide-react-native';
+
+function ProgressSteps() {
+  const steps = [
+    { label: 'Personal Info', completed: true },
+    { label: 'Address', completed: true },
+    { label: 'Verification', completed: false },
+  ];
+
+  return (
+    <View style={{ gap: 16 }}>
+      {steps.map((step, index) => (
+        <View key={step.label}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            {step.completed ? (
+              <CheckCircle size={24} color="#16A34A" />
+            ) : (
+              <Circle size={24} color="#A1A1AA" />
+            )}
+            <Text weight="medium">{step.label}</Text>
+          </View>
+          {index < steps.length - 1 && (
+            <View style={{ marginLeft: 12, marginVertical: 8 }}>
+              <Separator orientation="vertical" thickness={2} color="#E4E4E7" />
+            </View>
+          )}
+        </View>
+      ))}
+    </View>
+  );
+}
+```
+
+## Best Practices
+
+1. **Horizontal Separators**: Use for separating sections vertically stacked.
+
+2. **Vertical Separators**: Use for separating side-by-side content, requires explicit height.
+
+3. **Spacing**: Add margin around separators to create breathing room:
+   ```tsx
+   <View style={{ marginVertical: 16 }}>
+     <Separator />
+   </View>
+   ```
+
+4. **Thickness**: Keep thickness between 0.5 and 2 pixels for most use cases. Thicker separators can feel heavy.
+
+5. **Color Consistency**: Use theme border color for consistency, or choose semantic colors based on context.
+
+6. **Alternative to Borders**: Use separators instead of borders on container elements for cleaner layouts.
+
+7. **List Items**: Omit the last separator in a list to avoid redundancy with container borders.
+
+8. **Accessibility**: Separators are purely visual and don't need accessibility labels.

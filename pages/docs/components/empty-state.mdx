@@ -1,0 +1,531 @@
+# EmptyState
+
+A composable component for displaying empty states, no results, or placeholder content. The empty state component combines an icon, title, optional description, and action button area for comprehensive feedback when there's nothing to display.
+
+## Installation
+
+```bash
+npx rn-shad-cli add empty-state
+```
+
+## Usage
+
+### Basic Empty State
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+
+<EmptyState title="No results found" />
+```
+
+### With Description
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+
+<EmptyState
+  title="No tasks"
+  description="Create your first task to get started"
+/>
+```
+
+### With Custom Icon
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Search } from 'lucide-react-native';
+
+<EmptyState
+  icon={Search}
+  title="No search results"
+  description="Try adjusting your search terms"
+/>
+```
+
+### With Action Button
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+
+<EmptyState
+  title="No items yet"
+  description="Get started by creating your first item"
+  action={
+    <Button variant="primary" onPress={() => console.log('Create')}>
+      Create Item
+    </Button>
+  }
+/>
+```
+
+### Empty Inbox State
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+
+<EmptyState
+  title="Your inbox is empty"
+  description="All caught up! No new messages"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | `LucideIcon` | `Inbox` | Icon component from lucide-react-native |
+| `title` | `string` | - | Main heading text |
+| `description` | `string` | - | Optional descriptive text |
+| `action` | `React.ReactNode` | - | Optional action button or element |
+| `style` | `ViewStyle` | - | Additional style overrides |
+
+Plus all standard React Native `ViewProps`.
+
+## Features
+
+- **Flexible Icon Support**: Use any Lucide icon or custom component
+- **Optional Description**: Include helpful context about the empty state
+- **Action Area**: Built-in space for buttons or interactive elements
+- **Centered Layout**: Automatically centers content with proper spacing
+- **Semantic Colors**: Muted gray icon for visual hierarchy
+- **Customizable**: Override all styling with ViewStyle prop
+- **Theme Integration**: Automatic color and typography support
+
+## Examples
+
+### No Search Results
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Search } from 'lucide-react-native';
+import { View, TextInput } from 'react-native';
+import { useState } from 'react';
+
+function SearchResults() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ padding: 16 }}>
+        <TextInput
+          placeholder="Search..."
+          value={query}
+          onChangeText={setQuery}
+          style={{
+            borderWidth: 1,
+            borderColor: '#E4E4E7',
+            borderRadius: 8,
+            padding: 12,
+          }}
+        />
+      </View>
+
+      {results.length === 0 ? (
+        <EmptyState
+          icon={Search}
+          title="No results found"
+          description={query ? `No results for "${query}"` : 'Enter a search term to get started'}
+        />
+      ) : (
+        <View style={{ flex: 1 }}>
+          {/* Results list */}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### Create First Item
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react-native';
+
+function ItemList() {
+  const [items, setItems] = useState([]);
+
+  return items.length === 0 ? (
+    <EmptyState
+      icon={Plus}
+      title="No items yet"
+      description="Create your first item to get started"
+      action={
+        <Button
+          variant="primary"
+          onPress={() => setItems([...items, 'New Item'])}
+        >
+          Create Item
+        </Button>
+      }
+    />
+  ) : (
+    <View>
+      {/* Items list */}
+    </View>
+  );
+}
+```
+
+### No Notifications
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Bell } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+
+function NotificationCenter() {
+  const notifications = [];
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ paddingVertical: 16, paddingHorizontal: 16, borderBottomWidth: 1, borderColor: '#E4E4E7' }}>
+        <Text variant="h2" weight="bold">Notifications</Text>
+      </View>
+
+      {notifications.length === 0 ? (
+        <EmptyState
+          icon={Bell}
+          title="No notifications"
+          description="You're all caught up! Check back later for updates"
+        />
+      ) : (
+        <View style={{ flex: 1 }}>
+          {/* Notifications list */}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### File Upload Empty State
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Upload, File } from 'lucide-react-native';
+import { View, Text, Pressable } from 'react-native';
+
+function FileUploadArea() {
+  const [files, setFiles] = useState([]);
+
+  return (
+    <View style={{ flex: 1, gap: 16, padding: 16 }}>
+      <Text weight="semibold">Upload Files</Text>
+
+      <Pressable
+        style={{
+          borderWidth: 2,
+          borderColor: '#BFDBFE',
+          borderRadius: 8,
+          borderStyle: 'dashed',
+          padding: 32,
+          alignItems: 'center',
+        }}
+      >
+        <Upload size={32} color="#3B82F6" />
+        <Text weight="semibold" style={{ marginTop: 8 }}>
+          Drag files here
+        </Text>
+        <Text color="muted" style={{ marginTop: 4 }}>
+          or click to browse
+        </Text>
+      </Pressable>
+
+      {files.length === 0 ? (
+        <EmptyState
+          icon={File}
+          title="No files uploaded"
+          description="Files you upload will appear here"
+        />
+      ) : (
+        <View>
+          {/* Files list */}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### No Favorites
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Heart } from 'lucide-react-native';
+import { View } from 'react-native';
+
+function FavoritesScreen() {
+  const [favorites, setFavorites] = useState([]);
+
+  return (
+    <View style={{ flex: 1 }}>
+      {favorites.length === 0 ? (
+        <EmptyState
+          icon={Heart}
+          title="No favorites yet"
+          description="Items you favorite will appear here"
+          action={
+            <Button variant="secondary" onPress={() => console.log('Browse items')}>
+              Browse Items
+            </Button>
+          }
+        />
+      ) : (
+        <View>
+          {/* Favorites list */}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### Offline Empty State
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { WifiOff } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+
+function OfflineMessage({ isOnline }: { isOnline: boolean }) {
+  return !isOnline ? (
+    <EmptyState
+      icon={WifiOff}
+      title="No internet connection"
+      description="Check your network and try again"
+      action={
+        <Button variant="default" onPress={() => console.log('Retry')}>
+          Retry
+        </Button>
+      }
+    />
+  ) : (
+    <View>
+      {/* Content */}
+    </View>
+  );
+}
+```
+
+### Permission Denied
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Lock } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+
+function PermissionDenied() {
+  return (
+    <EmptyState
+      icon={Lock}
+      title="Access Denied"
+      description="You don't have permission to view this content"
+      action={
+        <Button variant="default" onPress={() => console.log('Request Access')}>
+          Request Access
+        </Button>
+      }
+    />
+  );
+}
+```
+
+### Filtered Results Empty State
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Filter } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
+
+function FilteredList() {
+  const [filters, setFilters] = useState({ category: 'electronics' });
+  const [results, setResults] = useState([]);
+
+  return (
+    <View style={{ flex: 1, gap: 16, padding: 16 }}>
+      <View>
+        <Text weight="semibold" style={{ marginBottom: 8 }}>Category: {filters.category}</Text>
+        <Button
+          variant="secondary"
+          size="sm"
+          onPress={() => setFilters({ category: 'all' })}
+        >
+          Clear Filters
+        </Button>
+      </View>
+
+      {results.length === 0 ? (
+        <EmptyState
+          icon={Filter}
+          title="No items match your filters"
+          description="Try adjusting your filter criteria"
+          action={
+            <Button
+              variant="primary"
+              onPress={() => setFilters({ category: 'all' })}
+            >
+              Clear All Filters
+            </Button>
+          }
+        />
+      ) : (
+        <View>
+          {/* Filtered results */}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
+### Maintenance Mode
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { AlertCircle } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+
+function MaintenanceScreen() {
+  return (
+    <EmptyState
+      icon={AlertCircle}
+      title="Under Maintenance"
+      description="We're making improvements. Check back soon!"
+    />
+  );
+}
+```
+
+### Custom Action Area
+
+```tsx
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react-native';
+import { View } from 'react-native';
+
+function CustomActionExample() {
+  return (
+    <EmptyState
+      icon={Plus}
+      title="No items"
+      description="Get started by creating your first item"
+      action={
+        <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+          <Button variant="primary" onPress={() => console.log('Create')}>
+            Create
+          </Button>
+          <Button variant="secondary" onPress={() => console.log('Import')}>
+            Import
+          </Button>
+        </View>
+      }
+    />
+  );
+}
+```
+
+## Best Practices
+
+1. **Meaningful Icons**: Choose icons that clearly represent the empty state situation:
+   - Search icon for no search results
+   - Inbox icon for empty inbox (default)
+   - Plus icon for create first item
+   - Filter icon for filtered results
+   - Bell icon for no notifications
+
+2. **Clear Titles**: Keep titles concise and specific:
+   ```tsx
+   // Good
+   <EmptyState title="No results found" />
+
+   // Avoid
+   <EmptyState title="There are currently no items in this section at this time" />
+   ```
+
+3. **Helpful Descriptions**: Provide context about why the state is empty:
+   ```tsx
+   <EmptyState
+     title="No tasks"
+     description="Create your first task to get started"
+   />
+   ```
+
+4. **Action Buttons**: Always provide a path forward when possible:
+   ```tsx
+   <EmptyState
+     title="No items yet"
+     action={<Button>Create Item</Button>}
+   />
+   ```
+
+5. **Avoid Generic Messages**: Be specific about what's missing:
+   ```tsx
+   // Good
+   <EmptyState title="No search results for 'xyz'" />
+
+   // Less helpful
+   <EmptyState title="No results" />
+   ```
+
+6. **Icon Colors**: The default gray icon color works for most cases; customize only if needed
+
+7. **Spacing**: The component handles internal spacing; just provide the content
+
+8. **Accessibility**: Ensure titles and descriptions are descriptive without relying on icons alone
+
+## Icon Examples from Lucide
+
+Common icons to use with EmptyState:
+
+```tsx
+import {
+  Inbox,        // Default, general empty state
+  Search,       // No search results
+  Plus,         // Create first item
+  Heart,        // No favorites
+  Bell,         // No notifications
+  Upload,       // No uploads
+  Folder,       // No files
+  TrendingUp,   // No data/analytics
+  MessageSquare,// No messages
+  Settings,     // No settings available
+  WifiOff,      // Offline
+  AlertCircle,  // Error/warning
+  Lock,         // Permission denied
+} from 'lucide-react-native';
+```
+
+## Styling
+
+Override the default styling by passing custom styles:
+
+```tsx
+<EmptyState
+  title="No items"
+  style={{
+    backgroundColor: '#F9FAFB',
+    paddingVertical: 64,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+  }}
+/>
+```
+
+## Performance
+
+- **Lightweight**: Minimal re-renders and no complex animations
+- **Efficient**: No heavy computations or state management
+- **Composable**: Works well with FlatList and ScrollView
+- **Fast**: Instant render with no animation overhead

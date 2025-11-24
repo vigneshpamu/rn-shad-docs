@@ -1,0 +1,216 @@
+# Input
+
+A beautifully animated text input component with label, error states, icons, and focus animations. Built with React Native Reanimated for smooth 60fps animations.
+
+## Installation
+
+```bash
+npx rn-shad-cli add input
+```
+
+## Usage
+
+### Basic Input
+
+```tsx
+import { Input } from '@/components/ui/input';
+
+<Input
+  label="Email"
+  placeholder="Enter your email"
+  value={email}
+  onChangeText={setEmail}
+/>
+```
+
+### With Icons
+
+```tsx
+import { Input } from '@/components/ui/input';
+import { Mail, Eye, EyeOff } from 'lucide-react-native';
+
+<Input
+  label="Email"
+  placeholder="you@example.com"
+  leftIcon={Mail}
+  value={email}
+  onChangeText={setEmail}
+/>
+```
+
+### Password Input with Toggle
+
+```tsx
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react-native';
+
+function PasswordInput() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <Input
+      label="Password"
+      placeholder="Enter password"
+      secureTextEntry={!showPassword}
+      rightIcon={showPassword ? EyeOff : Eye}
+      onRightIconPress={() => setShowPassword(!showPassword)}
+    />
+  );
+}
+```
+
+### With Error State
+
+```tsx
+<Input
+  label="Username"
+  placeholder="Enter username"
+  value={username}
+  onChangeText={setUsername}
+  error="Username is already taken"
+/>
+```
+
+### With Helper Text
+
+```tsx
+<Input
+  label="Bio"
+  placeholder="Tell us about yourself"
+  multiline
+  numberOfLines={4}
+  helperText="Maximum 200 characters"
+/>
+```
+
+## Variants
+
+### Default
+```tsx
+<Input variant="default" placeholder="Default style" />
+```
+Outlined input with border.
+
+### Filled
+```tsx
+<Input variant="filled" placeholder="Filled style" />
+```
+Filled background style without border.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Input label text |
+| `error` | `string` | - | Error message to display |
+| `helperText` | `string` | - | Helper text below input |
+| `disabled` | `boolean` | `false` | Whether input is disabled |
+| `leftIcon` | `LucideIcon` | - | Icon on the left side |
+| `rightIcon` | `LucideIcon` | - | Icon on the right side |
+| `onRightIconPress` | `() => void` | - | Handler for right icon press |
+| `variant` | `'default' \| 'filled'` | `'default'` | Input style variant |
+
+Plus all standard React Native `TextInputProps`.
+
+## Features
+
+- **Smooth Animations**: Focus animation with spring physics
+- **Icon Support**: Left and right icon support with Lucide icons
+- **Error States**: Built-in error styling and messages
+- **Helper Text**: Support for helper/hint text
+- **Theme Support**: Automatically uses your theme colors
+- **Accessibility**: Proper disabled and focus states
+- **Platform Optimized**: Android text alignment fixes included
+
+## Examples
+
+### Login Form
+
+```tsx
+import { Input } from '@/components/ui/input';
+import { Mail, Lock } from 'lucide-react-native';
+
+function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  return (
+    <>
+      <Input
+        label="Email"
+        placeholder="you@example.com"
+        leftIcon={Mail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={email}
+        onChangeText={setEmail}
+      />
+
+      <Input
+        label="Password"
+        placeholder="Enter password"
+        leftIcon={Lock}
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+    </>
+  );
+}
+```
+
+### Search Input
+
+```tsx
+import { Input } from '@/components/ui/input';
+import { Search, X } from 'lucide-react-native';
+
+function SearchInput() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <Input
+      placeholder="Search..."
+      leftIcon={Search}
+      rightIcon={query ? X : undefined}
+      onRightIconPress={() => setQuery('')}
+      value={query}
+      onChangeText={setQuery}
+    />
+  );
+}
+```
+
+### Form with Validation
+
+```tsx
+import { Input } from '@/components/ui/input';
+
+function SignupForm() {
+  const [username, setUsername] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+
+  const validateUsername = (value: string) => {
+    if (value.length < 3) {
+      setUsernameError('Username must be at least 3 characters');
+    } else {
+      setUsernameError('');
+    }
+  };
+
+  return (
+    <Input
+      label="Username"
+      placeholder="Choose a username"
+      value={username}
+      onChangeText={(value) => {
+        setUsername(value);
+        validateUsername(value);
+      }}
+      error={usernameError}
+      helperText={!usernameError ? 'Choose a unique username' : undefined}
+    />
+  );
+}
+```
